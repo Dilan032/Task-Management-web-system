@@ -22,10 +22,11 @@
     </script>
 @endif
 
+
 <!-- Modal for Institute Registration -->
 <div class="modal fade" id="registerInstituteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="registerInstituteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="registerInstituteModalLabel">Institute Registration</h1>
@@ -33,54 +34,65 @@
             </div>
             <div class="modal-body">
 
-                <form id="instituteForm" action="{{ route('RegisterInstitute.save') }}" method="POST" class="mx-auto px-2">
+                <form id="instituteForm" action="{{ route('RegisterInstitute.save') }}" method="POST"
+                    class="mx-auto px-2">
                     @csrf
 
-                    <div class="row">
-                        <div class="col-md-12 col-sm-4">
-                            <div class="form-floating mb-3">
-                                <input type="text" name="institute_name" value="{{ old('institute_name') }}"
-                                    class="form-control" id="floatingInput1" placeholder="Institute name">
-                                <label for="floatingInput1">Institute Name</label>
-                            </div>
-                        </div>
+                    <!-- Input Group with Institute Name, Type, and Assigned Employee -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Institute Info</span>
 
-                        <div class="form-group mb-3">
-                            <select id="institute_type" class="form-select" name="institute_type" required>
-                                <option selected disabled>Institute Type...</option>
-                                @foreach ($types as $institute_type)
-                                    <option value="{{ $institute_type->institute_type }}">
-                                        {{ $institute_type->institute_type }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <!-- Institute Name -->
+                        <input type="text" name="institute_name" value="{{ old('institute_name') }}"
+                            class="form-control" placeholder="Institute Name" required>
 
-                        <div class="col-md-12 col-sm-4">
-                            <div class="form-floating mb-3">
-                                <input type="text" name="institute_address" value="{{ old('institute_address') }}"
-                                    class="form-control" id="floatingInput2" placeholder="Institute address">
-                                <label for="floatingInput2">Address</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-4">
-                            <div class="form-floating mb-3">
-                                <input type="text" name="institute_contact_num"
-                                    value="{{ old('institute_contact_num') }}" class="form-control" id="floatingInput3"
-                                    placeholder="Institute contact number">
-                                <label for="floatingInput3">Contact Number</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-4">
-                            <div class="form-floating mb-3">
-                                <input type="email" name="email" value="{{ old('email') }}" class="form-control"
-                                    id="floatingInput4" placeholder="Email">
-                                <label for="floatingInput4">Email</label>
-                            </div>
-                        </div>
+                        <!-- Institute Type -->
+                        <select name="institute_type" class="form-select" required>
+                            <option selected disabled>Institute Type...</option>
+                            @foreach ($types as $institute_type)
+                                <option value="{{ $institute_type->institute_type }}">
+                                    {{ $institute_type->institute_type }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <!-- Assigned Employee -->
+                        <select name="assigned_employee" class="form-select" required>
+                            <option selected disabled>Assigned Employee...</option>
+                            @foreach ($employees as $assigned_employee)
+                                <option value="{{ $assigned_employee->name }}">
+                                    {{ $assigned_employee->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
                     </div>
 
+                    <br />
+
+                    <!-- Input Group with Institute Contact Number and Email -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Contact Info</span>
+
+                        <!-- Contact Number -->
+                        <input type="text" name="institute_contact_num" value="{{ old('institute_contact_num') }}"
+                            class="form-control" placeholder="Institute Contact Number" required>
+
+                        <!-- Email -->
+                        <input type="email" name="email" value="{{ old('email') }}" class="form-control"
+                            placeholder="Email" required>
+                    </div>
+
+                    <!-- Address Field -->
+                    <div class="form-floating mb-3">
+                        <input type="text" name="institute_address" value="{{ old('institute_address') }}"
+                            class="form-control" id="floatingInput2" placeholder="Institute Address">
+                        <label for="floatingInput2">Address</label>
+                    </div>
+
+                    <!-- Form Buttons -->
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary me-2" type="submit">Register Now</button>
+                        <button class="btn btn-success me-2" type="submit">Register Now</button>
                         <button id="clearButton" class="btn btn-warning" type="button">Clear</button>
                     </div>
 
@@ -90,9 +102,10 @@
     </div>
 </div>
 
+
 <!-- JavaScript to handle form clearing -->
 <script>
-    document.getElementById('clearButton').addEventListener('click', function () {
+    document.getElementById('clearButton').addEventListener('click', function() {
         document.getElementById('instituteForm').reset();
     });
 </script>

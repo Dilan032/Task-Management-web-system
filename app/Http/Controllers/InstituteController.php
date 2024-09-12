@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Institute;
-use App\Models\InstituteTypes;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class InstituteController extends Controller
@@ -21,6 +19,7 @@ class InstituteController extends Controller
             'institute_address' => 'required|string|max:255',
             'institute_name' => 'required|string|max:255',
             'institute_type' => 'required|string|max:255',
+            'assigned_employee' => 'required|string|max:255',
         ];
 
         // Create validator instance and validate
@@ -37,6 +36,7 @@ class InstituteController extends Controller
         $institute->institute_address = $request->input('institute_address');
         $institute->institute_contact_num = $request->input('institute_contact_num');
         $institute->email = $request->input('email');
+        $institute->assigned_employee = $request->input('assigned_employee');
         $institute->save();
 
         // Redirect with a success message
@@ -44,3 +44,4 @@ class InstituteController extends Controller
     }
 
 }
+
