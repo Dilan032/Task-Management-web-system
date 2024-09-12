@@ -48,13 +48,26 @@
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr style="text-align:center">
-                        <th>Institute Name</th>
-                        <th>Institute Type</th>
-                        <th>Institute Address</th>
-                        <th>Institute Contact</th>
-                        <th style="width: 20%;">Email</th>
-                        <th>Assigned Employee</th>
-                        <th>Actions</th>
+                        <th style="height: 60px; vertical-align: middle;">
+                            Institute Name
+                        </th>
+                        <th style="height: 60px; vertical-align: middle;">
+                            <!-- Institute Type with Badge -->
+                            Institute Type
+                            @if(request('filter_institute_type'))
+                                <span class="position-relative">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $institute->total() }}
+                                        <span class="visually-hidden">filtered institutes</span>
+                                    </span>
+                                </span>
+                            @endif
+                        </th>
+                        <th style="height: 60px; vertical-align: middle;">Institute Address</th>
+                        <th style="height: 60px; vertical-align: middle;">Institute Contact</th>
+                        <th style="height: 60px; vertical-align: middle; width: 20%;">Email</th>
+                        <th style="height: 60px; vertical-align: middle;">Assigned Employee</th>
+                        <th style="height: 60px; vertical-align: middle;">Actions</th>
                     </tr>
                 </thead>
                 <tbody style="text-align:center">
@@ -68,44 +81,36 @@
                             <td>{{ $item->assigned_employee }}</td>
                             <td>
                                 <!-- Edit Modal Trigger -->
-                                <a href="#editInstituteModal{{ $item->id }}" class="edit" title="Edit"
-                                    data-bs-toggle="modal">
+                                <a href="#editInstituteModal{{ $item->id }}" class="edit" title="Edit" data-bs-toggle="modal">
                                     <i class="material-icons" style="color: orange; margin-left:5px">&#xE254;</i>
                                 </a>
                             </td>
                         </tr>
 
                         <!-- Modal for Editing Institute -->
-                        <div class="modal fade" id="editInstituteModal{{ $item->id }}" tabindex="-1"
-                            aria-labelledby="editInstituteModalLabel{{ $item->id }}" aria-hidden="true">
+                        <div class="modal fade" id="editInstituteModal{{ $item->id }}" tabindex="-1" aria-labelledby="editInstituteModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="editInstituteModalLabel{{ $item->id }}">Edit
-                                            Institute</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <h5 class="modal-title" id="editInstituteModalLabel{{ $item->id }}">Edit Institute</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <!-- Form for editing the institute -->
-                                        <form action="{{ route('superAdmin.institute.update.view', $item->id) }}"
-                                            method="post">
+                                        <form action="{{ route('superAdmin.institute.update.view', $item->id) }}" method="post">
                                             @csrf
                                             @method('PUT')
 
                                             <!-- Institute Info: Name, Type, and Assigned Employee -->
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Institute Info</span>
-                                                <input type="text" name="institute_name"
-                                                    value="{{ old('institute_name', $item->institute_name) }}"
-                                                    class="form-control" placeholder="Institute Name" required>
+                                                <input type="text" name="institute_name" value="{{ old('institute_name', $item->institute_name) }}" class="form-control" placeholder="Institute Name" required>
 
                                                 <!-- Institute Type -->
                                                 <select name="institute_type" class="form-select" required>
                                                     <option selected disabled>Institute Type...</option>
                                                     @foreach ($types as $institute_type)
-                                                        <option value="{{ $institute_type->institute_type }}"
-                                                            {{ $institute_type->institute_type == $item->institute_type ? 'selected' : '' }}>
+                                                        <option value="{{ $institute_type->institute_type }}" {{ $institute_type->institute_type == $item->institute_type ? 'selected' : '' }}>
                                                             {{ $institute_type->institute_type }}
                                                         </option>
                                                     @endforeach
@@ -115,8 +120,7 @@
                                                 <select name="assigned_employee" class="form-select" required>
                                                     <option selected disabled>Assigned Employee...</option>
                                                     @foreach ($employees as $assigned_employee)
-                                                        <option value="{{ $assigned_employee->name }}"
-                                                            {{ $assigned_employee->name == $item->assigned_employee ? 'selected' : '' }}>
+                                                        <option value="{{ $assigned_employee->name }}" {{ $assigned_employee->name == $item->assigned_employee ? 'selected' : '' }}>
                                                             {{ $assigned_employee->name }}
                                                         </option>
                                                     @endforeach
@@ -126,21 +130,13 @@
                                             <!-- Contact Info: Number and Email -->
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Contact Info</span>
-                                                <input type="text" name="institute_contact_num"
-                                                    value="{{ old('institute_contact_num', $item->institute_contact_num) }}"
-                                                    class="form-control" placeholder="Institute Contact Number"
-                                                    required>
-                                                <input type="email" name="email"
-                                                    value="{{ old('email', $item->email) }}" class="form-control"
-                                                    placeholder="Email" required>
+                                                <input type="text" name="institute_contact_num" value="{{ old('institute_contact_num', $item->institute_contact_num) }}" class="form-control" placeholder="Institute Contact Number" required>
+                                                <input type="email" name="email" value="{{ old('email', $item->email) }}" class="form-control" placeholder="Email" required>
                                             </div>
 
                                             <!-- Address Field -->
                                             <div class="form-floating mb-3">
-                                                <input type="text" name="institute_address"
-                                                    value="{{ old('institute_address', $item->institute_address) }}"
-                                                    class="form-control" id="floatingInput2"
-                                                    placeholder="Institute Address">
+                                                <input type="text" name="institute_address" value="{{ old('institute_address', $item->institute_address) }}" class="form-control" id="floatingInput2" placeholder="Institute Address">
                                                 <label for="floatingInput2">Address</label>
                                             </div>
 

@@ -312,6 +312,7 @@ class SuperAdminController extends Controller
         ]);
     }
 
+
     public function ViewOneInstitute($id)
     {
         $institute = Institute::find($id);

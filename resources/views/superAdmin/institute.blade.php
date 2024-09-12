@@ -30,9 +30,7 @@
                 @include('components.superAdmin.institute.addInstituteType')
             </div>
         </div>
-
         <br/>
-
         @include('superAdmin.instituteManagement.overview')
     </div>
 
