@@ -306,31 +306,41 @@ class SuperAdminController extends Controller
 
     public function instituteUpdate(Request $request, $id)
     {
+        // Find a single institute by ID
         $institute = Institute::findOrFail($id);
-        // validation rules
+
+        // Validation rules
         $rules = [
             'institute_contact_num' => 'required|string|max:10',
             'email' => 'required|string|email|max:255',
             'institute_address' => 'required|string|max:255',
             'institute_name' => 'required|string|max:255',
+            'assigned_employee' => 'required|string',
+            'institute_type' => 'required|string',
         ];
 
-        // Create validator instance and validate
+        // Validate the input
         $validator = Validator::make($request->all(), $rules);
 
-        // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        // Update institute fields
         $institute->institute_name = $request->input('institute_name');
         $institute->institute_address = $request->input('institute_address');
         $institute->institute_contact_num = $request->input('institute_contact_num');
         $institute->email = $request->input('email');
-        $institute->update();
+        $institute->institute_type = $request->input('institute_type');
+        $institute->assigned_employee = $request->input('assigned_employee');
 
-        return redirect()->back()->with('success', 'institute Update successfully.');
+        // Save the changes
+        $institute->save();
+
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Institute updated successfully.');
     }
+
 
     public function instituteDelete($id)
     {

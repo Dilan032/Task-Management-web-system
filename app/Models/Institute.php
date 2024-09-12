@@ -27,3 +27,4 @@ class Institute extends Model
 
 }
 
+
