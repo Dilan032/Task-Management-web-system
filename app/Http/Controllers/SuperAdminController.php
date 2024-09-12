@@ -264,37 +264,51 @@ class SuperAdminController extends Controller
         );
     }
 
-    public function ViewInstitute()
+    public function ViewInstitute(Request $request)
     {
         // Get data for institute list component
         $types = InstituteTypes::all();
 
         // Retrieve users with specific user types (super admin and company employee)
         $employees = DB::table('users')
-            ->select('id', 'name', 'user_type') // Only select the required fields
-            ->whereIn('user_type', ['super admin', 'company employee']) // Filter by user type
+            ->select('id', 'name', 'user_type')
+            ->whereIn('user_type', ['super admin', 'company employee'])
             ->get();
 
-        $users = DB::table('users')->get();
+        // Build query with search and filters
+        $instituteQuery = DB::table('institutes')->orderBy('created_at', 'DESC');
 
-        // Ensure this uses paginate, not get
-        $institute = DB::table('institutes')
-            ->orderBy('created_at', 'DESC')
-            ->paginate(10); // This returns a paginator instance
+        // Apply search for institute name
+        if ($request->filled('search_institute_name')) {
+            $instituteQuery->where('institute_name', 'like', '%' . $request->search_institute_name . '%');
+        }
 
+        // Apply filter for institute type
+        if ($request->filled('filter_institute_type')) {
+            $instituteQuery->where('institute_type', $request->filter_institute_type);
+        }
+
+        // Apply filter for assigned employee
+        if ($request->filled('filter_assigned_employee')) {
+            $instituteQuery->where('assigned_employee', $request->filter_assigned_employee);
+        }
+
+        // Paginate results
+        $institute = $instituteQuery->paginate(3);
+
+        // Get total counts
         $instituteCount = Institute::count();
         $activeInstituteCount = Institute::where('status', 'active')->count();
         $inactiveInstituteCount = Institute::where('status', 'inactive')->count();
 
-        // Pass 'types' and 'institute' to the view
         return view('superAdmin.institute', [
-            'users' => $users,
+            'users' => DB::table('users')->get(),
             'institute' => $institute,
             'instituteCount' => $instituteCount,
             'activeInstituteCount' => $activeInstituteCount,
             'inactiveInstituteCount' => $inactiveInstituteCount,
             'types' => $types,
-            'employees' => $employees // This now contains only the relevant fields
+            'employees' => $employees,
         ]);
     }
 
