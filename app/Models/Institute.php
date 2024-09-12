@@ -23,5 +23,5 @@ class Institute extends Model
     {
         return $this->hasMany(Message::class);
     }
-    
+
 }

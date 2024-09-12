@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdministratorController;
-use App\Http\Controllers\InstituteController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MesageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\SuperAdminController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\InstituteTypesController;
 
 
 Route::get('/', function () {
@@ -39,7 +40,7 @@ Route::controller(SuperAdminController::class)
     Route::get('/superAdmin/dashbord', 'superAdminDashbord')->name('superAdmin.dashbord');
     Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
     Route::get('/superAdmin/details/{id}', 'superAdminDetails')->name('superAdmin.deails');
-    Route::put('/superAdmin/details/update/{id}', 'superAdminUpdate')->name('superAdmin.details.update'); 
+    Route::put('/superAdmin/details/update/{id}', 'superAdminUpdate')->name('superAdmin.details.update');
     Route::delete('/superAdmin/delete/{id}', 'deleteSuperAdmin')->name('superAdmin.SuperAdmin.delete');
 
     Route::get('/superAdmin/messages', 'ViewMessages')->name('superAdmin.messages.view');
@@ -47,7 +48,7 @@ Route::controller(SuperAdminController::class)
     Route::put('/superAdmin/messages/ProblemResolvedOrNot/{id}', 'ProblemResolvedOrNot')->name('superAdmin.problem.resolved.or.not');
 
     Route::get('/superAdmin/announcements', 'ViewAnnouncements')->name('superAdmin.announcements.view');
-    
+
 
     Route::get('/superAdmin/institute', 'ViewInstitute')->name('superAdmin.institute.view');
     Route::get('/superAdmin/institute/{id}', 'ViewOneInstitute')->name('superAdmin.one.institute.view');
@@ -67,6 +68,16 @@ Route::controller(InstituteController::class)->group(function () {
 });
 
 
+
+//Institute type CURD parts and routes.....
+Route::controller(InstituteTypesController::class)->group(function () {
+    Route::post('/superAdmin/institute-type/add', 'AddInstituteType')->name('AddInstituteType.save');
+});
+
+
+
+
+
 Route::controller(MesageController::class)
     ->middleware('UserType:user')->group(function (){
     Route::post('/user/userDashbord', 'SaveMessage')->name('message.save');
@@ -78,12 +89,12 @@ Route::controller(UserController::class)
     ->middleware('UserType:user')->group(function () {
     Route::get('/user/userDashbord', 'index')->name('user.index');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
-    
+
 });
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/details/{id}', 'oneUserDetailsForAdministrator')->name('user.details');
-    Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update'); 
+    Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
 
@@ -91,7 +102,7 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(UserController::class)
     ->middleware('UserType:super admin')->group(function () {
     Route::delete('/superAdmin/users/{id}', 'deleteUserForAdmin')->name('user.delete.for.admin');
-    Route::get('/superAdmin/user/details/{id}', 'oneUserDetailsForSuperAdmin')->name('superAdmin.user.details'); 
+    Route::get('/superAdmin/user/details/{id}', 'oneUserDetailsForSuperAdmin')->name('superAdmin.user.details');
 });
 
 //for administrator
