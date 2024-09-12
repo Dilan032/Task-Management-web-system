@@ -27,13 +27,9 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
-
 Route::get('/user/inactive',function(){
     return view('inactiveUserError');
 });
-
-
 
 Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
@@ -48,7 +44,6 @@ Route::controller(SuperAdminController::class)
     Route::put('/superAdmin/messages/ProblemResolvedOrNot/{id}', 'ProblemResolvedOrNot')->name('superAdmin.problem.resolved.or.not');
 
     Route::get('/superAdmin/announcements', 'ViewAnnouncements')->name('superAdmin.announcements.view');
-
 
     Route::get('/superAdmin/institute', 'ViewInstitute')->name('superAdmin.institute.view');
     Route::get('/superAdmin/institute/{id}', 'ViewOneInstitute')->name('superAdmin.one.institute.view');
@@ -66,8 +61,6 @@ Route::controller(SuperAdminController::class)
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
 });
-
-
 
 //Institute type CURD parts and routes.....
 Route::controller(InstituteTypesController::class)->group(function () {
