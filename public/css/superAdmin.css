@@ -1,0 +1,26 @@
+.shado{
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.allUserListBG {
+    border-top-style: inset;
+    border-left-style: inset;
+}
+
+a{
+    text-decoration: none;
+}
+
+.borderInset{
+    border-style: inset;
+}
+
+.userList{
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+.userList:hover{
+    box-shadow: 5px 5px 50px rgba(0, 0, 0, 0.1);
+}
+.mouse-hand{
+    cursor: pointer;
+}
