@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\CompanyEmployeeController;
+use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\MesageController;
 use App\Http\Controllers\ProfileController;
@@ -64,6 +66,12 @@ Route::controller(SuperAdminController::class)
 
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
+});
+
+Route::controller(CompanyEmployeeController::class)
+    ->middleware('UserType:company employee')->group(function () {
+    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
+    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
 });
 
 

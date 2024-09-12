@@ -23,11 +23,11 @@
 
 
     {{-- navBar --}}
-    <section class="mb-5">
+    <section class="mb-4">
         @include('components.user.navBar')
     </section>
 
-    <div class="container">
+    <div class="container-fluid">
         @yield('userContent')
     </div>
 
