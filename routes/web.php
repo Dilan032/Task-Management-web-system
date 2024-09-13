@@ -1,7 +1,12 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\CompanyEmployeeController;
+use App\Http\Controllers\CompanyUserController;
+use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\MesageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InstituteController;
@@ -62,12 +67,18 @@ Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
 });
 
+
 //Institute type CURD parts and routes.....
 Route::controller(InstituteTypesController::class)->group(function () {
     Route::post('/superAdmin/institute-type/add', 'AddInstituteType')->name('AddInstituteType.save');
 });
 
-
+//Company employees routes....
+Route::controller(CompanyEmployeeController::class)
+    ->middleware('UserType:company employee')->group(function () {
+    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
+    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+});
 
 
 

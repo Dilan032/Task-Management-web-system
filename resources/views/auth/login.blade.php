@@ -53,7 +53,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6 mt-3">
                 <div class="border p-4 bg-white text-dark rounded shadoLoginBG">
-                    <h4 class="text-center mb-4 fw-medium">Institute Complaint Web Application</h4>
+                    <h4 class="text-center mb-4 fw-medium">Institute Complain Web Application</h4>
                     <form action="{{route('login')}}" method="POST" class="mx-auto">
                         @csrf
                         <div class="form-floating mb-3">
