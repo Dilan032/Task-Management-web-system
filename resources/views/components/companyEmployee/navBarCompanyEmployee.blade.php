@@ -9,26 +9,29 @@
         <i class="bi bi-list fs-1"></i>
       </button>
     
-      <div class="collapse navbar-collapse mt-3" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-6">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ route('user.index') }}">Home</a>
+            {{-- <a class="nav-link active" aria-current="page" href="{{ route('user.index') }}">Home</a> --}}
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('user.index') }}">Previous messages</a>
+            {{-- <a class="nav-link" href="{{ route('user.index') }}">Previous messages</a> --}}
           </li>
         </ul>
         {{-- <div class="d-flex flex-row-reverse text-center "> --}}
           <div class="dropdown text-start">
-            <a class="px-5 py-1 text-white border"  data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="px-5 py-1 text-white fs-5 fw-normal"  data-bs-toggle="dropdown" aria-expanded="false">
               @if(Auth::check())
-                  <span><b>{{ Auth::user()->name }} 🔽</b></span> <br>
+                  <span>
+                    {{ Auth::user()->name }} 
+                    <i class="bi bi-caret-down-fill"></i>
+                  </span> <br>
               @else
                   <script>window.location = "/";</script>
               @endif
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-center">
-              <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Change Password</a></li>
+              <li><a class="dropdown-item" href="{{ route('change.password') }}">Change Password</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a href="{{route('user.logout')}}" class="active">Logout</a></li>
             </ul>

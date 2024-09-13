@@ -17,4 +17,8 @@ class CompanyEmployeeController extends Controller
         $messages = Message::findorFail($id);
         return view('companyEmployee/message',['messages'=>$messages]);
     }
+
+    public function changePassword(){
+        return view('companyEmployee.changePassword');
+    }
 }

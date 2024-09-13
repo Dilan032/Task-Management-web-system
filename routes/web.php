@@ -36,6 +36,7 @@ Route::get('/user/inactive',function(){
 
 
 
+
 Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
     Route::get('/superAdmin/dashbord', 'superAdminDashbord')->name('superAdmin.dashbord');
@@ -72,7 +73,9 @@ Route::controller(CompanyEmployeeController::class)
     ->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+    Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
 });
+
 
 
 Route::controller(MesageController::class)

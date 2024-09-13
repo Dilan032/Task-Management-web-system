@@ -24,11 +24,11 @@
 
     {{-- navBar --}}
     <section class="mb-4">
-        @include('components.user.navBar')
+        @include('components.companyEmployee.navBarCompanyEmployee')
     </section>
 
     <div class="container">
-        @yield('userContent')
+        @yield('companyEmployeeContent')
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
