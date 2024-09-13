@@ -1,24 +1,148 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="{{ asset('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}" type="image/x-icon">
-    <title>Account </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
-  <body>
 
-    {{-- <h1>Account is inactive</h1> --}}
-    <div class="alert alert-warning" role="alert">
-        <p class="font-monospace text-center my-5">
-            Your account has been temporarily suspended <br>
-            Contact your bank manager
-        </p>
-    </div>
-    
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
+	<title>404 HTML Template by Colorlib</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet">
+
+	<!-- Custom stlylesheet -->
+	<!-- <link type="text/css" rel="stylesheet" href="css/style.css" /> -->
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+
+		body {
+			padding: 0;
+			margin: 0;
+		}
+
+		#notfound {
+			position: relative;
+			height: 100vh;
+		}
+
+		#notfound .notfound {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+		}
+
+		.notfound {
+			max-width: 520px;
+			width: 100%;
+			line-height: 1.4;
+			text-align: center;
+		}
+
+		.notfound .notfound-404 {
+			position: relative;
+			height: 240px;
+		}
+
+		.notfound .notfound-404 h1 {
+			font-family: 'Montserrat', sans-serif;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			font-size: 252px;
+			font-weight: 900;
+			margin: 0px;
+			color: #c3c3c3;
+			text-transform: uppercase;
+			letter-spacing: -40px;
+			margin-left: -20px;
+		}
+
+		.notfound .notfound-404 h1>span {
+			text-shadow: -8px 0px 0px #fff;
+		}
+
+		.notfound .notfound-404 h3 {
+			font-family: 'Cabin', sans-serif;
+			position: relative;
+			font-size: 16px;
+			font-weight: 700;
+			text-transform: uppercase;
+			color: #262626;
+			margin: 0px;
+			letter-spacing: 3px;
+			padding-left: 6px;
+		}
+
+		.notfound h2 {
+			font-family: 'Cabin', sans-serif;
+			font-size: 20px;
+			font-weight: 400;
+			text-transform: uppercase;
+			color: #000;
+			margin-top: 0px;
+			margin-bottom: 25px;
+		}
+
+		@media only screen and (max-width: 767px) {
+			.notfound .notfound-404 {
+				height: 200px;
+			}
+
+			.notfound .notfound-404 h1 {
+				font-size: 200px;
+			}
+		}
+
+		@media only screen and (max-width: 480px) {
+			.notfound .notfound-404 {
+				height: 162px;
+			}
+
+			.notfound .notfound-404 h1 {
+				font-size: 162px;
+				height: 150px;
+				line-height: 162px;
+			}
+
+			.notfound h2 {
+				font-size: 16px;
+			}
+		}
+	</style>
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+</head>
+
+<body>
+
+	<div id="notfound">
+		<div class="notfound">
+			<div class="notfound-404">
+				<h3>Oops! Page not found</h3>
+				<h1><span>4</span><span>0</span><span>4</span></h1>
+			</div>
+			<h2>we are sorry, but the page you requested was not found</h2>
+		</div>
+	</div>
+
+</body>
+
 </html>
