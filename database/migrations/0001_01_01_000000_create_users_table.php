@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('institute_id')->nullable();
             $table->string('name')->nullable();
-            $table->enum('user_type',['super admin', 'administrator', 'user'])->default('user');
+            $table->enum('user_type',['super admin', 'administrator', 'user', 'company employee'])->default('user');
             $table->enum('status',['active', 'inactive'])->default('active')->nullable();
             $table->string('email')->unique();
             $table->string('user_contact_num')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->unique();
             $table->rememberToken();
+            $table->timestamp('last_seen')->nullable();
             $table->timestamps();
 
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');

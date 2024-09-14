@@ -1,34 +1,40 @@
 @extends('layouts.superAdminLayout')
-@section('SuperAdminContent')
 
-{{-- <span class="fs-3 ms-2">users</span> --}}
-<div class="fs-3 ms-4">Users</div>
+@section('SuperAdminContent')
+    <!-- Page Heading -->
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Company User Management</h3>
+        </div>
+    </div>
 
     <hr class="me-3">
 
     <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <!-- Badge on the left -->
+            <span class="badge text-bg-secondary fs-6 p-2" style="margin-left:15px">
+                Total Employees: {{ $employeeCount }}
+            </span>
 
-        {{-- btn for user registration model --}}
-        <div class="d-grid gap-2 mb-4 d-md-flex justify-content-md-end">
-            <button class="btn btn-primary me-md-5" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Register Users</button>
+            <!-- Buttons on the right -->
+            {{-- Buttons for Registe company employees and Remove all employees --}}
+            <div class="d-flex gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="modal"
+                    data-bs-target="#registerCompanyEmpModal">Register Company Users</button>
+
+                <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+                    data-bs-target="#deleteAllCompanyEmpModal">Remove All Employees</button>
+            </div>
         </div>
         {{-- include model --}}
-        @include('components.superAdmin.users.registerUsers')
-        {{-- end user registration section --}}
+        @include('components.superAdmin.users.registerSuperAdmin')
 
-        <div class="row">
-            <div class="col-md-12 col-sm-4 mx-auto">
-                {{-- @include('components.superAdmin.users.userAllDetails') --}}
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-12 col-sm-4 mx-auto mb-4">
-                {{-- @include('components.superAdmin.institute.instituteList') --}}
-            </div>
-        </div>
-       
+        @include('superAdmin.companyEmpManagement.removeAllEmps')
     </div>
 
+    <br />
+    @include('superAdmin.companyEmpManagement.overview')
+
 @endsection
+

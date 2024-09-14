@@ -114,20 +114,24 @@ class SuperAdminController extends Controller
         ]);
     }
 
-    public function superAdminDetails($id)
-    {
-        $superAdmin = User::where('user_type', 'super admin')->findOrFail($id);
-        return view('superAdmin.superAdminDeatils', ['superAdmin' => $superAdmin]);
-    }
+    // public function superAdminDetails($id)
+    // {
+    //     $superAdmin = User::where('user_type', 'super admin')->findOrFail($id);
+    //     return view('superAdmin.superAdminDeatils', ['superAdmin' => $superAdmin]);
+    // }
 
-    public function superAdminUpdate(Request $request, $id)
+
+    public function companyEmpUpdate(Request $request, $id) // Company Employee Details Update function
     {
-        $superAdmin = User::where('user_type', 'super admin')->findOrFail($id);
+        // Find the company employee or super admin by ID
+        $employee = User::findOrFail($id);
+
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'user_contact_num' => 'required|string|max:12',
             'password' => 'nullable|string|min:8|confirmed',
+            'status' => 'required|in:active,inactive', // Adding status validation
         ];
 
         // Create validator instance and validate
@@ -138,64 +142,79 @@ class SuperAdminController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $superAdmin->user_type = 'super admin';
-        $superAdmin->name = $request->input('name');
-        $superAdmin->email = $request->input('email');
-        $superAdmin->status = $request->input('status');
-        $superAdmin->user_contact_num = $request->input('user_contact_num');
+        // Update employee details
+        $employee->name = $request->input('name');
+        $employee->email = $request->input('email');
+        $employee->status = $request->input('status');
+        $employee->user_contact_num = $request->input('user_contact_num');
 
         // Check if password is provided and update it
         if ($request->filled('password')) {
-            $superAdmin->password = Hash::make($request->input('password'));
+            $employee->password = Hash::make($request->input('password'));
         }
 
-        $superAdmin->update();
+        // Save the updated employee details
+        $employee->update();
 
         // Redirect with a success message
-        return redirect()->back()->with('success', 'User Update successfully!');
+        return redirect()->back()->with('success', 'Employee updated successfully!');
     }
 
-    public function deleteSuperAdmin($id)
+    public function companyEmpDelete($id)
     {
         $user = User::find($id);
+
+        // Check if user exists
+        if (!$user) {
+            return redirect()->back()->with('error', 'Employee not found.');
+        }
+
+        // Store the user type for custom message
+        $userType = strtolower($user->user_type); // Convert to lowercase for case-insensitive check
+
+        // Delete the user
         $user->delete();
-        return redirect()->back()->with('success', 'Super Admin deleted successfully.');
+
+        // Customize the success message based on user type
+        if ($userType == 'super admin') {
+            $message = 'Super Admin deleted successfully.';
+        } elseif ($userType == 'company employee') {
+            $message = 'Company Employee deleted successfully.';
+        } else {
+            $message = ucfirst($userType) . ' deleted successfully.';
+        }
+
+        return redirect()->back()->with('success', $message);
     }
 
     // for User Registration super admin
     public function RegisterSuperAdmin(Request $request)
     {
         $rules = [
+            'user_type' => 'required|string',
             'password' => 'required|string|min:8|max:32|confirmed',
             'user_contact_num' => 'required|string|max:12',
             'email' => 'required|string|email|max:255|unique:users,email',
             'name' => 'required|string|max:255',
         ];
 
-        // Create validator instance and validate
         $validator = Validator::make($request->all(), $rules);
 
-        // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-
         $newUser = new User;
-        // $newUser->institute_id = $request->input('institute_id');
-        $newUser->user_type = 'super admin';
+        $newUser->user_type = $request->input('user_type');
         $newUser->name = $request->input('name');
         $newUser->email = $request->input('email');
         $newUser->user_contact_num = $request->input('user_contact_num');
         $newUser->password = Hash::make($request->input('password'));
         $newUser->save();
 
-        //for sent the new register user
         $plainPassword = $request->input('password');
 
-        //get user register pertion details
         if (Auth::check()) {
-            //get authenticate admin details
             $RegisterAdminName = Auth::user()->name;
             $RegisterUserType = Auth::user()->user_type;
             $RegisterAadminEmail = Auth::user()->email;
@@ -216,8 +235,7 @@ class SuperAdminController extends Controller
             $RegisterAdminContactNumber
         ));
 
-        // Redirect with a success message
-        return redirect()->back()->with('success', 'User Registration successfully!');
+        return redirect()->back()->with('success', 'User registered successfully!');
     }
 
     public function ViewOneMessages($id)
@@ -247,21 +265,62 @@ class SuperAdminController extends Controller
     }
 
     //$Institute variable used for while user registration form generate institute name list
-    public function ViewUsers()
+    public function ViewUsers(Request $request)
     {
-        //get data for institute list component
-        $users = DB::table('users')->get();
-        $institute = DB::table('institutes')
-            ->orderBy('created_at', 'DESC')
-            ->get();
-        //end
+        // Build the query with filtering and search capabilities
+        $employeeQuery = User::select('id', 'name', 'user_type', 'email', 'user_contact_num', 'last_seen', 'status')
+            ->whereIn('user_type', ['super admin', 'company employee']);
 
+        // Apply search for employee name
+        if ($request->filled('search_employee_name')) {
+            $employeeQuery->where('name', 'like', '%' . $request->search_employee_name . '%');
+        }
 
+        //Apply filter for employee type
+        if ($request->filled('filter_employee_type')) {
+            $employeeQuery->where('user_type', $request->filter_employee_type);
+        }
 
-        return view(
-            'superAdmin.users',
-            ['users' => $users, 'institute' => $institute,]
-        );
+        //Apply filter for employee status (online/offline)
+        if ($request->filled('filter_employee_status')) {
+            if ($request->filter_employee_status === 'online') {
+                $employeeQuery->whereNotNull('last_seen');
+            } elseif ($request->filter_employee_status === 'offline') {
+                $employeeQuery->whereNull('last_seen');
+            }
+        }
+
+        // Paginate the result
+        $employees = $employeeQuery->paginate(5);
+
+        $employeeCount = User::whereIn('user_type', ['super admin', 'company employee'])->count();
+
+        // Get institutes data
+        $institute = Institute::orderBy('created_at', 'DESC')->get();
+
+        // Pass data to the view
+        return view('superAdmin.users', [
+            'employees' => $employees,
+            'institute' => $institute,
+            'employeeCount' => $employeeCount,
+        ]);
+    }
+
+    public function deleteAllEmployees(Request $request)
+    {
+        // Validate the user ID (assuming you have user authentication)
+        $userId = $request->input('user_id');
+
+        // Check if the user ID is correct (you may need to implement your own authentication logic)
+        if (Auth::user()->id != $userId) {
+            return redirect()->back()->withErrors('Invalid user ID.');
+        }
+
+        // Delete all employees who are either 'super admin' or 'company employee'
+        User::whereIn('user_type', ['super admin', 'company employee'])->delete();
+
+        // Redirect with success message
+        return redirect()->route('superAdmin.users.view')->with('success', 'All employees have been deleted.');
     }
 
     public function ViewInstitute(Request $request)
@@ -270,6 +329,7 @@ class SuperAdminController extends Controller
         $types = InstituteTypes::all();
 
         // Retrieve users with specific user types (super admin and company employee)
+        // For institute assigned company employees
         $employees = DB::table('users')
             ->select('id', 'name', 'user_type')
             ->whereIn('user_type', ['super admin', 'company employee'])
@@ -311,7 +371,6 @@ class SuperAdminController extends Controller
             'employees' => $employees,
         ]);
     }
-
 
     public function ViewOneInstitute($id)
     {
@@ -363,7 +422,6 @@ class SuperAdminController extends Controller
         $institute->delete();
         return redirect()->back()->with('success', 'institute Remove successfully.');
     }
-
 
     // [super admin] for logout
     public function superAdminLogout(Request $request): RedirectResponse

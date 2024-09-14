@@ -4,11 +4,11 @@
 <div class="d-flex justify-content-between mt-3">
     <p class="fs-4">
         {{$oneMessage->institute->institute_name}} Message
-        {{-- <span class="badge text-bg-dark">{{$oneMessage->user->user_type}}</span> 
-        {{$oneMessage->user->name}}'s message of 
+        {{-- <span class="badge text-bg-dark">{{$oneMessage->user->user_type}}</span>
+        {{$oneMessage->user->name}}'s message of
         <span class="bg-dark-subtle p-1 px-2">{{$oneMessage->institute->institute_name}}</span> |
         <small class="bg-dark-subtle p-1 px-2">{{$oneMessage->institute->institute_address}}</small> --}}
-    </p>  
+    </p>
 </div>
 
 <hr class="me-3">
@@ -39,7 +39,7 @@
 @endif
 
 <div class="d-grid gap-2 d-flex justify-content-end mb-4">
-    
+
     <div class="dropdown-center">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Centered dropdown
@@ -84,10 +84,10 @@
         </form> --}}
     </ul>
   </div>
-        
+
 </div>
 
-      
+
 <section class="container">
     <div class="table-responsive">
         <table class="table table-borderless rounded messageBG">
@@ -109,7 +109,7 @@
                         status  <span class="badge text-bg-dark py-2">{{$oneMessage->status}}</span>
                     @else
                         status  <span class="badge text-bg-info text-dark py-2 px-4">{{$oneMessage->status}}</span>
-                    @endif 
+                    @endif
                 </td>
               </tr>
               <tr>
@@ -120,7 +120,7 @@
               </tr>
             </tbody>
           </table>
-    
+
             <div class="text-end me-2 fw-light">
                 <p>
                     <span class="badge bg-secondary-subtle text-dark px-4 py-2 fw-light">
@@ -130,9 +130,8 @@
                 </p>
             </div>
     </div>
-    
-          
-    
+
+
           <!-- Thumbnail Images -->
           <div class="container mt-4 mb-5">
             <p class="fw-light">Pictures of the problem areas :</p>
@@ -156,8 +155,8 @@
                 </div>
             </div>
         </div>
-    
-    
+
+
          <!-- Modals -->
          <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -171,7 +170,7 @@
               </div>
           </div>
       </div>
-    
+
       <div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
@@ -184,7 +183,7 @@
               </div>
           </div>
       </div>
-    
+
       <div class="modal fade" id="imageModal3" tabindex="-1" aria-labelledby="imageModalLabel3" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
@@ -197,7 +196,7 @@
               </div>
           </div>
       </div>
-    
+
       <div class="modal fade" id="imageModal4" tabindex="-1" aria-labelledby="imageModalLabel4" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
@@ -210,7 +209,7 @@
               </div>
           </div>
       </div>
-    
+
       <div class="modal fade" id="imageModal5" tabindex="-1" aria-labelledby="imageModalLabel5" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">

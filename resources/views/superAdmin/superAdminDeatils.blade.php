@@ -28,15 +28,15 @@
     });
 </script>
 @endif
-    
+
 
     <div class="row d-flex justify-content-center mt-4">
         {{-- @foreach ($superAdmin as $admin ) --}}
         <div class="col-md-6">
-            <form action="{{route('superAdmin.details.update',$superAdmin->id )}}" method="POST" class="mx-auto px-2">
+            <form action="{{route('companyEmp.details.update',$superAdmin->id )}}" method="POST" class="mx-auto px-2">
                 @csrf
                 @method('PUT')
-                
+
                 <input type="hidden" name="user_type" value="super admin">
                 <div class="row">
                     <div class="col-md-12 col-sm-4">
@@ -72,7 +72,7 @@
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary" type="submit">Update</button>
                     </div>
-                    
+
                 </div>
             </form>
         </div>

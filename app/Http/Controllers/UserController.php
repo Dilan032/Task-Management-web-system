@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-
     public function index(){
         if (Auth::check()) {
             $userid = Auth::id();
@@ -34,13 +33,13 @@ class UserController extends Controller
         }
     }
 
-    //show seleted user data 
+    //show seleted user data
     public function oneUserDetailsForAdministrator($id){
         $user =User::find($id);
         return view('administrator.userEdit', compact('user'));
     }
 
-    //show seleted user data 
+    //show seleted user data
     public function oneUserDetailsForSuperAdmin($id){
         $userInstituteId = DB::table('users')
                     ->where('id', $id)
@@ -48,7 +47,7 @@ class UserController extends Controller
 
         $instituteID = DB::table('institutes')
                     ->where('id', $userInstituteId)->first();
-                
+
 
         $adminDetails = DB::table('users')
                     ->where('institute_id', $userInstituteId)
@@ -64,15 +63,15 @@ class UserController extends Controller
         return view('superAdmin.editUser', compact('user', 'adminDetails', 'userDetails'));
     }
 
-     //user update Function for administrator 
-     public function UsersUpdate(Request $request , $uid){ 
+     //user update Function for administrator
+     public function UsersUpdate(Request $request , $uid){
         $user = User::findOrFail($uid);
-        
+
         $rules = [
             'user_type' => 'required|string|in:administrator,user,super admin',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'user_contact_num' => 'required|string|max:12',       
+            'user_contact_num' => 'required|string|max:12',
         ];
 
         // Create validator instance and validate
@@ -94,11 +93,10 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User Update successfully!');
     }
 
-    
-    // for User Registration 
-    public function RegisterUsers(Request $request){ 
+    // for User Registration
+    public function RegisterUsers(Request $request){
         $rules = [
-            'institute_id' => 'required|exists:institute,id',
+            'institute_id' => 'required|exists:institutes,id',
             'password' => 'required|string|min:8|max:32|confirmed',
             'user_contact_num' => 'required|string|max:12',
             'email' => 'required|string|email|max:255|unique:users,email',
@@ -113,7 +111,6 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
 
         $newUser = new User;
         $newUser->institute_id = $request->input('institute_id');
@@ -144,7 +141,6 @@ class UserController extends Controller
         // Redirect with a success message
         return redirect()->back()->with('success', 'User Registration successfully!');
     }
-
 
     // [User ] for logout
     public function userLogout(Request $request): RedirectResponse

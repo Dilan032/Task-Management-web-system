@@ -5,15 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\CompanyEmployeeController;
-use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\MesageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\SuperAdminController;
-use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\InstituteTypesController;
-
 
 Route::get('/', function () {
     return view('auth.login');
@@ -40,9 +36,14 @@ Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
     Route::get('/superAdmin/dashbord', 'superAdminDashbord')->name('superAdmin.dashbord');
     Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
-    Route::get('/superAdmin/details/{id}', 'superAdminDetails')->name('superAdmin.deails');
-    Route::put('/superAdmin/details/update/{id}', 'superAdminUpdate')->name('superAdmin.details.update');
-    Route::delete('/superAdmin/delete/{id}', 'deleteSuperAdmin')->name('superAdmin.SuperAdmin.delete');
+
+    Route::get('/superAdmin/details/{id}', 'superAdminDetails')->name('superAdmin.deails'); // Unused Route
+
+    Route::put('/company-employee/details/update/{id}', 'companyEmpUpdate')->name('companyEmp.details.update');
+    Route::delete('/company-employee/delete/{id}', 'companyEmpDelete')->name('company.employee.delete');
+
+    Route::delete('/company/employees/delete-all','deleteAllEmployees')->name('company.employees.deleteAll');
+
 
     Route::get('/superAdmin/messages', 'ViewMessages')->name('superAdmin.messages.view');
     Route::get('/superAdmin/messages/{id}', 'ViewOneMessages')->name('superAdmin.one.messages.view');
@@ -81,7 +82,6 @@ Route::controller(CompanyEmployeeController::class)
 });
 
 
-
 Route::controller(MesageController::class)
     ->middleware('UserType:user')->group(function (){
     Route::post('/user/userDashbord', 'SaveMessage')->name('message.save');
@@ -114,7 +114,6 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/administrator/users', 'RegisterUsers')->name('RegisterUser.save');
     Route::post('/superAdmin/users', 'RegisterUsers')->name('RegisterUser.save');
 });
-
 
 Route::controller(AdministratorController::class)
     ->middleware('UserType:administrator')->group(function () {
