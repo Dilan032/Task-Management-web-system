@@ -9,9 +9,7 @@ use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\MesageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\SuperAdminController;
-use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\InstituteTypesController;
 
 

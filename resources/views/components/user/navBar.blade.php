@@ -10,19 +10,20 @@
       </button>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 mt-3 fs-6">
           <li class="nav-item">
-            {{-- <a class="nav-link active" aria-current="page" href="{{ route('user.index') }}">Home</a> --}}
+            <a class="nav-link active" aria-current="page" href="{{ route('user.index') }}">Home</a>
           </li>
           <li class="nav-item">
-            {{-- <a class="nav-link" href="{{ route('user.index') }}">Previous messages</a> --}}
+            <a class="nav-link" href="{{ route('user.index') }}">Previous messages</a>
           </li>
         </ul>
         {{-- <div class="d-flex flex-row-reverse text-center "> --}}
           <div class="dropdown text-start">
-            <a class="px-5 py-1 text-white border"  data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="px-5 py-1 text-white"  data-bs-toggle="dropdown" aria-expanded="false">
               @if(Auth::check())
-                  <span><b>{{ Auth::user()->name }} 🔽</b></span> <br>
+                  <span class="fs-5 me-1">{{ Auth::user()->name }}</span>
+                  <i class="bi bi-caret-down-fill fs-5"></i>
               @else
                   <script>window.location = "/";</script>
               @endif

@@ -20,17 +20,25 @@
         <tbody class="table-group-divider">
           <tr>
             <td colspan="4" class="bg-primary-subtle text-black">
-              <span class="fw-light">status</span>  
+              <span class="fw-light">Progress</span>  
 
-            @if ( $oneMessage->status == 'not resolved')
-                <span class="badge text-bg-warning btnInset py-1">{{$oneMessage->status}}</span>
-            @elseif ( $oneMessage->status == 'solved')
-                <span class="badge text-bg-success btnInset py-1 px-4">{{$oneMessage->status}}</span>
-            @elseif ($oneMessage->status == 'Processing')
-                <span class="badge text-bg-dark btnInset py-1 px-2">{{$oneMessage->status}}</span>
-            @else
-                <span class="badge text-bg-info text-dark btnInset py-1 px-4">{{$oneMessage->status}}</span>
-            @endif  
+              @if ( $oneMessage->status == 'Completed')
+              <span class="badge rounded text-bg-success btnInset mt-1 py-1 px-5">{{$oneMessage->status}}</span>
+          @elseif ( $oneMessage->status == 'Completed in next day')
+              <span class="badge rounded text-bg-warning btnInset mt-1 py-1 px-2">{{$oneMessage->status}}</span>
+          @elseif ($oneMessage->status == 'Document Pending')
+              <span class="badge rounded text-bg-info btnInset mt-1 py-1 px-4">{{$oneMessage->status}}</span>
+          @elseif ($oneMessage->status == 'In Progress')
+              <span class="badge rounded text-bg-info btnInset mt-1 py-1 px-5">{{$oneMessage->status}}</span>
+          @elseif ($oneMessage->status == 'In Queue')
+              <span class="badge rounded text-bg-info btnInset mt-1 py-1 px-5">{{$oneMessage->status}}</span>
+          @elseif ($oneMessage->status == 'Move to next day')
+              <span class="badge rounded text-bg-danger btnInset mt-1 py-1 px-4">{{$oneMessage->status}}</span>
+          @elseif ($oneMessage->status == 'Postpond')
+              <span class="badge rounded text-bg-danger btnInset mt-1 py-1 px-5">{{$oneMessage->status}}</span>
+          @else
+              <span class="badge rounded text-bg-info btnInset mt-1 text-dark py-1 px-4">{{$oneMessage->status}}</span>
+          @endif   
              
             <span class="fw-light">request</span> 
 
