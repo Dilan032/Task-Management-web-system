@@ -15,6 +15,7 @@ class Institute extends Model
         'institute_address',
         'institute_contact_num',
         'email',
+        'assigned_employee',
         'status',
     ];
 
@@ -23,5 +24,7 @@ class Institute extends Model
     {
         return $this->hasMany(Message::class);
     }
-    
+
 }
+
+

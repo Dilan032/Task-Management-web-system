@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('institute_address');
             $table->string('institute_contact_num');
             $table->string('email');
+            $table->string('assigned_employee');
             $table->enum('status',['active', 'inactive'])->default('active');
             $table->timestamps();
         });
