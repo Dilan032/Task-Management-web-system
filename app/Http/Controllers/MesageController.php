@@ -16,6 +16,7 @@ class MesageController extends Controller
         //define validation rules
         $rules = [
             'subject'=> 'Required|String|max:255',
+            // 'assigned_user_id'=> 'Required', 
             'message'=> 'Required|String',
             'img_1'=> 'nullable|image|max:4096',
             'img_2'=> 'nullable|image|max:4096',

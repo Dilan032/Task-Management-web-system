@@ -168,6 +168,19 @@ class AdministratorController extends Controller
         $instituteDetails=DB::table('institutes')
                     ->where('id', $userInstituteId)
                     ->first();
+
+        //get problem send user details
+        // Get the user_id from the messages table
+        // $messageUserId = DB::table('messages')
+        // ->where('id', $mid)
+        // ->select('user_id')
+        // ->first();
+        // Now retrieve the user details using the user_id
+        // $user = DB::table('users')
+        // ->where('id', $messageUserId->user_id)
+        // ->get();
+
+
         //get institute name, Address from institute table
         $instituteName=$instituteDetails->institute_name;
         $instituteAddress=$instituteDetails->institute_address;
@@ -178,8 +191,9 @@ class AdministratorController extends Controller
                         ->where('user_type', 'super admin')
                         ->pluck('email')
                         ->toArray();
-
-        Mail::to($superAdminEmail)->send(new mail_for_problem($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber));
+      
+        Mail::to($superAdminEmail)->send(new mail_for_problem
+        ($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber));
 
         return redirect()->back()->with('success', 'User message send to the Nanosoft Solutions (Pvt)Ltd');
     }

@@ -50,6 +50,22 @@
                         Contact Number : {{ $administratorContactNumber }}
                     </p>
                 </div>
+
+                <hr>
+
+                <div class="p-2">
+                    <p>
+                        <span class="fw-bold">Message Send by,</span>
+                        @foreach ($user as $userDetails )
+                            {{ $userDetails->name }}
+                        @endforeach
+                    </p>
+
+                    {{-- <br> Administrator : {{ $user->name }} <br> 
+                        Contact Number : {{ $user->user_contact_num }} --}}
+
+
+                </div>
             </div>
         </div>
 
