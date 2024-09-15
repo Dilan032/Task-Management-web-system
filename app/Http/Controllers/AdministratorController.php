@@ -38,7 +38,7 @@ class AdministratorController extends Controller
                             ->where('institute_id', $instituteId)
                             ->where('user_type', 'administrator')
                             ->where('status', 'active')
-                            ->count(); 
+                            ->count();
             $NumInactiveAdministrators = DB::table('users')
                             ->where('institute_id', $instituteId)
                             ->where('user_type', 'administrator')
@@ -103,15 +103,15 @@ class AdministratorController extends Controller
                     ->where('user_type', 'super admin')
                     ->get();
 
-            return view('administrator.administratorDashbord', 
+            return view('administrator.administratorDashbord',
 
             ['institute' => $institute, 'userName' => $userName, 'NumAdministrators' => $NumAdministrators,
             'NumUsers' => $NumUsers, 'NumActiveUsers' => $NumActiveUsers, 'NumInactiveUsers' => $NumInactiveUsers,
             'NumActiveAdministrators' => $NumActiveAdministrators, 'NumInactiveAdministrators' => $NumInactiveAdministrators,
             'NumMessages' => $NumMessages, 'NumPendingMsg' => $NumPendingMsg, 'NumAcceptMsg' => $NumAcceptMsg, 'NumRejectMsg' => $NumRejectMsg,
             'NumSolvedMsg' => $NumSolvedMsg, 'NumNotSolvedMsg' => $NumNotSolvedMsg, 'superAdminDetails'=> $superAdminDetails, 'NumProcessing'=>$NumProcessing, 'NumViewed'=>$NumViewed]);
-        
-    } 
+
+    }
 
     public function messages(){
         if (Auth::check()) {
@@ -126,7 +126,7 @@ class AdministratorController extends Controller
             // Redirect to the login page or show an error
             return redirect()->route('login');
         }
-    } 
+    }
 
     public function showOneMessage($mid){
         if (Auth::check()) {
@@ -137,7 +137,7 @@ class AdministratorController extends Controller
             $messagesTableDataUser =Message::with('user')
                     ->where('id', $mid)
                     ->first();
-                
+
             return view('administrator.messageOne', compact('oneMessage','messagesTableDataUser'));
         } else {
             // Redirect to the login page or show an error
@@ -178,10 +178,10 @@ class AdministratorController extends Controller
                         ->where('user_type', 'super admin')
                         ->pluck('email')
                         ->toArray();
-            
+
         Mail::to($superAdminEmail)->send(new mail_for_problem($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber));
 
-        return redirect()->back()->with('success', 'User message send to the Nanosoft Solutions (Pvt)Ltd'); 
+        return redirect()->back()->with('success', 'User message send to the Nanosoft Solutions (Pvt)Ltd');
     }
 
     public function RejectMessage(Request $request, $mid){
@@ -189,7 +189,7 @@ class AdministratorController extends Controller
         $message->request = $request->input('request');
         $message->update();
 
-        return redirect()->back()->with('success', 'User message rejected'); 
+        return redirect()->back()->with('success', 'User message rejected');
     }
 
     public function SaveMessageAdminisrator(Request $request){
@@ -260,7 +260,7 @@ class AdministratorController extends Controller
                         ->where('user_type', 'super admin')
                         ->pluck('email')
                         ->toArray();
-        
+
         //get email data for send email
         $subject = $NewMessage->subject;
         $messageDetails = $NewMessage->message;
@@ -285,20 +285,17 @@ class AdministratorController extends Controller
             // Redirect to the login page or show an error
             return redirect()->route('login');
         }
-    } 
+    }
 
-
-   
-    
     // [administrator ] for logout
      public function administratorLogout(Request $request): RedirectResponse
      {
          Auth::guard('web')->logout();
- 
+
          $request->session()->invalidate();
- 
+
          $request->session()->regenerateToken();
- 
+
          return redirect('/login');
-     }//end method
+     }
 }

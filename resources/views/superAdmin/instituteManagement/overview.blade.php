@@ -53,6 +53,15 @@
                     <tr style="text-align:center">
                         <th style="height: 60px; vertical-align: middle;">
                             Institute Name
+                            @if (request('filter_assigned_employee'))
+                                <span class="position-relative">
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $institute->total() }}
+                                        <span class="visually-hidden">filtered institutes</span>
+                                    </span>
+                                </span>
+                            @endif
                         </th>
                         <th style="height: 60px; vertical-align: middle;">
                             <!-- Institute Type with Badge -->
@@ -77,7 +86,9 @@
                 <tbody style="text-align:center">
                     @foreach ($institute as $item)
                         <tr>
-                            <td>{{ $item->institute_name }}</td>
+                            <td>
+                                <a href="{{ route('institute.employees.view', ['id' => $item->id]) }}">{{ $item->institute_name }}</a>
+                            </td>
                             <td>{{ $item->institute_type }}</td>
                             <td>{{ $item->institute_address }}</td>
                             <td>{{ $item->institute_contact_num }}</td>
@@ -256,9 +267,9 @@
                                                 <button type="submit" class="btn btn-primary">Register Now</button>
                                                 <button type="reset" class="btn btn-warning">Clear</button>
                                             </div>
-
                                         </form>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

@@ -34,27 +34,34 @@ Route::get('/user/inactive',function(){
 
 Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
-    Route::get('/superAdmin/dashbord', 'superAdminDashbord')->name('superAdmin.dashbord');
+
+    Route::get('/superAdmin/dashboard', 'superAdminDashboard')->name('superAdmin.dashboard');
+
     Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
 
-    Route::get('/superAdmin/details/{id}', 'superAdminDetails')->name('superAdmin.deails'); // Unused Route
-
+    //Company Employees Details Update and Delete routes
     Route::put('/company-employee/details/update/{id}', 'companyEmpUpdate')->name('companyEmp.details.update');
     Route::delete('/company-employee/delete/{id}', 'companyEmpDelete')->name('company.employee.delete');
 
+    //Delete all company employees (Super Admins and Company Employees) route
     Route::delete('/company/employees/delete-all','deleteAllEmployees')->name('company.employees.deleteAll');
 
+    //Displaying the institute details in Institute Management section route
+    Route::get('/superAdmin/institute', 'ViewInstitute')->name('superAdmin.institute.view');
+
+    //Institute administrators and employees show page route
+    Route::get('/institute/{id}/employees/', 'viewInstituteEmployees')->name('institute.employees.view');
+
+    //Institute administrators and employees delete route
+    Route::delete('/institute-employee/delete/{id}', 'instituteEmpDelete')->name('institute.employee.delete');
+
+    //Institute Details Update and Delete routes
+    Route::put('/superAdmin/institute/{id}', 'instituteUpdate')->name('superAdmin.institute.update.view');
+    Route::delete('/superAdmin/institute/{id}', 'instituteDelete')->name('superAdmin.institute.delete');
 
     Route::get('/superAdmin/messages', 'ViewMessages')->name('superAdmin.messages.view');
     Route::get('/superAdmin/messages/{id}', 'ViewOneMessages')->name('superAdmin.one.messages.view');
     Route::put('/superAdmin/messages/ProblemResolvedOrNot/{id}', 'ProblemResolvedOrNot')->name('superAdmin.problem.resolved.or.not');
-
-    Route::get('/superAdmin/announcements', 'ViewAnnouncements')->name('superAdmin.announcements.view');
-
-    Route::get('/superAdmin/institute', 'ViewInstitute')->name('superAdmin.institute.view');
-    Route::get('/superAdmin/institute/{id}', 'ViewOneInstitute')->name('superAdmin.one.institute.view');
-    Route::put('/superAdmin/institute/{id}', 'instituteUpdate')->name('superAdmin.institute.update.view');
-    Route::delete('/superAdmin/institute/{id}', 'instituteDelete')->name('superAdmin.institute.delete');
 
     Route::get('/superAdmin/logout', 'superAdminLogout')->name('superAdmin.logout');
 });
@@ -72,6 +79,7 @@ Route::controller(InstituteController::class)->group(function () {
 //Institute type CURD parts and routes.....
 Route::controller(InstituteTypesController::class)->group(function () {
     Route::post('/superAdmin/institute-type/add', 'AddInstituteType')->name('AddInstituteType.save');
+    Route::post('/superAdmin/institute-type/update', 'UpdateInstituteType')->name('UpdateInstituteType');
 });
 
 //Company employees routes....

@@ -17,110 +17,13 @@ use Illuminate\Support\Facades\Validator;
 
 class SuperAdminController extends Controller
 {
-    public function superadminDashbord()
+    //Super Admin Dashboard View Method
+    public function superAdminDashboard()
     {
-        $NumMsg = DB::table('messages')
-            ->count();
-        $NumMsgSolved = DB::table('messages')
-            ->where('status', 'solved')
-            ->count();
-        $NumMsgNotSolved = DB::table('messages')
-            ->where('status', 'not resolved')
-            ->count();
-        $NumMsgProcessing = DB::table('messages')
-            ->where('status', 'Processing')
-            ->count();
-        $NumMsgViewed = DB::table('messages')
-            ->where('status', 'Viewed')
-            ->count();
-
-        $NumInstitute = DB::table('institutes')
-            ->count();
-
-        $Numusers = DB::table('users')
-            ->where('user_type', 'administrator')
-            ->orWhere('user_type', 'user')
-            ->count();
-        $NumAdministrators = DB::table('users')
-            ->where('user_type', 'administrator')
-            ->count();
-        $NumActiveAdministrators = DB::table('users')
-            ->where('user_type', 'administrator')
-            ->where('status', 'active')
-            ->count();
-        $NumUsers = DB::table('users')
-            ->where('user_type', 'user')
-            ->count();
-        $NumActiveUsers = DB::table('users')
-            ->where('user_type', 'user')
-            ->where('status', 'active')
-            ->count();
-
-        $superAdmin = DB::table('users')
-            ->where('user_type', 'super admin')
-            ->get();
-
-
-        return view(
-            'superAdmin.superAdminDashbord',
-            [
-                'NumMsg' => $NumMsg,
-                'NumMsgSolved' => $NumMsgSolved,
-                'NumMsgNotSolved' => $NumMsgNotSolved,
-                'NumInstitute' => $NumInstitute,
-                'Numusers' => $Numusers,
-                'NumAdministrators' => $NumAdministrators,
-                'NumUsers' => $NumUsers,
-                'NumActiveAdministrators' => $NumActiveAdministrators,
-                'NumActiveUsers' => $NumActiveUsers,
-                'superAdmin' => $superAdmin,
-                'NumMsgProcessing' => $NumMsgProcessing,
-                'NumMsgViewed' => $NumMsgViewed
-            ]
-        );
+        return view('superAdmin\superAdminDashboard');
     }
 
-    public function ViewMessages()
-    {
-
-        $solvedMessageCount = Message::where('request', 'accept')
-            ->where('status', 'solved')
-            ->count();
-
-        $noSolvedMessageCount = Message::where('status', 'not resolved')
-            ->where('request', 'accept')
-            ->count();
-
-        $ViewedMessageCount = Message::where('status', 'Viewed')
-            ->where('request', 'accept')
-            ->count();
-
-        $processingMessageCount = Message::where('status', 'Processing')
-            ->where('request', 'accept')
-            ->count();
-
-
-        $messagesAndInstitute = Message::with('institute')
-            ->where('request', 'accept')
-            ->orderBy('created_at', 'DESC')
-            ->get();
-
-        return view('superAdmin.messages', [
-            'messagesAndInstitute' => $messagesAndInstitute,
-            'noSolvedMessageCount' => $noSolvedMessageCount,
-            'solvedMessageCount' => $solvedMessageCount,
-            'ViewedMessageCount' => $ViewedMessageCount,
-            'processingMessageCount' => $processingMessageCount
-        ]);
-    }
-
-    // public function superAdminDetails($id)
-    // {
-    //     $superAdmin = User::where('user_type', 'super admin')->findOrFail($id);
-    //     return view('superAdmin.superAdminDeatils', ['superAdmin' => $superAdmin]);
-    // }
-
-
+    //Update the company employees details method (institute and company side)
     public function companyEmpUpdate(Request $request, $id) // Company Employee Details Update function
     {
         // Find the company employee or super admin by ID
@@ -160,6 +63,7 @@ class SuperAdminController extends Controller
         return redirect()->back()->with('success', 'Employee updated successfully!');
     }
 
+    //Delete the company employees details method
     public function companyEmpDelete($id)
     {
         $user = User::find($id);
@@ -180,6 +84,34 @@ class SuperAdminController extends Controller
             $message = 'Super Admin deleted successfully.';
         } elseif ($userType == 'company employee') {
             $message = 'Company Employee deleted successfully.';
+        } else {
+            $message = ucfirst($userType) . ' deleted successfully.';
+        }
+
+        return redirect()->back()->with('success', $message);
+    }
+
+    //Delete all institute employees (Administrators and Employees)
+    public function instituteEmpDelete($id)
+    {
+        $user = User::find($id);
+
+        // Check if user exists
+        if (!$user) {
+            return redirect()->back()->with('error', 'Employee not found.');
+        }
+
+        // Store the user type for custom message
+        $userType = strtolower($user->user_type); // Convert to lowercase for case-insensitive check
+
+        // Delete the user
+        $user->delete();
+
+        // Customize the success message based on user type
+        if ($userType == 'administrator') {
+            $message = 'Administrator deleted successfully.';
+        } elseif ($userType == 'user') {
+            $message = 'Institute Employee deleted successfully.';
         } else {
             $message = ucfirst($userType) . ' deleted successfully.';
         }
@@ -238,32 +170,6 @@ class SuperAdminController extends Controller
         return redirect()->back()->with('success', 'User registered successfully!');
     }
 
-    public function ViewOneMessages($id)
-    {
-        $oneMessage = Message::findorFail($id);
-
-        return view('superAdmin.messageOne', ['oneMessage' => $oneMessage]);
-    }
-
-    public function ProblemResolvedOrNot(Request $request, $id)
-    {
-        $message = Message::findOrFail($id);
-
-        $rules = ['status' => 'required|string'];
-
-        // Create validator instance and validate
-        $validator = Validator::make($request->all(), $rules);
-
-        // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        $message->status = $request->input('status');
-        $message->update();
-
-        return redirect()->back()->with('success', 'Message status updated');
-    }
-
     //$Institute variable used for while user registration form generate institute name list
     public function ViewUsers(Request $request)
     {
@@ -306,6 +212,7 @@ class SuperAdminController extends Controller
         ]);
     }
 
+    //Delete all company employees (Super Admins and Company Employees)
     public function deleteAllEmployees(Request $request)
     {
         // Validate the user ID (assuming you have user authentication)
@@ -323,10 +230,11 @@ class SuperAdminController extends Controller
         return redirect()->route('superAdmin.users.view')->with('success', 'All employees have been deleted.');
     }
 
+    //Displaying the institute details in Institute Management section
     public function ViewInstitute(Request $request)
     {
         // Get data for institute list component
-        $types = InstituteTypes::all();
+        $types = InstituteTypes::orderBy('institute_type', 'asc')->get();
 
         // Retrieve users with specific user types (super admin and company employee)
         // For institute assigned company employees
@@ -372,12 +280,39 @@ class SuperAdminController extends Controller
         ]);
     }
 
-    public function ViewOneInstitute($id)
+    //Displaying all institute administrators and employees
+    public function viewInstituteEmployees(Request $request, $id)
     {
-        $institute = Institute::find($id);
-        return view('superAdmin.editInstitute', ['institute' => $institute]);
+        // Retrieve institute-specific data using the passed ID
+        $institute = Institute::findOrFail($id);
+
+        // Build query to retrieve employees of the institute with user_type 'administrator' and 'user'
+        $employeeQuery = DB::table('users')
+            ->select('id', 'name', 'user_type', 'status', 'email', 'user_contact_num')
+            ->where('institute_id', $id)
+            ->whereIn('user_type', ['administrator', 'user']);
+
+        // Apply search by employee name
+        if ($request->filled('search_employee_name')) {
+            $employeeQuery->where('name', 'like', '%' . $request->search_employee_name . '%');
+        }
+
+        // Apply filter by employee type
+        if ($request->filled('filter_employee_type')) {
+            $employeeQuery->where('user_type', $request->filter_employee_type);
+        }
+
+        // Paginate the results
+        $employees = $employeeQuery->paginate(5);
+
+        // Pass the data to the view
+        return view('components.superAdmin.institute.instituteEmployeeList', [
+            'institute' => $institute,
+            'employees' => $employees,
+        ]);
     }
 
+    //Update the institute details method
     public function instituteUpdate(Request $request, $id)
     {
         // Find a single institute by ID
@@ -415,7 +350,7 @@ class SuperAdminController extends Controller
         return redirect()->back()->with('success', 'Institute updated successfully.');
     }
 
-
+    //Delete the institute details method
     public function instituteDelete($id)
     {
         $institute = Institute::find($id);
@@ -423,7 +358,7 @@ class SuperAdminController extends Controller
         return redirect()->back()->with('success', 'institute Remove successfully.');
     }
 
-    // [super admin] for logout
+    //Super admin for logout
     public function superAdminLogout(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
@@ -434,4 +369,67 @@ class SuperAdminController extends Controller
 
         return redirect('login');
     }
+
+
+// !Check these methods.....................................
+    public function ViewOneMessages($id)
+    {
+        $oneMessage = Message::findorFail($id);
+
+        return view('superAdmin.messageOne', ['oneMessage' => $oneMessage]);
+    }
+
+    public function ProblemResolvedOrNot(Request $request, $id)
+    {
+        $message = Message::findOrFail($id);
+
+        $rules = ['status' => 'required|string'];
+
+        // Create validator instance and validate
+        $validator = Validator::make($request->all(), $rules);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $message->status = $request->input('status');
+        $message->update();
+
+        return redirect()->back()->with('success', 'Message status updated');
+    }
+
+    public function ViewMessages()
+    {
+
+        $solvedMessageCount = Message::where('request', 'accept')
+            ->where('status', 'solved')
+            ->count();
+
+        $noSolvedMessageCount = Message::where('status', 'not resolved')
+            ->where('request', 'accept')
+            ->count();
+
+        $ViewedMessageCount = Message::where('status', 'Viewed')
+            ->where('request', 'accept')
+            ->count();
+
+        $processingMessageCount = Message::where('status', 'Processing')
+            ->where('request', 'accept')
+            ->count();
+
+
+        $messagesAndInstitute = Message::with('institute')
+            ->where('request', 'accept')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('superAdmin.messages', [
+            'messagesAndInstitute' => $messagesAndInstitute,
+            'noSolvedMessageCount' => $noSolvedMessageCount,
+            'solvedMessageCount' => $solvedMessageCount,
+            'ViewedMessageCount' => $ViewedMessageCount,
+            'processingMessageCount' => $processingMessageCount
+        ]);
+    }
+
 }

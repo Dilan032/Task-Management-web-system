@@ -11,15 +11,16 @@
     <hr class="me-3">
 
     <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <!-- Badge on the left -->
-            <span class="badge text-bg-secondary fs-6 p-2" style="margin-left:15px">
-                Total Employees: {{ $employeeCount }}
-            </span>
+        <div class="row align-items-center mb-3">
+            <!-- Badge on the left, takes the full width on smaller screens -->
+            <div class="col-sm-12 col-md-auto mb-3 mb-md-0">
+                <span class="badge text-bg-secondary fs-6 p-2">
+                    Total Registered Employees: {{ $employeeCount }}
+                </span>
+            </div>
 
-            <!-- Buttons on the right -->
-            {{-- Buttons for Registe company employees and Remove all employees --}}
-            <div class="d-flex gap-2">
+            <!-- Buttons on the right, align to the right on larger screens -->
+            <div class="col-sm-12 col-md d-flex gap-2 justify-content-sm-start justify-content-md-end flex-wrap">
                 <button class="btn btn-success" type="button" data-bs-toggle="modal"
                     data-bs-target="#registerCompanyEmpModal">Register Company Users</button>
 
@@ -35,6 +36,4 @@
 
     <br />
     @include('superAdmin.companyEmpManagement.overview')
-
 @endsection
-

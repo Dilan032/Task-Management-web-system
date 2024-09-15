@@ -71,7 +71,7 @@
 
         <ul class="nav nav-pills flex-column mb-auto p-2">
             <li class="nav-item mb-2">
-                <a href="{{ route('superAdmin.dashbord') }}" class="nav-link text-dark ">
+                <a href="{{ route('superAdmin.dashboard') }}" class="nav-link text-dark ">
                     <i class="bi bi-speedometer"></i>
                     <span>Dashbord</span>
                 </a>

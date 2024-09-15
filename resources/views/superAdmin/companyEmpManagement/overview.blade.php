@@ -57,11 +57,31 @@
                         </th>
                         <th style="height: 60px; vertical-align: middle;">
                             Employee Type
+                            @if (request('filter_employee_type'))
+                                <span class="position-relative">
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $employees->total() }}
+                                        <span class="visually-hidden">filtered employees</span>
+                                    </span>
+                                </span>
+                            @endif
                         </th>
                         <th style="height: 60px; vertical-align: middle;">Mobile Number</th>
                         <th style="height: 60px; vertical-align: middle; width: 20%;">Email</th>
                         {{-- <th style="height: 60px; vertical-align: middle;">Last Seen</th> --}}
-                        <th style="height: 60px; vertical-align: middle;">Status</th>
+                        <th style="height: 60px; vertical-align: middle;">
+                            Status
+                            @if (request('filter_employee_status'))
+                                <span class="position-relative">
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $employees->total() }}
+                                        <span class="visually-hidden">filtered employees</span>
+                                    </span>
+                                </span>
+                            @endif
+                        </th>
                         <th style="height: 60px; vertical-align: middle;">Actions</th>
                     </tr>
                 </thead>
