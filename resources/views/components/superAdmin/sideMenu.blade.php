@@ -1,5 +1,4 @@
-
-    {{-- <div class="row">
+{{-- <div class="row">
         <div class="col-auto min-vh-100 bg-dark position-fixed z-3 d-none d-sm-inline">
             <div class="pt-4 pb-2 px-2">
                 <a href="" class="nav-link text-white">
@@ -10,7 +9,7 @@
             </div>
 
             <hr class="text-white">
-            
+
             <ul class="nav nav-pills flex-column mb-auto p-2">
                 <li class="nav-item mb-2">
                     <a href="{{route('superAdmin.dashbord')}}" class="nav-link text-white ">
@@ -50,61 +49,63 @@
             </ul>
 
         </div>
-    </div> --}}
-
+</div> --}}
 
 {{-- in mobile view show this side bar --}}
-<i class="bi bi-list fs-1 ms-4 mt-2 mouse-hand" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></i>
+<i class="bi bi-list fs-1 ms-4 mt-2 mouse-hand" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+    aria-controls="offcanvasScrolling"></i>
 
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title" id="offcanvasScrollingLabel">SuperAdmin</h4>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    
-    <h6>Institute Complaning Web Application</h6>
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling"
+    aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+        <h4 class="offcanvas-title" id="offcanvasScrollingLabel">
+            {{ Auth::user()->name }}
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
 
-    <hr class="text-dark">
-    
-    <ul class="nav nav-pills flex-column mb-auto p-2">
-        <li class="nav-item mb-2">
-            <a href="{{ route('superAdmin.dashbord') }}" class="nav-link text-dark ">
-                <i class="bi bi-speedometer"></i>
-                <span>Dashbord</span>
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a href="{{ route('superAdmin.messages.view') }}" class="nav-link text-dark">
-                <i class="bi bi-chat-left-dots"></i>
-                <span>Messages</span>
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a href="{{ route('superAdmin.users.view') }}" class="nav-link text-dark">
-                <i class="bi bi-person-circle"></i>
-                <span>Users</span>
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a href="{{ route('superAdmin.institute.view') }}" class="nav-link text-dark">
-                <i class="bi bi-person-circle"></i>
-                <span>Institutes</span>
-            </a>
-        </li>
-    </ul>
+        <h6>Institute Complaning Web Application</h6>
 
-    <hr class="text-dark">
+        <hr class="text-dark">
 
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="{{route('administrator.logout')}}" class="nav-link text-dark">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>LogOut</span>
-            </a>
-        </li>
-    </ul>
+        <ul class="nav nav-pills flex-column mb-auto p-2">
+            <li class="nav-item mb-2">
+                <a href="{{ route('superAdmin.dashboard') }}" class="nav-link text-dark ">
+                    <i class="bi bi-speedometer"></i>
+                    <span>Dashbord</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="{{ route('superAdmin.messages.view') }}" class="nav-link text-dark">
+                    <i class="bi bi-chat-left-dots"></i>
+                    <span>Messages</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="{{ route('superAdmin.users.view') }}" class="nav-link text-dark">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Company Users</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="{{ route('superAdmin.institute.view') }}" class="nav-link text-dark">
+                    <i class="bi bi-building-add"></i>
+                    <span>Institutes</span>
+                </a>
+            </li>
+        </ul>
 
+        <hr class="text-dark">
 
-  </div>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="{{ route('administrator.logout') }}" class="nav-link text-dark">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>LogOut</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
 </div>

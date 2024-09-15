@@ -22,7 +22,6 @@
     </script>
 @endif
 
-
 <!-- Modal for Institute Registration -->
 <div class="modal fade" id="registerInstituteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="registerInstituteModalLabel" aria-hidden="true">

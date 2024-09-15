@@ -21,9 +21,10 @@ class User extends Authenticatable
         'user_type',
         'status',
         'email',
-        'user_contact_num',
+        'user_contact_num', //Mobile NUmber
         'password',
         'institute_id',    //Foreign key
+        'last_seen',
     ];
 
 

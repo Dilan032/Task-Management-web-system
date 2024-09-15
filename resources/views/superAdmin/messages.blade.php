@@ -1,6 +1,7 @@
 @extends('layouts.superAdminLayout')
+
 @section('SuperAdminContent')
-    
+
 {{-- <div class="container d-flex justify-content-between"> --}}
     <div class="fs-3 ms-4">message</div>
 {{-- </div> --}}
@@ -36,7 +37,7 @@
     <div class="row mt-3 mb-4 d-flex justify-content-center">
         <div class="col-md-10">
             <div class="p-2 bg-warning-subtle border-bottom border-black border-5 rounded shado">
-               
+
                 <div class="text-center">
                     <p><i class="bi bi-envelope-check fs-2"></i></p>
                     <p class="fs-4">All Messages <span class="badge text-bg-light px-5 problemImageMainBG">{{$solvedMessageCount + $noSolvedMessageCount + $ViewedMessageCount + $processingMessageCount}}</span></p>
@@ -68,13 +69,13 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
 
             </div>
         </div>
     </div>
-    
+
 
 
 <section class="px-4 mb-5">
@@ -138,16 +139,16 @@
                         <span class="badge rounded-pill text-bg-dark py-1 px-3"><small>{{$oneMessage->status}}</small></span>
                     @else
                         <span class="badge rounded-pill text-bg-info text-dark py-1 px-4"><small>{{$oneMessage->status}}</small></span>
-                    @endif     
+                    @endif
                 </div>
                 <div class="col-12 col-sm-auto col-md-2 text-start">
-                    <small>{{ $oneMessage->institute->institute_name ?? 'No institute Name Available' }}</small>                  
+                    <small>{{ $oneMessage->institute->institute_name ?? 'No institute Name Available' }}</small>
                 </div>
                 <div class="col-12 col-sm-auto col-md-1 text-start">
-                    <small>institute type</small>                  
+                    <small>institute type</small>
                 </div>
                 <div class="col-12 col-sm-auto col-md-4 text-start">
-                        <small>{{ $oneMessage->subject }}</small>  
+                        <small>{{ $oneMessage->subject }}</small>
                 </div>
                 <div class="col-12 col-sm-auto col-md-1">
                     <!-- Button trigger modal -->
