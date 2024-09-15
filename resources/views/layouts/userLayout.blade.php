@@ -27,7 +27,7 @@
         @include('components.user.navBar')
     </section>
 
-    <div class="container-fluid">
+    <div class="container">
         @yield('userContent')
     </div>
 

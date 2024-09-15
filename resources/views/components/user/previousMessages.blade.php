@@ -14,7 +14,7 @@
                 <span class="">Subject</span>
             </div>
             <div class="col-12 col-sm-auto col-md-2">
-                <span class="">Status</span>
+                <span class="">Progress</span>
             </div>
             <div class="col-12 col-sm-auto col-md-1">
                 <span class="">Action</span>
@@ -42,15 +42,25 @@
                 @endif               
             </div>
             <div class="col-12 col-sm-auto col-md-6">
-                <span class="">{{ $msg->subject }}</span>  
+                <span>
+                    <small>{{ $msg->subject }}</small>
+                </span>  
             </div>
             <div class="col-12 col-sm-auto col-md-2">
-                @if ( $msg->status == 'not resolved')
+                @if ( $msg->status == 'Completed')
+                    <span class="badge rounded-pill text-bg-success btnInset mt-1 py-1 px-5">{{$msg->status}}</span>
+                @elseif ( $msg->status == 'Completed in next day')
                     <span class="badge rounded-pill text-bg-warning btnInset mt-1 py-1 px-2">{{$msg->status}}</span>
-                @elseif ( $msg->status == 'solved')
-                    <span class="badge rounded-pill text-bg-success btnInset mt-1 py-1 px-4">{{$msg->status}}</span>
-                @elseif ($msg->status == 'Processing')
-                    <span class="badge rounded-pill text-bg-dark btnInset mt-1 py-1 px-2">{{$msg->status}}</span>
+                @elseif ($msg->status == 'Document Pending')
+                    <span class="badge rounded-pill text-bg-info btnInset mt-1 py-1 px-4">{{$msg->status}}</span>
+                @elseif ($msg->status == 'In Progress')
+                    <span class="badge rounded-pill text-bg-info btnInset mt-1 py-1 px-5">{{$msg->status}}</span>
+                @elseif ($msg->status == 'In Queue')
+                    <span class="badge rounded-pill text-bg-info btnInset mt-1 py-1 px-5">{{$msg->status}}</span>
+                @elseif ($msg->status == 'Move to next day')
+                    <span class="badge rounded-pill text-bg-danger btnInset mt-1 py-1 px-4">{{$msg->status}}</span>
+                @elseif ($msg->status == 'Postpond')
+                    <span class="badge rounded-pill text-bg-danger btnInset mt-1 py-1 px-5">{{$msg->status}}</span>
                 @else
                     <span class="badge rounded-pill text-bg-info btnInset mt-1 text-dark py-1 px-4">{{$msg->status}}</span>
                 @endif     
