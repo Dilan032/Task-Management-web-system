@@ -10,20 +10,21 @@ class Message extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'user_id',
+        'assigned_user_id',
+        'institute_id',
         'subject',
         'message',
         'status',
-        'time_frame',
         'request',
         'img_1',
         'img_2',
         'img_3',
         'img_4',
         'img_5',
-        'user_responded',
-        'user_id',    //Foreign key
-        'institute_id',    //Foreign key
+        'start_time',
+        'end_time',
+        'progress_note',
     ];
 
 
@@ -36,5 +37,4 @@ class Message extends Model
     {
         return $this->belongsTo(Institute::class, 'institute_id');
     }
-
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\CompanyEmployeeController;
 use App\Http\Controllers\InstituteController;
-use App\Http\Controllers\MesageController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\InstituteTypesController;
@@ -90,25 +90,27 @@ Route::controller(CompanyEmployeeController::class)
 });
 
 
-Route::controller(MesageController::class)
+
+Route::controller(MessageController::class)
     ->middleware('UserType:user')->group(function (){
-    Route::post('/user/userDashbord', 'SaveMessage')->name('message.save');
+    Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
     Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
 });
-
-
 Route::controller(UserController::class)
     ->middleware('UserType:user')->group(function () {
-    Route::get('/user/userDashbord', 'index')->name('user.index');
+    Route::get('/user/dashboard', 'index')->name('user.index');
+    //Show the user's previous send messages
+    Route::get('/user/previous-messages', 'previousMessages')->name('user.previous.messages');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
-
 });
-
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/details/{id}', 'oneUserDetailsForAdministrator')->name('user.details');
     Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
+
+
+
 
 //for super admin
 Route::controller(UserController::class)

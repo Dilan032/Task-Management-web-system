@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Mail\userWellcomeMessage;
-use App\Models\Institute;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -18,28 +17,43 @@ class UserController extends Controller
 {
     public function index(){
         if (Auth::check()) {
-            $userid = Auth::id();
+            $user_id = Auth::id();
             $instituteList = DB::table('institutes')
                                 ->orderBy('created_at', 'DESC')
                                 ->get();
             $messages =Message::with('user')
-                                ->where('user_id', $userid)
+                                ->where('user_id', $user_id)
                                 ->orderBy('created_at', 'DESC')
                                 ->get();
-            return view('user.userDashbord', compact('instituteList', 'messages', 'userid'));
+            return view('user.userDashboard', compact('instituteList', 'messages', 'user_id'));
         } else {
             // Redirect to the login page or show an error
             return redirect()->route('login');
         }
     }
 
-    //show seleted user data
+    //Showing user's send previous messages page.
+    public function previousMessages()
+    {
+        $user_id = Auth::id();
+        $instituteList = DB::table('institutes')
+                                ->orderBy('created_at', 'DESC')
+                                ->get();
+        $messages =Message::with('user')
+                                ->where('user_id', $user_id)
+                                ->orderBy('created_at', 'DESC')
+                                ->paginate(10);
+
+        return view('user.previousMessages', compact('messages', 'instituteList'));
+    }
+
+    //show selected user data
     public function oneUserDetailsForAdministrator($id){
         $user =User::find($id);
         return view('administrator.userEdit', compact('user'));
     }
 
-    //show seleted user data
+    //show selected user data
     public function oneUserDetailsForSuperAdmin($id){
         $userInstituteId = DB::table('users')
                     ->where('id', $id)
@@ -152,8 +166,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
-    }//end method
-
+    }
     public function deleteUser($id){
         $user =User::find($id);
         $user->delete();

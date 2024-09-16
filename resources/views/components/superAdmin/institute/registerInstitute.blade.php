@@ -64,9 +64,7 @@
                                 </option>
                             @endforeach
                         </select>
-
                     </div>
-
                     <br />
 
                     <!-- Input Group with Institute Contact Number and Email -->
@@ -100,7 +98,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- JavaScript to handle form clearing -->
 <script>

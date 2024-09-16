@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('institute_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('assigned_user_id');//This column store the assigned company employee
             $table->string('subject');
             $table->text('message');
             $table->enum('status',['solved', 'not resolved', 'Processing', 'Seen'])->default('not resolved');
@@ -29,6 +30,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
+            $table->foreign('assigned_user_id')->references('assigned_employee_id')->on('institutes')->onDelete('cascade');
         });
     }
 
@@ -40,3 +42,4 @@ return new class extends Migration
         Schema::dropIfExists('message');
     }
 };
+
