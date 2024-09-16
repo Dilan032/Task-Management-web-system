@@ -84,15 +84,18 @@ Route::controller(ViewMessageController::class)
         Route::post('/message/{id}/update', [ViewMessageController::class, 'updateTimesAndStatus']);
         Route::post('/messages/{id}/update-assigned-employee', [ViewMessageController::class, 'updateAssignedEmployee'])->name('update.assigned.employee');
         Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
-});
+    });
 
 
-//Super Admin All Messages Section(All Institue Tasks)
+// Super Admin All Messages Section (with filtering for assigned employee, priority, progress)
 Route::controller(AllMessagesController::class)
     ->middleware('UserType:super admin')->group(function () {
-        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view');
+        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])
+             ->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
+        Route::get('/superAdmin/all-messages/filter', [AllMessagesController::class, 'filter'])
+             ->name('messages.filter');
 
-    });
+            });
 
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');

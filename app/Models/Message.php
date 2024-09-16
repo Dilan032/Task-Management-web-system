@@ -12,7 +12,7 @@ class Message extends Model
     protected $fillable = [
         'id',
         'user_id', //Foreign key
-        'assigned_user_id', //Foreign key
+        'assigned_employee',
         'institute_id', //Foreign key
         'subject',
         'message',

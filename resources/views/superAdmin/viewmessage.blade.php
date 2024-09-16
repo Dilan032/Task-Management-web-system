@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
-        .dropdown-item.in-queue { background-color: #ebe700; }
+        .dropdown-item.in-queue { background-color: #ffd637; }
         .dropdown-item.in-progress { background-color: #ff0000; }
         .dropdown-item.document-pending { background-color: #357402; }
         .dropdown-item.postponed { background-color: #ff00b3; }
@@ -15,7 +15,7 @@
         .dropdown-item.top-urgent { background-color: #995e05; }
         .dropdown-item.urgent { background-color: #ff0000; }
         .dropdown-item.medium { background-color: #357402; }
-        .dropdown-item.low { background-color: #ebe700; }
+        .dropdown-item.low { background-color: #ffd637; }
 
         .time-buttons-container {
             display: flex;
@@ -101,7 +101,7 @@
             <input type="hidden" name="priority" id="priority-input">
 
             <div class="dropdown-center me-2">
-                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
                     Priority
                 </button>
                 <ul class="dropdown-menu">
@@ -122,7 +122,7 @@
             <input type="hidden" name="progress_note" id="progress-note-input">
 
             <div class="dropdown-center">
-                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
                     Progress
                 </button>
                 <ul class="dropdown-menu">
@@ -275,7 +275,7 @@
                                 <div>
                                     <b>Status :</b>
                                     @if ($message->status == 'In Queue')
-                                        <span class="badge rounded-pill" style="background-color: #c4c000; color: black; padding: 5px;">
+                                        <span class="badge rounded-pill" style="background-color: #ffd637; color: black; padding: 5px;">
                                             <small>{{ $message->status }}</small>
                                         </span>
                                     @elseif ($message->status == 'In Progress')
@@ -325,7 +325,7 @@
                                             <small>{{ $message->priority }}</small>
                                         </span>
                                     @elseif ($message->priority == 'Low')
-                                        <span class="badge rounded-pill" style="background-color: #c4c000; color: black; padding: 5px;">
+                                        <span class="badge rounded-pill" style="background-color: #ffd637; color: black; padding: 5px;">
                                             <small>{{ $message->priority }}</small>
                                         </span>
                                     @else
@@ -338,7 +338,7 @@
                                 <!-- Assigned to -->
                                 <div>
                                     <b>Assigned to:</b>
-                                    <span>{{ $message->assignedUser->name ?? 'Not assigned' }}</span>
+                                    <span>{{ $message->assigned_employee ?? 'Not assigned' }}</span>
                                 </div>
                             </div>
                         </td>
