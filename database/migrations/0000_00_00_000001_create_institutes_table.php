@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('institutes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('assigned_employee_id');
             $table->string('assigned_employee'); //store the employee name
             $table->string('institute_name');
             $table->string('institute_type');
@@ -23,7 +22,6 @@ return new class extends Migration
             $table->enum('status',['active', 'inactive'])->default('active');
             $table->timestamps();
 
-            $table->foreign('assigned_employee_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -35,3 +33,4 @@ return new class extends Migration
         Schema::dropIfExists('institutes');
     }
 };
+
