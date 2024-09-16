@@ -6,10 +6,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\CompanyEmployeeController;
 use App\Http\Controllers\InstituteController;
-use App\Http\Controllers\MesageController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\InstituteTypesController;
+use App\Http\Controllers\AllMessagesController;
+use App\Http\Controllers\ViewMessageController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -71,6 +73,27 @@ Route::controller(SuperAdminController::class)
     Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
 });
 
+// Define route for viewing a single message
+Route::controller(ViewMessageController::class)
+    ->middleware('UserType:super admin')->group(function (){
+        Route::get('/view-message/{id}', [ViewMessageController::class, 'show'])->name('superAdmin.one.messages.view');
+        Route::post('/update-message-status/{id}', [ViewMessageController::class, 'updateStatus'])->name('update.message.status');
+        Route::post('/update-message-priority/{id}', [ViewMessageController::class, 'updatePriority'])->name('update.message.priority');
+        Route::post('/message/{id}/start', [ViewMessageController::class, 'startTimer'])->name('message.start');
+        Route::post('/message/{id}/end', [ViewMessageController::class, 'endTimer'])->name('message.end');
+        Route::post('/message/{id}/update', [ViewMessageController::class, 'updateTimesAndStatus']);
+        Route::post('/messages/{id}/update-assigned-employee', [ViewMessageController::class, 'updateAssignedEmployee'])->name('update.assigned.employee');
+        Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
+});
+
+
+//Super Admin All Messages Section(All Institue Tasks)
+Route::controller(AllMessagesController::class)
+    ->middleware('UserType:super admin')->group(function () {
+        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view');
+
+    });
+
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
 });
@@ -89,26 +112,32 @@ Route::controller(CompanyEmployeeController::class)
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
 });
 
-
-Route::controller(MesageController::class)
+//Company employees routes....
+Route::controller(CompanyEmployeeController::class)
+    ->middleware('UserType:company employee')->group(function () {
+    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
+    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+});
+Route::controller(MessageController::class)
     ->middleware('UserType:user')->group(function (){
-    Route::post('/user/userDashbord', 'SaveMessage')->name('message.save');
+    Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
     Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
 });
-
-
 Route::controller(UserController::class)
     ->middleware('UserType:user')->group(function () {
-    Route::get('/user/userDashbord', 'index')->name('user.index');
+    Route::get('/user/dashboard', 'index')->name('user.index');
+    //Show the user's previous send messages
+    Route::get('/user/previous-messages', 'previousMessages')->name('user.previous.messages');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
-
 });
-
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/details/{id}', 'oneUserDetailsForAdministrator')->name('user.details');
     Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
+
+
+
 
 //for super admin
 Route::controller(UserController::class)
@@ -137,6 +166,3 @@ Route::controller(AdministratorController::class)
     Route::get('/administrator/logout', 'administratorLogout')->name('administrator.logout');
 
 });
-
-
-

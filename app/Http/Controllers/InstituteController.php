@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +12,6 @@ class InstituteController extends Controller
     // [super admin] for Institute Registration
     public function RegisterInstitute(Request $request)
     {
-
         // validation rules
         $rules = [
             'institute_contact_num' => 'required|string|max:10',
@@ -30,18 +30,25 @@ class InstituteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        // Find assigned employee by name and get their ID
+        $assignedEmployee = User::where('name', $request->input('assigned_employee'))->first();
+
+        if (!$assignedEmployee) {
+            return redirect()->back()->with('error', 'Assigned Employee not found')->withInput();
+        }
+
+        // Create a new institute
         $institute = new Institute;
         $institute->institute_name = $request->input('institute_name');
         $institute->institute_type = $request->input('institute_type');
         $institute->institute_address = $request->input('institute_address');
         $institute->institute_contact_num = $request->input('institute_contact_num');
         $institute->email = $request->input('email');
-        $institute->assigned_employee = $request->input('assigned_employee');
+        $institute->assigned_employee = $request->input('assigned_employee'); // Save the employee name
+        $institute->assigned_employee_id = $assignedEmployee->id; // Save the employee ID
         $institute->save();
 
         // Redirect with a success message
         return redirect()->route('superAdmin.institute.view')->with('success', 'Institute Registration successful!');
     }
-
 }
-
