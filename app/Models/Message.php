@@ -11,26 +11,23 @@ class Message extends Model
 
     protected $fillable = [
         'id',
-        'assigned_user_id',
+        'user_id',    //Foreign key
+        'assigned_user_id', //Foreign key
+        'institute_id',    //Foreign key
         'subject',
         'message',
         'priority',
         'status',
-        'time_frame',
         'request',
         'img_1',
         'img_2',
         'img_3',
         'img_4',
         'img_5',
-        'user_responded',
         'start_time',
         'end_time',
-        'user_id',    //Foreign key
-        'institute_id',    //Foreign key
+        'progress_note',
     ];
-
-
 
     public function user() {
         return $this->belongsTo(User::class);

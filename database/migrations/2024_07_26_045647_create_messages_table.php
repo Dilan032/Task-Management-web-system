@@ -25,13 +25,14 @@ return new class extends Migration
             $table->string('img_3')->nullable();
             $table->string('img_4')->nullable();
             $table->string('img_5')->nullable();
-            $table->string('user_responded')->nullable();
+            $table->string('progress_note')->nullable();
             $table->timestamps();
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
+            $table->foreign('assigned_user_id')->references('assigned_employee_id')->on('institutes')->onDelete('cascade');
         });
     }
 

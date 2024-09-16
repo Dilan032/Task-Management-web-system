@@ -1,18 +1,76 @@
 <?php
 
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\CompanyEmployeeController;
 use App\Http\Controllers\InstituteController;
-use App\Http\Controllers\MesageController;
-use App\Http\Controllers\AllMessagesController;
-use App\Http\Controllers\ViewMessageController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\InstituteTypesController;
+use App\Http\Controllers\AllMessagesController;
+use App\Http\Controllers\ViewMessageController;
 
 Route::get('/', function () {
     return view('auth.login');
+});
+
+
+Route::get('/dashboard', function () {
+    return view('404');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+
+Route::get('/user/inactive',function(){
+    return view('inactiveUserError');
+});
+
+Route::controller(SuperAdminController::class)
+    ->middleware('UserType:super admin')->group(function () {
+
+    Route::get('/superAdmin/dashboard', 'superAdminDashboard')->name('superAdmin.dashboard');
+
+    Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
+
+    //Company Employees Details Update and Delete routes
+    Route::put('/company-employee/details/update/{id}', 'companyEmpUpdate')->name('companyEmp.details.update');
+    Route::delete('/company-employee/delete/{id}', 'companyEmpDelete')->name('company.employee.delete');
+
+    //Delete all company employees (Super Admins and Company Employees) route
+    Route::delete('/company/employees/delete-all','deleteAllEmployees')->name('company.employees.deleteAll');
+
+    //Displaying the institute details in Institute Management section route
+    Route::get('/superAdmin/institute', 'ViewInstitute')->name('superAdmin.institute.view');
+
+    //Institute administrators and employees show page route
+    Route::get('/institute/{id}/employees/', 'viewInstituteEmployees')->name('institute.employees.view');
+
+    //Institute administrators and employees delete route
+    Route::delete('/institute-employee/delete/{id}', 'instituteEmpDelete')->name('institute.employee.delete');
+
+    //Institute Details Update and Delete routes
+    Route::put('/superAdmin/institute/{id}', 'instituteUpdate')->name('superAdmin.institute.update.view');
+    Route::delete('/superAdmin/institute/{id}', 'instituteDelete')->name('superAdmin.institute.delete');
+
+    Route::get('/superAdmin/messages', 'ViewMessages')->name('superAdmin.messages.view');
+    Route::get('/superAdmin/messages/{id}', 'ViewOneMessages')->name('superAdmin.one.messages.view');
+    Route::put('/superAdmin/messages/ProblemResolvedOrNot/{id}', 'ProblemResolvedOrNot')->name('superAdmin.problem.resolved.or.not');
+
+    Route::get('/superAdmin/logout', 'superAdminLogout')->name('superAdmin.logout');
+});
+
+Route::controller(SuperAdminController::class)
+    ->middleware('UserType:super admin')->group(function () {
+    Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
 });
 
 // Define route for viewing a single message
@@ -28,24 +86,6 @@ Route::controller(ViewMessageController::class)
         Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
 });
 
-Route::get('/dashboard', function () {
-    return view('404');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
-
-
-
-Route::get('/user/inactive',function(){
-    return view('inactiveUserError');
-});
-
 //Super Admin All Messages Section(All Institue Tasks)
 Route::controller(AllMessagesController::class)
     ->middleware('UserType:super admin')->group(function () {
@@ -53,62 +93,44 @@ Route::controller(AllMessagesController::class)
 
     });
 
-
-
-
-Route::controller(SuperAdminController::class)
-    ->middleware('UserType:super admin')->group(function () {
-    Route::get('/superAdmin/dashbord', 'superAdminDashbord')->name('superAdmin.dashbord');
-    Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
-    Route::get('/superAdmin/details/{id}', 'superAdminDetails')->name('superAdmin.deails');
-    Route::put('/superAdmin/details/update/{id}', 'superAdminUpdate')->name('superAdmin.details.update');
-    Route::delete('/superAdmin/delete/{id}', 'deleteSuperAdmin')->name('superAdmin.SuperAdmin.delete');
-
-    Route::get('/superAdmin/messages', 'ViewMessages')->name('superAdmin.messages.view');
-    // Route::get('/superAdmin/messages/{id}', 'ViewOneMessages')->name('superAdmin.one.messages.view');
-    Route::put('/superAdmin/messages/ProblemResolvedOrNot/{id}', 'ProblemResolvedOrNot')->name('superAdmin.problem.resolved.or.not');
-
-    Route::get('/superAdmin/announcements', 'ViewAnnouncements')->name('superAdmin.announcements.view');
-
-
-    Route::get('/superAdmin/institute', 'ViewInstitute')->name('superAdmin.institute.view');
-    Route::get('/superAdmin/institute/{id}', 'ViewOneInstitute')->name('superAdmin.one.institute.view');
-    Route::put('/superAdmin/institute/{id}', 'instituteUpdate')->name('superAdmin.institute.update.view');
-    Route::delete('/superAdmin/institute/{id}', 'instituteDelete')->name('superAdmin.institute.delete');
-
-    Route::get('/superAdmin/logout', 'superAdminLogout')->name('superAdmin.logout');
-});
-
-Route::controller(SuperAdminController::class)
-    ->middleware('UserType:super admin')->group(function () {
-    Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
-});
-
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
 });
 
 
-Route::controller(MesageController::class)
-    ->middleware('UserType:user')->group(function (){
-    Route::post('/user/userDashbord', 'SaveMessage')->name('message.save');
-    Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
-    Route::get('/messages/status', [MesageController::class, 'showStatus']);
-    Route::post('/update-status', [MesageController::class, 'updateStatus']);
+//Institute type CURD parts and routes.....
+Route::controller(InstituteTypesController::class)->group(function () {
+    Route::post('/superAdmin/institute-type/add', 'AddInstituteType')->name('AddInstituteType.save');
+    Route::post('/superAdmin/institute-type/update', 'UpdateInstituteType')->name('UpdateInstituteType');
 });
 
+//Company employees routes....
+Route::controller(CompanyEmployeeController::class)
+    ->middleware('UserType:company employee')->group(function () {
+    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
+    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+});
+
+Route::controller(MessageController::class)
+    ->middleware('UserType:user')->group(function (){
+    Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
+    Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
+});
 Route::controller(UserController::class)
     ->middleware('UserType:user')->group(function () {
-    Route::get('/user/userDashbord', 'index')->name('user.index');
+    Route::get('/user/dashboard', 'index')->name('user.index');
+    //Show the user's previous send messages
+    Route::get('/user/previous-messages', 'previousMessages')->name('user.previous.messages');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
-
 });
-
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/details/{id}', 'oneUserDetailsForAdministrator')->name('user.details');
     Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
+
+
+
 
 //for super admin
 Route::controller(UserController::class)
@@ -123,7 +145,6 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/superAdmin/users', 'RegisterUsers')->name('RegisterUser.save');
 });
 
-
 Route::controller(AdministratorController::class)
     ->middleware('UserType:administrator')->group(function () {
     Route::get('/administrator/dashboard', 'index')->name('administrator.index');
@@ -136,7 +157,5 @@ Route::controller(AdministratorController::class)
     Route::get('/administrator/announcements', 'announcements')->name('administrator.announcements');
     Route::get('/administrator/users', 'users')->name('administrator.users');
     Route::get('/administrator/logout', 'administratorLogout')->name('administrator.logout');
+
 });
-
-
-
