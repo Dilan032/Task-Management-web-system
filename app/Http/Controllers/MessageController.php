@@ -14,7 +14,7 @@ class MessageController extends Controller
 {
     public function SaveMessage(Request $request)
     {
-        //define validation rules
+        // Define validation rules
         $rules = [
             'subject' => 'Required|String|max:255',
             'message' => 'Required|String',
@@ -25,10 +25,10 @@ class MessageController extends Controller
             'img_5' => 'nullable|image|max:4096',
         ];
 
-        //check rules
+        // Check rules
         $validator = Validator::make($request->all(), $rules);
 
-        //if rules fail
+        // If rules fail
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -37,14 +37,14 @@ class MessageController extends Controller
         $userId = Auth::id();
         $userInstituteId = Auth::user()->institute_id;
 
-        // Find the assigned employee for the user's institute
-        $assignedEmployeeId = Institute::where('id', $userInstituteId)->value('assigned_employee_id');
+        // Retrieve the assigned employee for the user's institute
+        $assignedEmployee = Institute::where('id', $userInstituteId)->value('assigned_employee');
 
         // Create a new message
         $NewMessage = new Message;
         $NewMessage->user_id = $userId;
         $NewMessage->institute_id = $userInstituteId;
-        $NewMessage->assigned_employee_id = $assignedEmployeeId;  // Store assigned employee ID
+        $NewMessage->assigned_employee = $assignedEmployee; // Set the assigned employee
         $NewMessage->subject = $request->input('subject');
         $NewMessage->message = $request->input('message');
 

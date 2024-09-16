@@ -87,7 +87,7 @@ Route::controller(ViewMessageController::class)
 });
 
 
-//Super Admin All Messages Section(All Institue Tasks)
+//Super Admin All Messages Section(All Institute Tasks)
 Route::controller(AllMessagesController::class)
     ->middleware('UserType:super admin')->group(function () {
         Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view');

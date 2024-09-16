@@ -45,10 +45,10 @@ class InstituteController extends Controller
         $institute->institute_contact_num = $request->input('institute_contact_num');
         $institute->email = $request->input('email');
         $institute->assigned_employee = $request->input('assigned_employee'); // Save the employee name
-        $institute->assigned_employee_id = $assignedEmployee->id; // Save the employee ID
         $institute->save();
 
         // Redirect with a success message
         return redirect()->route('superAdmin.institute.view')->with('success', 'Institute Registration successful!');
     }
 }
+
