@@ -10,7 +10,7 @@
             </div>
 
             <hr class="text-white">
-            
+
             <ul class="nav nav-pills flex-column mb-auto p-2">
                 <li class="nav-item mb-2">
                     <a href="{{route('superAdmin.dashbord')}}" class="nav-link text-white ">
@@ -62,11 +62,11 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    
+
     <h6>Institute Complaning Web Application</h6>
 
     <hr class="text-dark">
-    
+
     <ul class="nav nav-pills flex-column mb-auto p-2">
         <li class="nav-item mb-2">
             <a href="{{ route('superAdmin.dashbord') }}" class="nav-link text-dark ">
@@ -78,6 +78,12 @@
             <a href="{{ route('superAdmin.messages.view') }}" class="nav-link text-dark">
                 <i class="bi bi-chat-left-dots"></i>
                 <span>Messages</span>
+            </a>
+        </li>
+        <li class="nav-item mb-2">
+            <a href="{{ route('superAdmin.allmessages.view') }}" class="nav-link text-dark">
+                <i class="bi bi-chat-left-dots"></i>
+                <span>All Messages</span>
             </a>
         </li>
         <li class="nav-item mb-2">

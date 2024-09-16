@@ -11,8 +11,10 @@ class Message extends Model
 
     protected $fillable = [
         'id',
+        'assigned_user_id',
         'subject',
         'message',
+        'priority',
         'status',
         'time_frame',
         'request',
@@ -22,6 +24,8 @@ class Message extends Model
         'img_4',
         'img_5',
         'user_responded',
+        'start_time',
+        'end_time',
         'user_id',    //Foreign key
         'institute_id',    //Foreign key
     ];
@@ -36,5 +40,12 @@ class Message extends Model
     {
         return $this->belongsTo(Institute::class, 'institute_id');
     }
+
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_user_id');
+    }
+
 
 }

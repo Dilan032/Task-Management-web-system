@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\MesageController;
+use App\Http\Controllers\AllMessagesController;
+use App\Http\Controllers\ViewMessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UserController;
@@ -13,6 +15,18 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// Define route for viewing a single message
+Route::controller(ViewMessageController::class)
+    ->middleware('UserType:super admin')->group(function (){
+        Route::get('/view-message/{id}', [ViewMessageController::class, 'show'])->name('superAdmin.one.messages.view');
+        Route::post('/update-message-status/{id}', [ViewMessageController::class, 'updateStatus'])->name('update.message.status');
+        Route::post('/update-message-priority/{id}', [ViewMessageController::class, 'updatePriority'])->name('update.message.priority');
+        Route::post('/message/{id}/start', [ViewMessageController::class, 'startTimer'])->name('message.start');
+        Route::post('/message/{id}/end', [ViewMessageController::class, 'endTimer'])->name('message.end');
+        Route::post('/message/{id}/update', [ViewMessageController::class, 'updateTimesAndStatus']);
+        Route::post('/messages/{id}/update-assigned-employee', [ViewMessageController::class, 'updateAssignedEmployee'])->name('update.assigned.employee');
+        Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
+});
 
 Route::get('/dashboard', function () {
     return view('404');
@@ -32,6 +46,14 @@ Route::get('/user/inactive',function(){
     return view('inactiveUserError');
 });
 
+//Super Admin All Messages Section(All Institue Tasks)
+Route::controller(AllMessagesController::class)
+    ->middleware('UserType:super admin')->group(function () {
+        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view');
+
+    });
+
+
 
 
 Route::controller(SuperAdminController::class)
@@ -39,15 +61,15 @@ Route::controller(SuperAdminController::class)
     Route::get('/superAdmin/dashbord', 'superAdminDashbord')->name('superAdmin.dashbord');
     Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
     Route::get('/superAdmin/details/{id}', 'superAdminDetails')->name('superAdmin.deails');
-    Route::put('/superAdmin/details/update/{id}', 'superAdminUpdate')->name('superAdmin.details.update'); 
+    Route::put('/superAdmin/details/update/{id}', 'superAdminUpdate')->name('superAdmin.details.update');
     Route::delete('/superAdmin/delete/{id}', 'deleteSuperAdmin')->name('superAdmin.SuperAdmin.delete');
 
     Route::get('/superAdmin/messages', 'ViewMessages')->name('superAdmin.messages.view');
-    Route::get('/superAdmin/messages/{id}', 'ViewOneMessages')->name('superAdmin.one.messages.view');
+    // Route::get('/superAdmin/messages/{id}', 'ViewOneMessages')->name('superAdmin.one.messages.view');
     Route::put('/superAdmin/messages/ProblemResolvedOrNot/{id}', 'ProblemResolvedOrNot')->name('superAdmin.problem.resolved.or.not');
 
     Route::get('/superAdmin/announcements', 'ViewAnnouncements')->name('superAdmin.announcements.view');
-    
+
 
     Route::get('/superAdmin/institute', 'ViewInstitute')->name('superAdmin.institute.view');
     Route::get('/superAdmin/institute/{id}', 'ViewOneInstitute')->name('superAdmin.one.institute.view');
@@ -71,19 +93,20 @@ Route::controller(MesageController::class)
     ->middleware('UserType:user')->group(function (){
     Route::post('/user/userDashbord', 'SaveMessage')->name('message.save');
     Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
+    Route::get('/messages/status', [MesageController::class, 'showStatus']);
+    Route::post('/update-status', [MesageController::class, 'updateStatus']);
 });
-
 
 Route::controller(UserController::class)
     ->middleware('UserType:user')->group(function () {
     Route::get('/user/userDashbord', 'index')->name('user.index');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
-    
+
 });
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/details/{id}', 'oneUserDetailsForAdministrator')->name('user.details');
-    Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update'); 
+    Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
 
@@ -91,7 +114,7 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(UserController::class)
     ->middleware('UserType:super admin')->group(function () {
     Route::delete('/superAdmin/users/{id}', 'deleteUserForAdmin')->name('user.delete.for.admin');
-    Route::get('/superAdmin/user/details/{id}', 'oneUserDetailsForSuperAdmin')->name('superAdmin.user.details'); 
+    Route::get('/superAdmin/user/details/{id}', 'oneUserDetailsForSuperAdmin')->name('superAdmin.user.details');
 });
 
 //for administrator
@@ -113,7 +136,6 @@ Route::controller(AdministratorController::class)
     Route::get('/administrator/announcements', 'announcements')->name('administrator.announcements');
     Route::get('/administrator/users', 'users')->name('administrator.users');
     Route::get('/administrator/logout', 'administratorLogout')->name('administrator.logout');
-
 });
 
 

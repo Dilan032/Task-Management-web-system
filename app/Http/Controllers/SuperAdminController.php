@@ -64,15 +64,15 @@ class SuperAdminController extends Controller
         'NumInstitute' => $NumInstitute, 'Numusers'=> $Numusers, 'NumAdministrators' => $NumAdministrators,
         'NumUsers' => $NumUsers, 'NumActiveAdministrators'=> $NumActiveAdministrators, 'NumActiveUsers'=>$NumActiveUsers,
         'superAdmin' => $superAdmin, 'NumMsgProcessing' => $NumMsgProcessing, 'NumMsgViewed' => $NumMsgViewed]);
-    } 
+    }
 
     public function ViewMessages(){
-        
+
         $solvedMessageCount = Message::where('request', 'accept')
-                            ->where('status', 'solved')
+                            ->where('status', 'completed')
                             ->count();
-                                    
-        $noSolvedMessageCount = Message::where('status', 'not resolved')
+
+        $noSolvedMessageCount = Message::where('status', 'In Queue')
                             ->where('request', 'accept')
                             ->count();
 
@@ -80,20 +80,20 @@ class SuperAdminController extends Controller
                             ->where('request', 'accept')
                             ->count();
 
-        $processingMessageCount = Message::where('status', 'Processing')
+        $processingMessageCount = Message::where('status', 'In Progress')
                             ->where('request', 'accept')
                             ->count();
-                                    
+
 
         $messagesAndInstitute = Message::with('institute')
                     ->where('request' , 'accept')
                     ->orderBy('created_at', 'DESC')
                     ->get();
 
-        return view('superAdmin.messages',['messagesAndInstitute'=> $messagesAndInstitute, 
+        return view('superAdmin.messages',['messagesAndInstitute'=> $messagesAndInstitute,
         'noSolvedMessageCount'=> $noSolvedMessageCount, 'solvedMessageCount'=> $solvedMessageCount,
         'ViewedMessageCount' => $ViewedMessageCount, 'processingMessageCount' => $processingMessageCount]);
-    } 
+    }
 
     public function superAdminDetails($id){
         $superAdmin = User::where('user_type', 'super admin')->findOrFail($id);
@@ -106,7 +106,7 @@ class SuperAdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'user_contact_num' => 'required|string|max:12',
-            'password' => 'nullable|string|min:8|confirmed',       
+            'password' => 'nullable|string|min:8|confirmed',
         ];
 
         // Create validator instance and validate
@@ -141,23 +141,23 @@ class SuperAdminController extends Controller
     }
 
         // for User Registration super admin
-        public function RegisterSuperAdmin(Request $request){ 
+        public function RegisterSuperAdmin(Request $request){
             $rules = [
                 'password' => 'required|string|min:8|max:32|confirmed',
                 'user_contact_num' => 'required|string|max:12',
                 'email' => 'required|string|email|max:255|unique:users,email',
                 'name' => 'required|string|max:255',
             ];
-    
+
             // Create validator instance and validate
             $validator = Validator::make($request->all(), $rules);
-    
+
             // Check if validation fails
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            
-    
+
+
             $newUser = new User;
             // $newUser->institute_id = $request->input('institute_id');
             $newUser->user_type = 'super admin';
@@ -166,10 +166,10 @@ class SuperAdminController extends Controller
             $newUser->user_contact_num = $request->input('user_contact_num');
             $newUser->password = Hash::make($request->input('password'));
             $newUser->save();
-    
+
             //for sent the new register user
             $plainPassword = $request->input('password');
-    
+
             //get user register pertion details
             if (Auth::check()) {
                 //get authenticate admin details
@@ -180,10 +180,10 @@ class SuperAdminController extends Controller
             } else {
                 return redirect()->route('login');
             }
-    
+
             Mail::to($newUser->email)->send(new userWellcomeMessage($newUser->user_type, $newUser->name, $newUser->email, $newUser->user_contact_num, $plainPassword,
                     $RegisterAdminName, $RegisterUserType, $RegisterAadminEmail, $RegisterAdminContactNumber));
-    
+
             // Redirect with a success message
             return redirect()->back()->with('success', 'User Registration successfully!');
         }
@@ -192,7 +192,7 @@ class SuperAdminController extends Controller
         $oneMessage = Message::findorFail($id);
 
         return view('superAdmin.messageOne',['oneMessage'=> $oneMessage]);
-    } 
+    }
 
     public function ProblemResolvedOrNot(Request $request, $id){
         $message=Message::findOrFail($id);
@@ -210,10 +210,10 @@ class SuperAdminController extends Controller
         $message->update();
 
         return redirect()->back()->with('success', 'Message status updated');
-    } 
+    }
 
     //$Institute variable used for while user registration form generate institute name list
-    public function ViewUsers(){    
+    public function ViewUsers(){
         //get data for institute list component
         $users = DB::table('users')->get();
         $institute = DB::table('institutes')
@@ -221,9 +221,9 @@ class SuperAdminController extends Controller
                 ->get();
         //end
 
-        
 
-        return view('superAdmin.users', 
+
+        return view('superAdmin.users',
         ['users' => $users, 'institute' => $institute,]);
     }
 
@@ -239,7 +239,7 @@ class SuperAdminController extends Controller
         $inactiveInstituteCount = Institute::where('status', 'inactive')->count();
 
         return view('superAdmin.institute',
-        [ 'users' => $users, 'institute' => $institute, 'instituteCount' => $instituteCount, 'activeInstituteCount' => $activeInstituteCount, 'inactiveInstituteCount' => $inactiveInstituteCount ]);  
+        [ 'users' => $users, 'institute' => $institute, 'instituteCount' => $instituteCount, 'activeInstituteCount' => $activeInstituteCount, 'inactiveInstituteCount' => $inactiveInstituteCount ]);
     }
 
     public function ViewOneInstitute($id){
@@ -256,15 +256,15 @@ class SuperAdminController extends Controller
                     'institute_address' => 'required|string|max:255',
                     'institute_name' => 'required|string|max:255',
                 ];
-        
+
                 // Create validator instance and validate
                 $validator = Validator::make($request->all(), $rules);
-        
+
                 // Check if validation fails
                 if ($validator->fails()) {
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
-        
+
                 $institute->institute_name = $request->input('institute_name');
                 $institute->institute_address = $request->input('institute_address');
                 $institute->institute_contact_num = $request->input('institute_contact_num');
