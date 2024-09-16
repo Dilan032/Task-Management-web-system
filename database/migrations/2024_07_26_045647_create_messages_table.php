@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('img_3')->nullable();
             $table->string('img_4')->nullable();
             $table->string('img_5')->nullable();
-            $table->string('user_responded')->nullable();
+            $table->string('progress_note')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -10,9 +10,10 @@ class Message extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'assigned_user_id',
-        'institute_id',
+        'id',
+        'user_id', //Foreign key
+        'assigned_user_id', //Foreign key
+        'institute_id', //Foreign key
         'subject',
         'message',
         'status',

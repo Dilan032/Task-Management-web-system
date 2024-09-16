@@ -61,8 +61,6 @@ class AuthenticatedSessionController extends Controller
                 $url ='/user/inactive';
             }
 
-
-
         }elseif($request->user()->user_type === 'user'){
 
             if($request->user()->status === 'active'){

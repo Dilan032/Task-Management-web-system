@@ -1,14 +1,32 @@
 @extends('layouts.superAdminLayout')
 @section('SuperAdminContent')
 
-<div class="d-flex justify-content-between mt-3">
-    <p class="fs-4">
-        {{$oneMessage->institute->institute_name}} Message
-        {{-- <span class="badge text-bg-dark">{{$oneMessage->user->user_type}}</span>
-        {{$oneMessage->user->name}}'s message of
-        <span class="bg-dark-subtle p-1 px-2">{{$oneMessage->institute->institute_name}}</span> |
-        <small class="bg-dark-subtle p-1 px-2">{{$oneMessage->institute->institute_address}}</small> --}}
-    </p>
+<div class="d-flex justify-content-between">
+    <div class=" justify-content-left">
+        <p class="fs-4">
+            {{$oneMessage->institute->institute_name}} Message
+            {{-- <span class="badge text-bg-dark">{{$oneMessage->user->user_type}}</span>
+            {{$oneMessage->user->name}}'s message of
+            <span class="bg-dark-subtle p-1 px-2">{{$oneMessage->institute->institute_name}}</span> |
+            <small class="bg-dark-subtle p-1 px-2">{{$oneMessage->institute->institute_address}}</small> --}}
+        </p>
+    </div>
+
+    <div class="d-flex justify-content-center mb-3">
+        <div class="timer me-3" id="timer" style="display: none; font-size: 1.5rem; font-weight: bold;">
+            00:00:00
+        </div>
+        <button id="startBtn" class="btn btn-success me-3" type="button" style="width: 100px;">
+            Start
+        </button>
+        <button id="endBtn" class="btn btn-danger" type="button" style="width: 100px; display: none;">
+            End
+        </button>
+        <button id="doneBtn" class="btn btn-secondary" type="button" style="width: 100px; display: none;" disabled>
+            Done
+        </button>
+    </div>
+
 </div>
 
 <hr class="me-3">
@@ -38,52 +56,34 @@
 </script>
 @endif
 
-<div class="d-grid gap-2 d-flex justify-content-end mb-4">
+<div class="d-grid gap-2 d-flex justify-content-end mb-3">
 
-    <div class="dropdown-center">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Centered dropdown
+    <div class="dropdown-center me-2">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
+        Priority
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Action two</a></li>
-          <li><a class="dropdown-item" href="#">Action three</a></li>
+            <li><a class="dropdown-item badge top-urgent" href="#" >Top Urgent(2 min)</a></li>
+            <li><a class="dropdown-item badge urgent" href="#">Urgent(5 min)</a></li>
+            <li><a class="dropdown-item badge medium" href="#">Medium(2 hrs)</a></li>
+            <li><a class="dropdown-item badge low" href="#">Low(1 day)</a></li>
         </ul>
     </div>
 
-<!-- Example split danger button -->
-<div class="btn-group me-5">
-    <form action="{{ route('superAdmin.problem.resolved.or.not', $oneMessage->id ) }}" method="post">
-        @csrf
-        @method('PUT')
-        <input type="hidden" name="status" value="solved">
-        <button type="submit" class="btn btn-success px-4" onclick="return confirm('A text message will also be sent to the institute');">Solved</button>
-    </form>
-
-    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-      <span class="visually-hidden">Toggle Dropdown</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-dark">
-        <form action="{{ route('superAdmin.problem.resolved.or.not', $oneMessage->id ) }}" method="post">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="status" value="Processing">
-            <li><button class="dropdown-item" type="submit" href="#">Processing</button></li>
-        </form>
-        <form action="{{ route('superAdmin.problem.resolved.or.not', $oneMessage->id ) }}" method="post">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="status" value="Viewed">
-            <li><button class="dropdown-item" type="submit" href="#">Viewed</button></li>
-        </form>
-        {{-- <form action="{{ route('superAdmin.problem.resolved.or.not', $oneMessage->id ) }}" method="post">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="status" value="not resolved">
-            <li><button class="dropdown-item" type="submit" href="#">Not Solved</button></li>
-        </form> --}}
-    </ul>
-  </div>
+    <div class="dropdown-center">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
+        Progress
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item badge in-queue" href="#">In Queue</a></li>
+            <li><a class="dropdown-item badge in-progress" href="#">In Progress</a></li>
+            <li><a class="dropdown-item badge document-pending" href="#">Document Pending</a></li>
+            <li><a class="dropdown-item badge postponed" href="#">Postponed</a></li>
+            <li><a class="dropdown-item badge move-next-day" href="#">Move to next day</a></li>
+            <li><a class="dropdown-item badge completed-next-day" href="#">Completed in next day</a></li>
+            <li><a class="dropdown-item badge completed" href="#">Completed</a></li>
+        </ul>
+    </div>
 
 </div>
 
@@ -130,6 +130,7 @@
                 </p>
             </div>
     </div>
+
 
 
           <!-- Thumbnail Images -->
@@ -262,5 +263,60 @@
         </div>
     </div>
 </div>
+
+<!-- Timer Script -->
+<script>
+    // Elements
+    const startBtn = document.getElementById('startBtn');
+    const endBtn = document.getElementById('endBtn');
+    const doneBtn = document.getElementById('doneBtn')
+    const timerElement = document.getElementById('timer');
+
+    let timerInterval;
+    let seconds = 0;
+
+    // Start button click event
+    startBtn.addEventListener('click', () => {
+        // Hide the Start button and show the End button
+        startBtn.style.display = 'none';
+        endBtn.style.display = 'block';
+        // timerElement.style.display = 'block';
+        // Start the timer
+        // timerInterval = setInterval(() => {
+        //     seconds++;
+        //     timerElement.textContent = formatTime(seconds);
+        // }, 1000);
+    });
+
+    // End button click event
+    endBtn.addEventListener('click', () => {
+        endBtn.style.display = 'none';
+        doneBtn.style.display = 'block';
+        // Stop the timer
+        clearInterval(timerInterval);
+    });
+
+    // Function to format the time in HH:MM:SS
+    function formatTime(seconds) {
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+</script>
+
+<style>
+    .dropdown-item.in-queue { background-color: #ebe700; }
+    .dropdown-item.in-progress { background-color: #ff0000; }
+    .dropdown-item.document-pending { background-color: #357402; }
+    .dropdown-item.postponed { background-color: #ff00b3; }
+    .dropdown-item.move-next-day { background-color: #995e05; }
+    .dropdown-item.completed-next-day { background-color: #ff7300; }
+    .dropdown-item.completed { background-color: #001aff; }
+    .dropdown-item.top-urgent { background-color: #995e05; }
+    .dropdown-item.urgent { background-color: #ff0000; }
+    .dropdown-item.medium { background-color: #357402; }
+    .dropdown-item.low { background-color: #ebe700; }
+</style>
 
 @endsection

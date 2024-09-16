@@ -10,6 +10,8 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\InstituteTypesController;
+use App\Http\Controllers\AllMessagesController;
+use App\Http\Controllers\ViewMessageController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -70,6 +72,26 @@ Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
     Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
 });
+
+// Define route for viewing a single message
+Route::controller(ViewMessageController::class)
+    ->middleware('UserType:super admin')->group(function (){
+        Route::get('/view-message/{id}', [ViewMessageController::class, 'show'])->name('superAdmin.one.messages.view');
+        Route::post('/update-message-status/{id}', [ViewMessageController::class, 'updateStatus'])->name('update.message.status');
+        Route::post('/update-message-priority/{id}', [ViewMessageController::class, 'updatePriority'])->name('update.message.priority');
+        Route::post('/message/{id}/start', [ViewMessageController::class, 'startTimer'])->name('message.start');
+        Route::post('/message/{id}/end', [ViewMessageController::class, 'endTimer'])->name('message.end');
+        Route::post('/message/{id}/update', [ViewMessageController::class, 'updateTimesAndStatus']);
+        Route::post('/messages/{id}/update-assigned-employee', [ViewMessageController::class, 'updateAssignedEmployee'])->name('update.assigned.employee');
+        Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
+});
+
+//Super Admin All Messages Section(All Institute Tasks)
+Route::controller(AllMessagesController::class)
+    ->middleware('UserType:super admin')->group(function () {
+        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view');
+
+    });
 
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
