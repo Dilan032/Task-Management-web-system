@@ -16,6 +16,7 @@ class Message extends Model
         'institute_id', //Foreign key
         'subject',
         'message',
+        'priority',
         'status',
         'request',
         'img_1',
@@ -28,8 +29,6 @@ class Message extends Model
         'progress_note',
     ];
 
-
-
     public function user() {
         return $this->belongsTo(User::class);
     }
@@ -38,4 +37,10 @@ class Message extends Model
     {
         return $this->belongsTo(Institute::class, 'institute_id');
     }
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_user_id');
+    }
+
 }
