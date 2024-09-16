@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('institute_id');
-            $table->unsignedBigInteger('assigned_user_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('assigned_user_id');//This column store the assigned company employee
             $table->string('subject');
             $table->enum('priority', ['Top Urgent(2min)', 'Urgent(5min)', 'Medium(2hrs)', 'Low(1day)'])->default('Low(1day)');
             $table->enum('status', ['In Queue', 'In Progress', 'Document Pending', 'Postponed', 'Move to next day', 'Complete in next day', 'Completed'])->default('In Queue');
@@ -44,3 +44,4 @@ return new class extends Migration
         Schema::dropIfExists('messages');
     }
 };
+

@@ -10,6 +10,8 @@ class Institute extends Model
     use HasFactory;
 
     protected $fillable = [
+        'assigned_employee_id',
+        'assigned_employee',
         'institute_name',
         'institute_type',
         'institute_address',
@@ -23,5 +25,7 @@ class Institute extends Model
     {
         return $this->hasMany(Message::class);
     }
-    
+
 }
+
+

@@ -11,9 +11,9 @@ class Message extends Model
 
     protected $fillable = [
         'id',
-        'user_id',    //Foreign key
+        'user_id', //Foreign key
         'assigned_user_id', //Foreign key
-        'institute_id',    //Foreign key
+        'institute_id', //Foreign key
         'subject',
         'message',
         'priority',
@@ -38,11 +38,9 @@ class Message extends Model
         return $this->belongsTo(Institute::class, 'institute_id');
     }
 
-
     public function assignedUser()
     {
         return $this->belongsTo(User::class, 'assigned_user_id');
     }
-
 
 }

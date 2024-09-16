@@ -24,5 +24,9 @@ class DatabaseSeeder extends Seeder
             'user_contact_num' => '0718896345',
             'password' => Hash::make('12345678')
         ]);
+
+        $this->call([
+            InstituteTypesSeeder::class,
+        ]);
     }
 }

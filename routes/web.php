@@ -86,6 +86,7 @@ Route::controller(ViewMessageController::class)
         Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
 });
 
+
 //Super Admin All Messages Section(All Institue Tasks)
 Route::controller(AllMessagesController::class)
     ->middleware('UserType:super admin')->group(function () {
@@ -111,6 +112,12 @@ Route::controller(CompanyEmployeeController::class)
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
 });
 
+//Company employees routes....
+Route::controller(CompanyEmployeeController::class)
+    ->middleware('UserType:company employee')->group(function () {
+    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
+    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+});
 Route::controller(MessageController::class)
     ->middleware('UserType:user')->group(function (){
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
