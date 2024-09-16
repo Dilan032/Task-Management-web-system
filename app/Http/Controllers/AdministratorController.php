@@ -151,6 +151,7 @@ class AdministratorController extends Controller
         $message->update();
 
         //get message data from message table
+        $problemSendserUserId = $message->user_id;
         $subject = $message->subject;
         $messageDetails = $message->message;
 
@@ -163,6 +164,15 @@ class AdministratorController extends Controller
         } else {
             return redirect()->route('login');
         }
+        //get problem occur user details
+        $problemSendserUser = DB::table('users')
+                            ->where('id', $problemSendserUserId)
+                            ->select('name', 'user_contact_num', 'email')
+                            ->first();
+
+        $userName = $problemSendserUser->name;
+        $user_contact_num = $problemSendserUser->user_contact_num;
+        $email = $problemSendserUser->email;
 
         //get institute details
         $instituteDetails=DB::table('institutes')
@@ -179,7 +189,10 @@ class AdministratorController extends Controller
                         ->pluck('email')
                         ->toArray();
             
-        Mail::to($superAdminEmail)->send(new mail_for_problem($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber));
+        Mail::to($superAdminEmail)->send(new mail_for_problem
+        ($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, 
+        $instituteName, $instituteAddress, $instituteContactNumber, 
+        $userName, $user_contact_num, $email));
 
         return redirect()->back()->with('success', 'User message send to the Nanosoft Solutions (Pvt)Ltd'); 
     }
@@ -262,10 +275,24 @@ class AdministratorController extends Controller
                         ->toArray();
         
         //get email data for send email
+        $problemSendserUserId = $NewMessage->user_id;
         $subject = $NewMessage->subject;
         $messageDetails = $NewMessage->message;
 
-        Mail::to($superAdminEmail)->send(new mail_for_problem($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber));
+                //get problem occur user details
+                $problemSendserUser = DB::table('users')
+                ->where('id', $problemSendserUserId)
+                ->select('name', 'user_contact_num', 'email')
+                ->first();
+
+        $userName = $problemSendserUser->name;
+        $user_contact_num = $problemSendserUser->user_contact_num;
+        $email = $problemSendserUser->email;
+
+        Mail::to($superAdminEmail)->send(new mail_for_problem
+        ($subject, $messageDetails, $administratorName, $administratorEmail, 
+        $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber,
+        $userName, $user_contact_num, $email));
 
         return redirect()->route('administrator.messages')->with('success','Message Send to the Nanosoft Solutions Comapany');
     }

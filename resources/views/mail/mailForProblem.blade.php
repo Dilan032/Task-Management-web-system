@@ -28,16 +28,16 @@
         <div class="row mb-5">
             <div class="col-md-8 p-2 rounded">
                 <p class="bg-primary-subtle text-dark p-2 rounded">
-                    subject : <b>{{ $subject }}</b>
+                    Subject : {{ $subject }}
                 </p>
-                <p class="p-2"><b>messages :</b> <br> {{ $messageDetails }} </p> 
+                <p class="p-2">Messages : <br> {{ $messageDetails }} </p> 
             </div>
             <div class="col-md-4">
                 <div class="p-2 mt-2">
-                    <p> <span class="fw-bold">Bank Details</span> <br>
-                        Bank Name : {{ $bankName }} <br>
-                        Bank Address : {{ $bankAddress }} <br>
-                        Bank Contact Number : {{ $bankContactNumber }}
+                    <p> <span>Institute Details</span> <br>
+                        Name : {{ $bankName }} <br>
+                        Address : {{ $bankAddress }} <br>
+                        Contact Number : {{ $bankContactNumber }}
                     </p>
                 </div>
                 
@@ -45,11 +45,21 @@
 
                 <div class="p-2">
                     <p>
-                        <span class="fw-bold">Message Accept by,</span>
+                        <span>Message sent by,</span>
+                        <br> Name : {{ $userName }} <br> 
+                        Contact Number : {{ $user_contact_num }} <br>
+                        Email : {{ $email }}
+                    </p>
+                </div>
+
+                <div class="p-2">
+                    <p>
+                        <span>Message Accept by,</span>
                         <br> Administrator : {{ $administratorName }} <br> 
                         Contact Number : {{ $administratorContactNumber }}
                     </p>
                 </div>
+
             </div>
         </div>
 
