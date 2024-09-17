@@ -12,11 +12,16 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\InstituteTypesController;
 use App\Http\Controllers\AllMessagesController;
 use App\Http\Controllers\ViewMessageController;
+use App\Http\Controllers\LoacationController;
+use App\Http\Controllers\DeviceDetectorController;
+
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
+route::get('/getDeviceDeatails', [DeviceDetectorController::class, 'getDeviceDeatails']);
+route::get('/location', [LoacationController::class, 'getLocation']);
 
 Route::get('/dashboard', function () {
     return view('404');
