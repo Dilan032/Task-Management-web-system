@@ -1,130 +1,168 @@
-@extends('layouts.administratorLayout')
-@section('administratorContent')
+<!-- Display validation errors -->
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "{{ $error }}",
+            });
+        </script>
+    @endforeach
+@endif
 
-<span class="fs-4 ms-4">users</span>
-<hr class="me-3">
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: "success",
+            title: "{{ session('success') }}",
+            showConfirmButton: false,
+            timer: 1000
+        });
+    </script>
+@endif
 
+<div class="container-fluid">
+    <div class="table-responsive">
+        <div class="table-wrapper">
 
-{{-- btns for user register model --}}
-<div class="d-grid mb-4 justify-content-end">
-    <button class="btn btn-primary me-4" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Register Users</button>
+            <!-- Filter Section -->
+            <form action="{{ route('administrator.users') }}" method="GET">
+                <div class="row mb-3 align-items-end">
+
+                    <!-- Search by Employee Name -->
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <input type="text" name="search_employee_name" class="form-control"
+                            placeholder="Search Employee Name" value="{{ request('search_employee_name') }}">
+                    </div>
+
+                    <!-- Filter by Employee Type: Administrator and User -->
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <select name="filter_employee_type" class="form-select">
+                            <option value="" selected>Filter by Employee Type</option>
+                            <option value="administrator"
+                                {{ request('filter_employee_type') == 'administrator' ? 'selected' : '' }}>
+                                Administrator
+                            </option>
+                            <option value="user" {{ request('filter_employee_type') == 'user' ? 'selected' : '' }}>
+                                Company Employee
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Filter by institute employee Status (active or not) -->
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <select name="filter_employee_status" class="form-select">
+                            <option value="" selected>Filter by Status</option>
+                            <option value="active"
+                                {{ request('filter_employee_status') == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive"
+                                {{ request('filter_employee_status') == 'inactive' ? 'selected' : '' }}>Inactive
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Buttons Section -->
+                    <div class="col-md-3 d-flex justify-content-end align-items-center">
+                        <button type="submit" class="btn btn-primary me-2">Apply</button>
+                        <a href="{{ route('administrator.users') }}" class="btn btn-warning me-2">Reset</a>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal"
+                            data-bs-target="#addInstituteEmployeeModal" style="margin-left:10px">
+                            New user
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            @include('components.superAdmin.users.registerUsers')
+
+            <!-- Table Section -->
+            <table class="table table-bordered" style="width: 100%;">
+                <thead class="table-dark">
+                    <tr style="text-align:center">
+                        <th style="height: 60px; vertical-align: middle;">
+                            Employee Name
+                        </th>
+                        <th style="height: 60px; vertical-align: middle;">
+                            Employee Type
+                            @if (request('filter_employee_type'))
+                                <span class="position-relative">
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $employees->total() }}
+                                        <span class="visually-hidden">filtered employees</span>
+                                    </span>
+                                </span>
+                            @endif
+                        </th>
+                        <th style="height: 60px; vertical-align: middle;">Mobile Number</th>
+                        <th style="height: 60px; vertical-align: middle; width: 20%;">Email</th>
+                        <th style="height: 60px; vertical-align: middle;">
+                            Status
+                            @if (request('filter_employee_status'))
+                                <span class="position-relative">
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $employees->total() }}
+                                        <span class="visually-hidden">filtered employees</span>
+                                    </span>
+                                </span>
+                            @endif
+                        </th>
+                        <th style="height: 60px; vertical-align: middle;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center">
+                    @foreach ($employees as $employee)
+                        <tr>
+                            <td>{{ $employee->name }}</td>
+                            <td>{{ $employee->user_type }}</td>
+                            <td>{{ $employee->user_contact_num }}</td>
+                            <td>{{ $employee->email }}</td>
+                            <td>
+                                @php
+                                    $statusClasses = [
+                                        'active' => 'text-bg-success',
+                                        'inactive' => 'text-bg-warning',
+                                    ];
+                                    $statusClass = $statusClasses[$employee->status] ?? 'text-bg-info';
+                                @endphp
+                                <span class="badge rounded-pill {{ $statusClass }} py-1 px-4">
+                                    {{ $employee->status }}
+                                </span>
+                            </td>
+                            <td>
+                                <!-- Edit Modal Trigger -->
+                                <a href="#editCompanyEmpModal{{ $employee->id }}" class="edit" title="Edit"
+                                    data-bs-toggle="modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="orange"
+                                        class="bi bi-pencil-fill" viewBox="0 0 16 16"
+                                        style="margin-left: 5px; margin-right: 10px;">
+                                        <path
+                                            d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                    </svg>
+                                </a>
+
+                                <!-- Delete Modal Trigger -->
+                                <a href="#deleteCompanyEmpModal{{ $employee->id }}" class="remove" title="Remove"
+                                    data-bs-toggle="modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                        class="bi bi-trash-fill" viewBox="0 0 16 16"
+                                        style="margin-left: 5px; margin-right: 10px;">
+                                        <path
+                                            d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4v8h1V5h-1zm3 0v8h1V5h-1zm2 0v8h1V5h-1z" />
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <!-- Pagination Links -->
+            <div style="margin-top:30px">
+                {{ $employees->appends(request()->query())->links() }}
+            </div>
+        </div>
+    </div>
 </div>
-    {{-- include model --}}
-    @include('components.superAdmin.users.registerUsers')
-    {{-- end user register section --}}
-
-<p class="fs-4 text-center">Institute Administrators</p>
-<section class="container bg-white text-dark userBgShado rounded">
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="table-dark">
-                <tr class="text-start">
-                    <td scope="col" style="width: 30%">Name</td>
-                    <td scope="col" style="width: 30%">Email</td>
-                    <td scope="col" class="text-center">Tel</td>
-                    <td scope="col" class="text-center">Status</td>
-                    <td scope="col"></td>
-                    <td scope="col"></td>
-                  </tr>
-              </thead>
-              <tbody class="table-group-divider">
-                {{-- @if ($institute->isNotEmpty()) --}}
-                    @foreach ($institute as $instituteDetails)
-                        @if ($users->isNotEmpty())
-                            @foreach ($users as $userDetails)
-                                @if ($instituteDetails->id == $userDetails->institute_id && $userDetails->user_type == "administrator" )
-                                    <tr class="text-start fw-lighter">
-                                        <td scope="col" style="width: 30%">{{ $userDetails->name }}</td>
-                                        <td scope="col" style="width: 30%">{{ $userDetails->email }}</td>
-                                        <td scope="col" class="text-center">{{ $userDetails->user_contact_num }}</td>
-                                        <td scope="col" class="text-center">
-                                            @if ($userDetails->status == "active")
-                                                <span class="badge text-bg-success px-4">{{ $userDetails->status }}</span>
-                                            @else
-                                                <span class="badge text-bg-secondary px-3">{{ $userDetails->status }}</span>
-                                            @endif  
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="{{ route('user.details',$userDetails->id) }}" type="button" class="btn btn-outline-primary btn-sm">
-                                                <small>Manage</small>
-                                            </a>
-                                        </td>
-                                        <td class="text-start">
-                                            <form action="{{ route('user.delete', $userDetails->id ) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">
-                                                    <small>Remove</small>
-                                                </button>
-                                             </form>
-                                        </td>
-                                      </tr>
-                                @endif
-                            @endforeach
-                        @endif
-                    @endforeach
-                {{-- @endif --}}
-              </tbody>
-        </table>
-      </div>
-</section>
-
-
-<p class="fs-4 text-center mt-5">Institute Employees</p>
-<section class="container bg-white text-dark userBgShado rounded">
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="table-dark">
-                <tr class="text-start">
-                    <td scope="col" style="width: 30%">Name</td>
-                    <td scope="col" style="width: 30%">Email</td>
-                    <td scope="col" class="text-center">Tel</td>
-                    <td scope="col" class="text-center">Status</td>
-                    <td scope="col"></td>
-                    <td scope="col"></td>
-                  </tr>
-              </thead>
-              <tbody class="table-group-divider">
-                {{-- @if ($Institute->isNotEmpty()) --}}
-                    @foreach ($institute as $instituteDetails)
-                        @if ($users->isNotEmpty())
-                            @foreach ($users as $userDetails)
-                                @if ($instituteDetails->id == $userDetails->institute_id && $userDetails->user_type == "user" )
-                                    <tr class="text-start fw-lighter">
-                                        <td scope="col" style="width: 30%">{{ $userDetails->name }}</td>
-                                        <td scope="col" style="width: 30%">{{ $userDetails->email }}</td>
-                                        <td scope="col" class="text-center">{{ $userDetails->user_contact_num }}</td>
-                                        <td scope="col" class="text-center">
-                                            @if ($userDetails->status == "active")
-                                                <span class="badge text-bg-success px-4 mt-2">{{ $userDetails->status }}</span>
-                                            @else
-                                                <span class="badge text-bg-secondary px-3 mt-2">{{ $userDetails->status }}</span>
-                                            @endif  
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="{{ route('user.details',$userDetails->id) }}" type="button" class="btn btn-outline-primary btn-sm">
-                                                <small>Manage</small>
-                                            </a>                     
-                                        </td>
-                                        <td class="text-start">
-                                            <form action="{{ route('user.delete', $userDetails->id ) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">
-                                                    <small>Remove</small>
-                                                </button>
-                                            </form>
-                                        </td>
-                                      </tr>
-                                @endif
-                            @endforeach
-                        @endif
-                    @endforeach
-                {{-- @endif --}}
-              </tbody>
-        </table>
-      </div>
-</section>
-
-@endsection

@@ -23,12 +23,12 @@
 @endif
 
 <!-- Modal for Add Employees for institute -->
-<div class="modal fade" id="addInstituteEmpModal{{ $item->id }}" tabindex="-1"
-    aria-labelledby="addInstituteModalEmpLabel{{ $item->id }}" aria-hidden="true">
+<div class="modal fade" id="addInstituteEmployeeModal" tabindex="-1" aria-labelledby="addInstituteEmployeeLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editInstituteModalLabel{{ $item->id }}">Add
+                <h5 class="modal-title" id="addInstituteEmployeeLabel">Add
                     Institute Employees</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -37,18 +37,14 @@
                     @csrf
 
                     <!-- Institute Info Group -->
-                    <div class="input-group mb-3" style="padding-bottom:15px">
+                    <div class="input-group mb-3">
                         <span class="input-group-text">Institute Info</span>
 
+                        <!-- Hidden Institute ID Field -->
+                        <input type="hidden" name="institute_id" value="{{ $institute->id }}">
+
                         <!-- Institute Name -->
-                        <select name="institute_id" class="form-select" required>
-                            @foreach ($institute as $instituteDetails)
-                                <option value="{{ $instituteDetails->id }}"
-                                    {{ $instituteDetails->id == $item->id ? 'selected' : '' }}>
-                                    {{ $instituteDetails->institute_name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control" value="{{ $institute->institute_name }}" readonly>
 
                         <!-- User Name -->
                         <input type="text" name="name" value="{{ old('name') }}" class="form-control"
@@ -65,7 +61,7 @@
                     </div>
 
                     <!-- Contact Info Group -->
-                    <div class="input-group mb-3" style="padding-bottom:15px">
+                    <div class="input-group mb-3">
                         <span class="input-group-text">Email & Contact Number</span>
                         <input type="email" name="email" value="{{ old('email') }}" class="form-control"
                             placeholder="Email" required>
@@ -83,10 +79,10 @@
 
                     <!-- Form Buttons: Register and Clear -->
                     <div class="d-flex justify-content-end gap-2">
-                        <button type="submit" class="btn btn-primary">Register Now</button>
+                        <button type="submit" class="btn btn-primary">Register
+                            Now</button>
                         <button type="reset" class="btn btn-warning">Clear</button>
                     </div>
-
                 </form>
             </div>
         </div>
