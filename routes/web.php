@@ -156,7 +156,7 @@ Route::controller(AdministratorController::class)
     ->middleware('UserType:administrator')->group(function () {
     Route::get('/administrator/dashboard', 'index')->name('administrator.index');
     Route::get('/administrator/messages', 'messages')->name('administrator.messages');
-    Route::post('/administrator/messages/save', 'SaveMessageAdminisrator')->name('administrator.messages.save');
+    Route::post('/administrator/messages/save', 'SaveMessageAdministrator')->name('administrator.messages.save');
 
     Route::get('/administrator/Message/{mid}', 'showOneMessage')->name('oneMessageForAdministrator.show');
     Route::put('/administrator/Message/conform/{mid}', 'ConformMessage')->name('administrator.conform.message');
