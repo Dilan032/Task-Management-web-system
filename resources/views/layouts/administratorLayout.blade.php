@@ -18,30 +18,19 @@
     {{-- for sweetalert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        .row {
-            margin-right: 0;
-            margin-left: 0;
-        }
-        .col-md-2, .col-md-10 {
-            padding-right: 0;
-            padding-left: 0;
-        }
-    </style>
-
     <link rel="shortcut icon" href="{{ asset('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}" type="image/x-icon">
     <title>Nanosoft Solutions</title>
 </head>
 <body class="bg-light text-dark">
 
-   <div class="row">
-        <div class="col-md-2">
-            @include('components.administrator.sideMenu')
-        </div>
-        <div class="col-md-10">
-            @yield('administratorContent')
-        </div>
-   </div>
+    {{-- navBar --}}
+    <section class="mb-4">
+        @include('components.administrator.sideMenu')
+    </section>
+
+    <div class="container">
+        @yield('administratorContent')
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

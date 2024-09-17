@@ -30,7 +30,7 @@
                 <p class="bg-primary-subtle text-dark p-2 rounded">
                     subject : <b>{{ $subject }}</b>
                 </p>
-                <p class="p-2"><b>messages :</b> <br> {{ $messageDetails }} </p> 
+                <p class="p-2"><b>messages :</b> <br> {{ $messageDetails }} </p>
             </div>
             <div class="col-md-4">
                 <div class="p-2 mt-2">
@@ -40,13 +40,13 @@
                         Bank Contact Number : {{ $bankContactNumber }}
                     </p>
                 </div>
-                
+
                 <hr>
 
                 <div class="p-2">
                     <p>
                         <span class="fw-bold">Message Accept by,</span>
-                        <br> Administrator : {{ $administratorName }} <br> 
+                        <br> Administrator : {{ $administratorName }} <br>
                         Contact Number : {{ $administratorContactNumber }}
                     </p>
                 </div>
@@ -61,7 +61,7 @@
                         @endforeach
                     </p>
 
-                    {{-- <br> Administrator : {{ $user->name }} <br> 
+                    {{-- <br> Administrator : {{ $user->name }} <br>
                         Contact Number : {{ $user->user_contact_num }} --}}
 
 
