@@ -13,19 +13,23 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('institute_id');
+            $table->unsignedBigInteger('user_id'); //Message send user id store this column
+            $table->string('assigned_employee');//This column store the assigned company employee
             $table->string('subject');
-            $table->text('message');
-            $table->enum('status',['solved', 'not resolved', 'Processing', 'Seen'])->default('not resolved');
+            $table->string('message');
+            $table->enum('priority', ['Top Urgent(2min)', 'Urgent(5min)', 'Medium(2hrs)', 'Low(1day)'])->default('Low(1day)');
+            $table->enum('status', ['In Queue', 'In Progress', 'Document Pending', 'Postponed', 'Move to next day', 'Complete in next day', 'Completed'])->default('In Queue');
             $table->enum('request',['pending', 'accept', 'reject'])->default('pending');
             $table->string('img_1')->nullable();
             $table->string('img_2')->nullable();
             $table->string('img_3')->nullable();
             $table->string('img_4')->nullable();
             $table->string('img_5')->nullable();
-            $table->string('user_responded')->nullable();
+            $table->string('progress_note')->nullable();
             $table->timestamps();
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
@@ -37,6 +41,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('message');
+        Schema::dropIfExists('messages');
     }
 };
+

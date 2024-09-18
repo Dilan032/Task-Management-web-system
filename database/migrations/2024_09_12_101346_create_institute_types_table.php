@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('institutes', function (Blueprint $table) {
+        Schema::create('institute_types', function (Blueprint $table) {
             $table->id();
-            $table->string('institute_name');
-            $table->string('institute_type');
-            $table->text('institute_address');
-            $table->string('institute_contact_num');
-            $table->string('email');
-            $table->enum('status',['active', 'inactive'])->default('active');
+            $table->string('institute_type')->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('institutes');
+        Schema::dropIfExists('institute_types');
     }
 };

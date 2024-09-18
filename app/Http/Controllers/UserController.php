@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Mail\userWellcomeMessage;
-use App\Models\Institute;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -16,31 +15,45 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-
     public function index(){
         if (Auth::check()) {
-            $userid = Auth::id();
+            $user_id = Auth::id();
             $instituteList = DB::table('institutes')
                                 ->orderBy('created_at', 'DESC')
                                 ->get();
             $messages =Message::with('user')
-                                ->where('user_id', $userid)
+                                ->where('user_id', $user_id)
                                 ->orderBy('created_at', 'DESC')
                                 ->get();
-            return view('user.userDashbord', compact('instituteList', 'messages', 'userid'));
+            return view('user.userDashboard', compact('instituteList', 'messages', 'user_id'));
         } else {
             // Redirect to the login page or show an error
             return redirect()->route('login');
         }
     }
 
-    //show seleted user data 
+    //Showing user's send previous messages page.
+    public function previousMessages()
+    {
+        $user_id = Auth::id();
+        $instituteList = DB::table('institutes')
+                                ->orderBy('created_at', 'DESC')
+                                ->get();
+        $messages =Message::with('user')
+                                ->where('user_id', $user_id)
+                                ->orderBy('created_at', 'DESC')
+                                ->paginate(10);
+
+        return view('user.previousMessages', compact('messages', 'instituteList'));
+    }
+
+    //show selected user data
     public function oneUserDetailsForAdministrator($id){
         $user =User::find($id);
         return view('administrator.userEdit', compact('user'));
     }
 
-    //show seleted user data 
+    //show selected user data
     public function oneUserDetailsForSuperAdmin($id){
         $userInstituteId = DB::table('users')
                     ->where('id', $id)
@@ -48,7 +61,7 @@ class UserController extends Controller
 
         $instituteID = DB::table('institutes')
                     ->where('id', $userInstituteId)->first();
-                
+
 
         $adminDetails = DB::table('users')
                     ->where('institute_id', $userInstituteId)
@@ -64,15 +77,15 @@ class UserController extends Controller
         return view('superAdmin.editUser', compact('user', 'adminDetails', 'userDetails'));
     }
 
-     //user update Function for administrator 
-     public function UsersUpdate(Request $request , $uid){ 
+     //user update Function for administrator
+     public function UsersUpdate(Request $request , $uid){
         $user = User::findOrFail($uid);
-        
+
         $rules = [
             'user_type' => 'required|string|in:administrator,user,super admin',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'user_contact_num' => 'required|string|max:12',       
+            'user_contact_num' => 'required|string|max:12',
         ];
 
         // Create validator instance and validate
@@ -94,11 +107,10 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User Update successfully!');
     }
 
-    
-    // for User Registration 
-    public function RegisterUsers(Request $request){ 
+    // for User Registration
+    public function RegisterUsers(Request $request){
         $rules = [
-            'institute_id' => 'required|exists:institute,id',
+            'institute_id' => 'required|exists:institutes,id',
             'password' => 'required|string|min:8|max:32|confirmed',
             'user_contact_num' => 'required|string|max:12',
             'email' => 'required|string|email|max:255|unique:users,email',
@@ -113,7 +125,6 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
 
         $newUser = new User;
         $newUser->institute_id = $request->input('institute_id');
@@ -145,7 +156,6 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User Registration successfully!');
     }
 
-
     // [User ] for logout
     public function userLogout(Request $request): RedirectResponse
     {
@@ -156,8 +166,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
-    }//end method
-
+    }
     public function deleteUser($id){
         $user =User::find($id);
         $user->delete();

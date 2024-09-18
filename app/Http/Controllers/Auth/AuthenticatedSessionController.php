@@ -30,8 +30,8 @@ class AuthenticatedSessionController extends Controller
 
         $url = '';
         if ($request->user()->user_type === 'super admin'){
-            $url = 'superAdmin/dashbord';
-            
+            $url = '/superAdmin/dashboard';
+
         }elseif($request->user()->user_type === 'company employee'){
 
             if($request->user()->status === 'active'){
@@ -61,23 +61,21 @@ class AuthenticatedSessionController extends Controller
                 $url ='/user/inactive';
             }
 
-
-            
         }elseif($request->user()->user_type === 'user'){
-            
+
             if($request->user()->status === 'active'){
-                $url = '/user/userDashbord';
+                $url = '/user/dashboard';
             }else{
                 Auth::guard('web')->logout();
 
                 $request->session()->invalidate();
 
                 $request->session()->regenerateToken();
-                
+
                 $url ='/user/inactive';
             }
         }
-        
+
 
         return redirect()->intended( $url );
     }
@@ -96,3 +94,4 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 }
+

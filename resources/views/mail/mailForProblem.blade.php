@@ -30,7 +30,9 @@
                 <p class="bg-primary-subtle text-dark p-2 rounded">
                     Subject : {{ $subject }}
                 </p>
+
                 <p class="p-2">Messages : <br> {{ $messageDetails }} </p> 
+
             </div>
             <div class="col-md-4">
                 <div class="p-2 mt-2">
@@ -40,11 +42,12 @@
                         Contact Number : {{ $bankContactNumber }}
                     </p>
                 </div>
-                
+
                 <hr>
 
                 <div class="p-2">
                     <p>
+
                         <span>Message sent by,</span>
                         <br> Name : {{ $userName }} <br> 
                         Contact Number : {{ $user_contact_num }} <br>

@@ -1,6 +1,6 @@
 @extends('layouts.superAdminLayout')
 @section('SuperAdminContent')
-    
+
 {{-- <div class="container d-flex justify-content-between"> --}}
     <div class="fs-3 ms-4">message</div>
 {{-- </div> --}}
@@ -34,55 +34,47 @@
 
 
     <div class="row mt-3 mb-4 d-flex justify-content-center">
-        <div class="col-md-10">
-            <div class="p-2 bg-warning-subtle border-bottom border-black border-5 rounded shado">
-               
+        <div class="col-md-12">
+            <div class="p-2 mb-2 bg-white text-black rounded shado">
+
                 <div class="text-center">
-                    <p><i class="bi bi-envelope-check fs-2"></i></p>
                     <p class="fs-4">All Messages <span class="badge text-bg-light px-5 problemImageMainBG">{{$solvedMessageCount + $noSolvedMessageCount + $ViewedMessageCount + $processingMessageCount}}</span></p>
                 </div>
 
                 <div class="row d-flex justify-content-center">
-                    <div class="col-md-5">
-                        <div class="p-2 bg-white text-dark  rounded">
-                            <div class="d-flex justify-content-between px-4 mt-2">
-                                ✔ Solved
-                                <span class="badge text-bg-success px-5">{{$solvedMessageCount}}</span>
-                            </div>
-                            <div class="d-flex justify-content-between px-4 mt-2">
-                                ❌ Not Solved
-                                <span class="badge text-bg-warning px-5">{{$noSolvedMessageCount}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="p-2 bg-white text-dark  rounded">
-                            <div class="d-flex justify-content-between px-4 mt-2">
+                    <div class="col-md-12">
+                        <div class="d-flex p-2 mb-2 bg-light  text-black text-dark rounded justify-content-between">
+                            <div class="p-2">
                                 👁 Viewed
-                                <span class="badge text-bg-info px-5">{{$ViewedMessageCount}}</span>
+                                <span class="badge text-bg-info">{{$ViewedMessageCount}}</span>
                             </div>
-                            <div class="d-flex justify-content-between px-4 mt-2">
-                                ⚙ processing
-                                <span class="badge text-bg-dark px-5">{{$processingMessageCount}}</span>
+                            <div class="p-2">
+                                ❌ Not Solved
+                                <span class="badge text-bg-danger">{{$noSolvedMessageCount}}</span>
+                            </div>
+                            <div class="p-2">
+                                ⚙ Processing
+                                <span class="badge text-bg-warning">{{$processingMessageCount}}</span>
+                            </div>
+                            <div class="p-2">
+                                ✔ Solved
+                                <span class="badge text-bg-success">{{$solvedMessageCount}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
-
             </div>
         </div>
     </div>
-    
 
 
-<section class="px-4 mb-5">
-    <div class="p-2 mb-2 bg-black text-white">
+
+<section class="px-4 mb-4">
+    <div class="p-2 mb-2 bg-white text-black rounded shado">
         <div class="text-center d-none d-sm-inline">
             <div class="row">
-                <div class="col-12 col-sm-auto col-md-1">
-                    <span class="">date</span>
+                <div class="col-12 col-sm-auto col-md-1" >
+                    <span class="">Date</span>
                 </div>
                 <div class="col-12 col-sm-auto col-md-1">
                     <span class="">Assign</span>
@@ -91,15 +83,15 @@
                     <span class="">Priority</span>
                 </div>
                 <div class="col-12 col-sm-auto col-md-1">
-                    <span class="">Status</span>
+                    <span class="">Progress</span>
                 </div>
-                <div class="col-12 col-sm-auto col-md-2 text-start">
+                <div class="col-12 col-sm-auto col-md-2">
                     <span class="">Institute Name</span>
                 </div>
-                <div class="col-12 col-sm-auto col-md-1 text-start">
+                <div class="col-12 col-sm-auto col-md-2">
                     <span class="">Institute Type</span>
                 </div>
-                <div class="col-12 col-sm-auto col-md-4 text-start">
+                <div class="col-12 col-sm-auto col-md-3">
                     <span class="">Subject</span>
                 </div>
                 <div class="col-12 col-sm-auto col-md-1">
@@ -138,16 +130,16 @@
                         <span class="badge rounded-pill text-bg-dark py-1 px-3"><small>{{$oneMessage->status}}</small></span>
                     @else
                         <span class="badge rounded-pill text-bg-info text-dark py-1 px-4"><small>{{$oneMessage->status}}</small></span>
-                    @endif     
+                    @endif
                 </div>
-                <div class="col-12 col-sm-auto col-md-2 text-start">
-                    <small>{{ $oneMessage->institute->institute_name ?? 'No institute Name Available' }}</small>                  
+                <div class="col-12 col-sm-auto col-md-2">
+                    <small>{{ $oneMessage->institute->institute_name ?? 'No institute Name Available' }}</small>
                 </div>
-                <div class="col-12 col-sm-auto col-md-1 text-start">
-                    <small>institute type</small>                  
+                <div class="col-12 col-sm-auto col-md-2">
+                    <small>institute type</small>
                 </div>
-                <div class="col-12 col-sm-auto col-md-4 text-start">
-                        <small>{{ $oneMessage->subject }}</small>  
+                <div class="col-12 col-sm-auto col-md-3">
+                        <small>{{ $oneMessage->subject }}</small>
                 </div>
                 <div class="col-12 col-sm-auto col-md-1">
                     <!-- Button trigger modal -->
