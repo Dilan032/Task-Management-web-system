@@ -115,7 +115,7 @@ Route::controller(InstituteTypesController::class)->group(function () {
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
-
+});
 
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
@@ -186,5 +186,4 @@ Route::controller(UserController::class)->group(function () {
     Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
-
 
