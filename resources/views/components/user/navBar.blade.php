@@ -4,6 +4,9 @@
         <img class="p-1 rounded-circle bg-white me-4" style="width: 70px;"
             src="{{ asset('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}" alt="NanosoftSolutions Logo">
 
+
+
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-list fs-1"></i>
@@ -19,6 +22,7 @@
                     <a class="nav-link {{ Route::currentRouteName() == 'user.previous.messages' ? 'active' : '' }}"
                         href="{{ route('user.previous.messages') }}">Previous messages</a>
                 </li>
+
             </ul>
             <div class="dropdown text-start">
                 <a class="px-5 py-1 text-white" data-bs-toggle="dropdown" aria-expanded="false">

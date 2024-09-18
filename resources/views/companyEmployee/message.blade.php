@@ -1,8 +1,8 @@
-@extends('layouts.userLayout')
-@section('userContent')
+@extends('layouts.companyUserLayout')
+@section('companyEmployeeContent')
 
 <div class="d-flex justify-content-between">
-    <p class="fs-3 ms-3">
+    <p class="fs-3 ms-3 fw-normal">
         🏬 {{ $messages->institute->institute_name }} |
         <small>{{ $messages->institute->institute_address }}</small>
     </p>  
@@ -13,7 +13,7 @@
       <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
       <li class="breadcrumb-item active" aria-current="page">Message</li>
     </ol>
-  </nav>
+</nav>
 
 <hr class="me-3">
 
@@ -42,11 +42,11 @@
             @endif
 
             
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-primary me-md-2 ms-2" type="button">Start Now</button>
-                    <button type="button" class="btn btn-outline-danger fw-bold">2 houre 30 minites</button>
-                    <button class="btn btn-danger me-md-2 ms-2" type="button">End Now</button>
-                </div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button class="btn btn-primary me-md-2 ms-2" type="button">Start Now</button>
+    <button type="button" class="btn btn-outline-danger fw-bold">2 houre 30 minites</button>
+    <button class="btn btn-danger me-md-2 ms-2" type="button">End Now</button>
+</div>
 
       
 <section class="container-fluid">
@@ -54,7 +54,7 @@
         <table class="table table-borderless rounded messageBG">
             <thead>
               <tr>
-                <td colspan="4" class="fs-5">
+                <td colspan="4" class="fs-5 fw-normal">
                     {{$messages->subject}}
                 </td>
               </tr>
@@ -104,7 +104,7 @@
     
           <!-- Thumbnail Images -->
           <div class="container mt-4 mb-5">
-            <p class="fw-bold">Pictures of the problem areas :</p>
+            <p class="fw-normal">Pictures of the problem areas :</p>
             <div class="p-1 mb-2 bg-primary-subtle text-dark problemImageMainBG rounded">
                 <div class="row d-flex justify-content-center mx-auto">
                     <div class="col-md-2 p-2">

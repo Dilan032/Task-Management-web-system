@@ -39,6 +39,7 @@ Route::get('/user/inactive',function(){
     return view('inactiveUserError');
 });
 
+
 Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
 
@@ -115,14 +116,9 @@ Route::controller(CompanyEmployeeController::class)
     ->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+    Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
 });
 
-//Company employees routes....
-Route::controller(CompanyEmployeeController::class)
-    ->middleware('UserType:company employee')->group(function () {
-    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
-    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
-});
 Route::controller(MessageController::class)
     ->middleware('UserType:user')->group(function (){
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
