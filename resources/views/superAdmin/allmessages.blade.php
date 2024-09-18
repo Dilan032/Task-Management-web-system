@@ -84,6 +84,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -173,6 +174,7 @@
                     <th style="height: 60px; vertical-align: middle;">Priority</th>
                     <th style="height: 60px; vertical-align: middle;">Progress</th>
                     {{-- <th style="height: 60px; vertical-align: middle;">Request</th> --}}
+                    <th style="height: 60px; vertical-align: middle;">Request</th>
                     <th style="height: 60px; vertical-align: middle;">Institute Name</th>
                     {{-- <th style="height: 60px; vertical-align: middle;">Institute Type</th> --}}
                     <th style="height: 60px; vertical-align: middle; width: 20%;">Subject</th>
@@ -210,7 +212,7 @@
 
                         </td>
                         <td>
-                            @if ($message->status == 'In Queue')
+                        @if ($message->status == 'In Queue')
                             <span class="badge rounded-pill" style="background-color: #ffd637; color: black; padding: 5px;">
                                 <small>{{ $message->status }}</small>
                             </span>
@@ -245,6 +247,17 @@
                         @endif
                         </td>
                         {{-- <td>{{ $message->request }}</td> --}}
+                        <td>
+                        @if ($message->sp_request == 'Accepted')
+                            <span class="badge rounded-pill" style="background-color: #51a800; color: black; padding: 5px;">
+                                <small>{{ $message->sp_request }}</small>
+                            </span>
+                        @elseif ($message->sp_request == 'Pending')
+                            <span class="badge rounded-pill" style="background-color: #ffd637; color: black; padding: 5px;">
+                                <small>{{ $message->sp_request }}</small>
+                            </span>
+                        @endif
+                        </td>
                         <td>{{ $message->institute_name ?? 'No institute Name Available' }}</td>
                         {{-- <td>{{ $message->institute->institute_type}}</td> --}}
                         <td>{{ $message->subject }}</td>

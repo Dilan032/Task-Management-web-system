@@ -56,12 +56,23 @@
             </div>
 
             <div>
-                @if (is_null($message->start_time) && is_null($message->end_time))
-                    <button id="start-btn" class="btn btn-success" onclick="startTimer()">Start</button>
-                    <button id="end-btn" class="btn btn-danger" style="display: none;" onclick="endTimer()">End</button>
-                @elseif (!is_null($message->start_time) && is_null($message->end_time))
-                    <button id="end-btn" class="btn btn-danger" onclick="endTimer()">End</button>
-                @endif
+                <div class="d-flex justify-content-between">
+                    @if (is_null($message->start_time) && is_null($message->end_time))
+                        <!-- Accept SP Request Button -->
+                        @if ($message->sp_request !== 'Accepted')
+                            <form action="{{ route('accept.sp_request', $message->id) }}" method="POST" id="acceptSpRequestForm">
+                                @csrf
+                                <button id="accept-sp-request-btn" class="btn btn-warning me-2" onclick="submitSpRequestForm()">Accept</button>
+                            </form>
+                        @endif
+
+                        <!-- Start Button -->
+                        <button id="start-btn" class="btn btn-success me-2" onclick="startTimer()">Start</button>
+                        <button id="end-btn" class="btn btn-danger" style="display: none;" onclick="endTimer()">End</button>
+                    @elseif (!is_null($message->start_time) && is_null($message->end_time))
+                        <button id="end-btn" class="btn btn-danger" onclick="endTimer()">End</button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
@@ -253,6 +264,9 @@
             document.getElementById('editProgressNoteForm').submit();
             }
 
+            function submitSpRequestForm() {
+            document.getElementById('acceptSpRequestForm').submit();
+            }
 
         </script>
     </div>

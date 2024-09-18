@@ -19,6 +19,7 @@ class Message extends Model
         'priority',
         'status',
         'request',
+        'sp_request',
         'img_1',
         'img_2',
         'img_3',

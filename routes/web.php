@@ -84,6 +84,7 @@ Route::controller(ViewMessageController::class)
         Route::post('/message/{id}/update', [ViewMessageController::class, 'updateTimesAndStatus']);
         Route::post('/messages/{id}/update-assigned-employee', [ViewMessageController::class, 'updateAssignedEmployee'])->name('update.assigned.employee');
         Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
+        Route::post('/message/{id}/accept-sp-request', [ViewMessageController::class, 'acceptSpRequest'])->name('accept.sp_request');
     });
 
 

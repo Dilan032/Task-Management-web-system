@@ -41,13 +41,13 @@ class AllMessagesController extends Controller
 
         // Status counts for the dashboard
         $statusCounts = [
-            'In Queue' => Message::where('status', 'In Queue')->count(),
-            'In Progress' => Message::where('status', 'In Progress')->count(),
-            'Document Pending' => Message::where('status', 'Document Pending')->count(),
-            'Postponed' => Message::where('status', 'Postponed')->count(),
-            'Move to Next Day' => Message::where('status', 'Move to Next Day')->count(),
-            'Complete in Next Day' => Message::where('status', 'Complete in Next Day')->count(),
-            'Completed' => Message::where('status', 'Completed')->count(),
+            'In Queue' => Message::where('status', 'In Queue')->where('request', 'Accept')->count(),
+            'In Progress' => Message::where('status', 'In Progress')->where('request', 'Accept')->count(),
+            'Document Pending' => Message::where('status', 'Document Pending')->where('request', 'Accept')->count(),
+            'Postponed' => Message::where('status', 'Postponed')->where('request', 'Accept')->count(),
+            'Move to Next Day' => Message::where('status', 'Move to Next Day')->where('request', 'Accept')->count(),
+            'Complete in Next Day' => Message::where('status', 'Complete in Next Day')->where('request', 'Accept')->count(),
+            'Completed' => Message::where('status', 'Completed')->where('request', 'Accept')->count(),
         ];
 
         // Return view with data

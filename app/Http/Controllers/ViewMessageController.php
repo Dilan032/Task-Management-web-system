@@ -53,7 +53,18 @@ class ViewMessageController extends Controller
 
     // Update the assigned_employee in the message
     if ($message) {
+        // Set the assigned_employee from the request
         $message->assigned_employee = $request->input('assigned_employee');
+
+        // Reset start_time, end_time, and viewed_at when the assigned_employee changes
+        $message->start_time = null;
+        $message->end_time = null;
+        $message->viewed_at = null;
+
+        // Set the progress status to 'In Queue'
+        $message->status = 'In Queue';
+
+        // Save the changes to the database
         $message->save();
     }
 
@@ -166,6 +177,15 @@ public function updateProgressNote(Request $request, $id)
     }
 
     return redirect()->back()->withErrors('Message not found.');
+}
+
+public function acceptSpRequest($id)
+{
+    $message = Message::find($id);
+    $message->sp_request = 'Accepted';
+    $message->save();
+
+    return redirect()->back()->with('success', 'SP request accepted.');
 }
 
 
