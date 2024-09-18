@@ -10,11 +10,9 @@
             <div class="col-12 col-sm-auto col-md-6">
                 <span class="">Subject</span>
             </div>
-            @if ($messages->first()->request !== 'pending')  {{-- Check if the first message's request is not 'pending' --}}
             <div class="col-12 col-sm-auto col-md-2">
                 <span class="">Progress</span>
             </div>
-            @endif
             <div class="col-12 col-sm-auto col-md-1">
                 <span class="">Action</span>
             </div>
@@ -31,9 +29,9 @@
                     <small>{{ \Carbon\Carbon::parse($msg->created_at)->format('d M Y') }}</small>
                 </div>
                 <div class="col-12 col-sm-auto col-md-1">
-                    @if ($msg->request == 'accept')
+                    @if ($msg->request == 'Accept')
                         <span class="badge rounded-pill text-bg-success btnInset mt-1 py-1 px-3">{{ $msg->request }}</span>
-                    @elseif ($msg->request == 'reject')
+                    @elseif ($msg->request == 'Reject')
                         <span class="badge rounded-pill text-bg-danger btnInset mt-1 py-1 px-3">{{ $msg->request }}</span>
                     @else
                         <span class="badge rounded-pill text-bg-warning btnInset mt-1 py-1 px-2">{{ $msg->request }}</span>
@@ -44,7 +42,6 @@
                         <small>{{ $msg->subject }}</small>
                     </span>
                 </div>
-                @if ($msg->request !== 'pending')  {{-- Conditionally show Progress column --}}
                 <div class="col-12 col-sm-auto col-md-2">
                     @if ($msg->status == 'Completed')
                         <span class="badge rounded-pill text-bg-success btnInset mt-1 py-1 px-5">{{ $msg->status }}</span>
@@ -64,7 +61,6 @@
                         <span class="badge rounded-pill text-bg-info btnInset mt-1 text-dark py-1 px-4">{{ $msg->status }}</span>
                     @endif
                 </div>
-                @endif
                 <div class="col-12 col-sm-auto col-md-1">
                     <!-- Button trigger modal -->
                     <div class="d-grid gap-2">

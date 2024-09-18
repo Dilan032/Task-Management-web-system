@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorController;
@@ -68,8 +67,7 @@ Route::controller(SuperAdminController::class)
     Route::get('/superAdmin/logout', 'superAdminLogout')->name('superAdmin.logout');
 });
 
-Route::controller(SuperAdminController::class)
-    ->middleware('UserType:super admin')->group(function () {
+Route::controller(SuperAdminController::class)->middleware('UserType:super admin')->group(function () {
     Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
 });
 
@@ -128,8 +126,7 @@ Route::controller(UserController::class)->middleware('UserType:user')->group(fun
 });
 
 //for company side super admin
-Route::controller(UserController::class)
-    ->middleware('UserType:super admin')->group(function () {
+Route::controller(UserController::class)->middleware('UserType:super admin')->group(function () {
     Route::delete('/superAdmin/users/{id}', 'deleteUserForAdmin')->name('user.delete.for.admin');
     Route::get('/superAdmin/user/details/{id}', 'oneUserDetailsForSuperAdmin')->name('superAdmin.user.details');
 });
@@ -143,6 +140,11 @@ Route::controller(AdministratorController::class)
     Route::get('/administrator/Message/{mid}', 'showOneMessage')->name('oneMessageForAdministrator.show');
     Route::put('/administrator/Message/conform/{mid}', 'ConformMessage')->name('administrator.conform.message');
     Route::put('/administrator/Message/reject/{mid}', 'RejectMessage')->name('administrator.reject.message');
+
+    //Institute side employees edit and delete routes.
+    Route::put('/institute-employee/details/update/{id}', 'instituteEmpUpdate')->name('instituteEmp.details.update');
+    Route::delete('/institute-employee/delete/{id}', 'instituteEmpDelete')->name('institute.employee.delete');
+
     Route::get('/administrator/announcements', 'announcements')->name('administrator.announcements');
     Route::get('/administrator/users', 'users')->name('administrator.users');
     Route::get('/administrator/logout', 'administratorLogout')->name('administrator.logout');

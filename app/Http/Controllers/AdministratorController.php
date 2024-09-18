@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\mail_for_problem;
-use App\Models\Institute;
-use App\Models\Message;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Message;
+use App\Models\Institute;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Mail\mail_for_problem;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
 class AdministratorController extends Controller
@@ -350,7 +350,6 @@ class AdministratorController extends Controller
         // Apply filter by employee status (active or not)
         if ($request->filled('filter_employee_status')) {
             $employeeQuery->where('status', $request->filter_employee_status);
-
         }
 
         // Paginate the results
@@ -363,6 +362,73 @@ class AdministratorController extends Controller
         ]);
     }
 
+    //Institute employee data management Update function in administrator account.
+    public function instituteEmpUpdate(Request $request, $id)
+    {
+        // Find the company employee or super admin by ID
+        $employee = User::findOrFail($id);
+
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'user_contact_num' => 'required|string|max:12',
+            'password' => 'nullable|string|min:8|confirmed',
+            'status' => 'required|in:active,inactive', // Adding status validation
+        ];
+
+        // Create validator instance and validate
+        $validator = Validator::make($request->all(), $rules);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Update employee details
+        $employee->name = $request->input('name');
+        $employee->email = $request->input('email');
+        $employee->status = $request->input('status');
+        $employee->user_contact_num = $request->input('user_contact_num');
+
+        // Check if password is provided and update it
+        if ($request->filled('password')) {
+            $employee->password = Hash::make($request->input('password'));
+        }
+
+        // Save the updated employee details
+        $employee->update();
+
+        // Redirect with a success message
+        return redirect()->back()->with('success', 'Employee updated successfully!');
+    }
+
+    //Institute employee data management Delete function in administrator account.
+    public function instituteEmpDelete($id)
+    {
+        $user = User::find($id);
+
+        // Check if user exists
+        if (!$user) {
+            return redirect()->back()->with('error', 'Employee not found.');
+        }
+
+        // Store the user type for custom message
+        $userType = strtolower($user->user_type); // Convert to lowercase for case-insensitive check
+
+        // Delete the user
+        $user->delete();
+
+        // Customize the success message based on user type
+        if ($userType == 'administrator') {
+            $message = 'Administrator deleted successfully.';
+        } elseif ($userType == 'user') {
+            $message = 'Institute Employee deleted successfully.';
+        } else {
+            $message = ucfirst($userType) . ' deleted successfully.';
+        }
+
+        return redirect()->back()->with('success', $message);
+    }
 
     // [administrator ] for logout
     public function administratorLogout(Request $request): RedirectResponse
