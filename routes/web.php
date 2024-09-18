@@ -115,7 +115,7 @@ Route::controller(InstituteTypesController::class)->group(function () {
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
-
+});
 
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
@@ -144,9 +144,9 @@ Route::controller(UserController::class)->middleware('UserType:user')->group(fun
     Route::get('/user/previous-messages', 'previousMessages')->name('user.previous.messages');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
 });
-  
-  
-  
+
+
+
 
 //for company side super admin
 Route::controller(UserController::class)->middleware('UserType:super admin')->group(function () {
