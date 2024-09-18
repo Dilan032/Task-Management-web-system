@@ -67,10 +67,10 @@
                     <div class="col-12 col-sm-auto col-md-3">
                         <span class="">Institute</span>
                     </div>
-                    <div class="col-12 col-sm-auto col-md-4">
+                    <div class="col-12 col-sm-auto col-md-3">
                         <span class="">Address</span>
                     </div>
-                    <div class="col-12 col-sm-auto col-md-1">
+                    <div class="col-12 col-sm-auto col-md-2">
                         <span class="">Progess</span> 
                         {{-- in database 'status' column in hear show --}}
                     </div>
@@ -86,38 +86,88 @@
         {{-- start message content --}}
         <div class="p-1 mb-3 bg-white text-dark messageBG rounded">
             <div class="text-center">
-                <div class="row">
+                <div class="row d-flex align-items-center">
                     <div class="col-12 col-sm-auto col-md-2">
                         <small>{{ \Carbon\Carbon::parse($oneMessage->created_at)->format('d M Y') }}</small>
                     </div>
                     <div class="col-12 col-sm-auto col-md-1">
-                        pppp
+                        @if ($oneMessage->priority == 'Top Urgent')
+                            <span class="badge rounded-pill px-2 btnInset" style="background-color: #705601;">
+                                {{ $oneMessage->priority }}
+                            </span>
+                        @elseif ($oneMessage->priority == 'Urgent')
+                            <span class="badge rounded-pill px-3 ms-1 btnInset" style="background-color: #f32121;">
+                                {{ $oneMessage->priority }}
+                            </span>
+                        @elseif ($oneMessage->priority == 'Medium')
+                            <span class="badge rounded-pill px-3 btnInset" style="background-color: #51a800;">
+                                {{ $oneMessage->priority }}
+                            </span>
+                        @elseif ($oneMessage->priority == 'Low')
+                            <span class="badge rounded-pill px-4 ms-1 btnInset" style="background-color: #c4c000;">
+                                {{ $oneMessage->priority }}
+                            </span>
+                        @else
+                            <span class="badge rounded-pill text-bg-info btnInset text-dark py-1 px-4">
+                                {{ $oneMessage->priority }}
+                            </span>
+                        @endif
                     </div>
+
                     <div class="col-12 col-sm-auto col-md-3">
                        {{  $oneMessage->institute->institute_name }}
                     </div>
-                    <div class="col-12 col-sm-auto col-md-4">
-                        address
+
+                    <div class="col-12 col-sm-auto col-md-3">
+                        {{ $oneMessage->institute->institute_address }}
                     </div>
                     
                        
-                    <div class="col-12 col-sm-auto col-md-1">
-                        @if ( $oneMessage->status == 'not resolved')
-                            <span class="badge rounded-pill text-bg-warning btnInset py-1">{{$oneMessage->status}}</span>
-                        @elseif ( $oneMessage->status == 'solved')
-                            <span class="badge rounded-pill text-bg-success btnInset py-1 px-4">{{$oneMessage->status}}</span>
-                        @elseif ($oneMessage->status == 'Processing')
-                            <span class="badge rounded-pill text-bg-dark btnInset py-1">{{$oneMessage->status}}</span>
+                    <div class="col-12 col-sm-auto col-md-2">
+                        @if ($oneMessage->status == 'In Queue')
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #c4c000;">
+                                {{ $oneMessage->status }}
+                            </span>
+                        @elseif ($oneMessage->status == 'In Progress')
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #f32121;">
+                                {{ $oneMessage->status }}
+                            </span>
+                        @elseif ($oneMessage->status == 'Document Pending')
+                            <span class="badge rounded-pill btnInset px-4" style="background-color: #51a800;">
+                                {{ $oneMessage->status }}
+                            </span>
+                        @elseif ($oneMessage->status == 'Postponed')
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #f436f4; color: black;">
+                                {{ $oneMessage->status }}
+                            </span>
+                        @elseif ($oneMessage->status == 'Move to Next Day')
+                            <span class="badge rounded-pill btnInset ms-3" style="background-color: #705601;">
+                                {{ $oneMessage->status }}
+                            </span>
+                        @elseif ($oneMessage->status == 'Complete in Next Day')
+                            <span class="badge rounded-pill btnInset" style="background-color: #df7700; color: black;">
+                                {{ $oneMessage->status }}
+                            </span>
+                        @elseif ($oneMessage->status == 'Completed')
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #003c96;">
+                                {{ $oneMessage->status }}
+                            </span>
                         @else
-                            <span class="badge rounded-pill text-bg-info btnInset text-dark py-1 px-3">{{$oneMessage->status}}</span>
-                        @endif    
+                            <span class="badge rounded-pill text-bg-info text-dark py-1 px-4 btnInset">
+                                {{ $oneMessage->status }}
+                            </span>
+                        @endif
                     </div>
+
                     <div class="col-12 col-sm-auto col-md-1">
-                        <!-- Button trigger modal -->
-                        <div class="d-grid gap-2 btnShado">
-                            <a href="{{route('message', $oneMessage->id)}}" class="btn btn-primary btn-sm" type="button">View</a>
-                        </div>
+                        <form action="{{ route('company.employee.messageView', $oneMessage->id) }}" method="post">
+                            @csrf
+                            <div class="d-grid gap-2 btnShado">
+                                <button class="btn btn-primary btn-sm" type="submit">View</button>
+                            </div>
+                        </form>
                     </div>
+                    
                 </div>
             </div>
         </div>

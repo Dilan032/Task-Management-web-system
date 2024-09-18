@@ -114,7 +114,9 @@ Route::controller(InstituteTypesController::class)->group(function () {
 Route::controller(CompanyEmployeeController::class)
     ->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
-    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+    
+    //company employee view message and submit current time to message table
+    Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
 });
 
 //Company employees routes....
