@@ -22,7 +22,7 @@
 > [!WARNING]
 > First you need to migrate the bank table. Then migrate the rest. <br>
 > Run the following two codes one after the other. <br>
-- `php artisan migrate --path=/database/migrations/2024_07_26_043735_create_institute_table.php` <br>
+- `php artisan migrate --path=/database/migrations/2024_07_26_043735_create_institutes_table.php` <br>
 - `php artisan migrate `
 
 <br>

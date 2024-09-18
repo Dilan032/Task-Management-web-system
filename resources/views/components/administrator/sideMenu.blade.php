@@ -1,100 +1,74 @@
+{{-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{{ route('administrator.index') }}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('administrator.messages') }}">Messages</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('administrator.users') }}">Users</a>
+        </li>
+      </ul>
+      <div class="d-flex justify-content-end">
+        <a href="{{ route('logout') }}" class="btn btn-outline-light">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav> --}}
+<nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+    <div class="container-fluid">
 
-    <div class="row">
-        <div class="col-auto min-vh-100 bg-dark position-fixed z-3 d-none d-sm-inline">
-            <div class="pt-4 pb-2 px-2">
-                <a href="" class="nav-link text-white">
-                    <i class="bi bi-list fs-2 me-2 ms-2"></i>
-                    <span class="fs-3 d-none d-sm-inline">Administrator</span>
-                    <br>
-                </a>
-            </div>
+        <img class="p-1 rounded-circle bg-white me-4" style="width: 70px;"
+            src="{{ asset('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}" alt="NanosoftSolutions Logo">
 
-            <hr class="text-white">
-            
-            <ul class="nav nav-pills flex-column mb-auto p-2">
-                <li class="nav-item mb-2">
-                    <a href="{{ route('administrator.index') }}" class="nav-link text-white ">
-                        <i class="bi bi-speedometer me-2 ms-2"></i>
-                        <span class="d-none d-sm-inline">Dashbord</span>
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('administrator.messages') }}" class="nav-link text-white">
-                        <i class="bi bi-chat-left-dots me-2 ms-2"></i>
-                        <span class="d-none d-sm-inline">Messages</span>
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('administrator.users') }}" class="nav-link text-white">
-                        <i class="bi bi-person-circle me-2 ms-2"></i>
-                        <span class="d-none d-sm-inline">Users</span>
-                    </a>
-                </li>
-            </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-1"></i>
+        </button>
 
-            <br><br>
-            <hr class="text-white">
-            <ul class="nav nav-pills flex-column mb-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mt-3 fs-6">
                 <li class="nav-item">
-                    <a href="{{route('administrator.logout')}}" class="nav-link text-white">
-                        <i class="bi bi-box-arrow-right me-2 ms-4"></i>
-                        <span class="d-none d-sm-inline">LogOut</span>
-                    </a>
+                    <a class="nav-link {{ Route::currentRouteName() == 'administrator.index' ? 'active' : '' }}"
+                        aria-current="page" href="{{ route('administrator.index') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'administrator.messages' ? 'active' : '' }}"
+                        href="{{ route('administrator.messages') }}">Issues Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'administrator.users' ? 'active' : '' }}"
+                        href="{{ route('administrator.users') }}">Employee Management</a>
                 </li>
             </ul>
-
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('administrator.logout') }}" class="btn btn-outline-light">Logout</a>
+            </div>
+            {{-- <div class="dropdown text-start">
+                <a class="px-5 py-1 text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                    @if (Auth::check())
+                        <span class="fs-5 me-1">{{ Auth::user()->name }}</span>
+                        <i class="bi bi-caret-down-fill fs-5"></i>
+                    @else
+                        <script>
+                            window.location = "/";
+                        </script>
+                    @endif
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-center">
+                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Change Password</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a href="{{ route('administrator.logout') }}" class="active">Logout</a></li>
+                </ul>
+            </div> --}}
         </div>
     </div>
-
-
-
-
-{{-- in mobile view show this side bar --}}
-<i class="bi bi-list fs-1 ms-4 mt-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></i>
-
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title" id="offcanvasScrollingLabel">Administrator</h4>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    
-    <h6>Bank Complaning Web Application</h6>
-
-    <hr class="text-dark">
-    
-    <ul class="nav nav-pills flex-column mb-auto p-2">
-        <li class="nav-item mb-2">
-            <a href="{{ route('administrator.index') }}" class="nav-link text-dark ">
-                <i class="bi bi-speedometer"></i>
-                <span>Dashbord</span>
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a href="{{ route('administrator.messages') }}" class="nav-link text-dark">
-                <i class="bi bi-chat-left-dots"></i>
-                <span>Messages</span>
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a href="{{ route('administrator.users') }}" class="nav-link text-dark">
-                <i class="bi bi-person-circle"></i>
-                <span>Users</span>
-            </a>
-        </li>
-    </ul>
-
-    <hr class="text-dark">
-
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="{{route('administrator.logout')}}" class="nav-link text-dark">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>LogOut</span>
-            </a>
-        </li>
-    </ul>
-
-
-  </div>
-</div>
+</nav>

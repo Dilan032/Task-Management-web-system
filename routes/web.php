@@ -12,11 +12,16 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\InstituteTypesController;
 use App\Http\Controllers\AllMessagesController;
 use App\Http\Controllers\ViewMessageController;
+use App\Http\Controllers\LoacationController;
+use App\Http\Controllers\DeviceDetectorController;
+
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
+route::get('/getDeviceDeatails', [DeviceDetectorController::class, 'getDeviceDeatails']);
+route::get('/location', [LoacationController::class, 'getLocation']);
 
 Route::get('/dashboard', function () {
     return view('404');
@@ -33,6 +38,7 @@ require __DIR__.'/auth.php';
 Route::get('/user/inactive',function(){
     return view('inactiveUserError');
 });
+
 
 Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
@@ -88,6 +94,7 @@ Route::controller(ViewMessageController::class)
     });
 
 
+
 // Super Admin All Messages Section (with filtering for assigned employee, priority, progress)
 Route::controller(AllMessagesController::class)
     ->middleware('UserType:super admin')->group(function () {
@@ -113,15 +120,13 @@ Route::controller(InstituteTypesController::class)->group(function () {
 Route::controller(CompanyEmployeeController::class)
     ->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
-    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+
+    //company employee view message and submit current time to message table
+    Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
+    Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
+
 });
 
-//Company employees routes....
-Route::controller(CompanyEmployeeController::class)
-    ->middleware('UserType:company employee')->group(function () {
-    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
-    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
-});
 Route::controller(MessageController::class)
     ->middleware('UserType:user')->group(function (){
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
@@ -160,7 +165,7 @@ Route::controller(AdministratorController::class)
     ->middleware('UserType:administrator')->group(function () {
     Route::get('/administrator/dashboard', 'index')->name('administrator.index');
     Route::get('/administrator/messages', 'messages')->name('administrator.messages');
-    Route::post('/administrator/messages/save', 'SaveMessageAdminisrator')->name('administrator.messages.save');
+    Route::post('/administrator/messages/save', 'SaveMessageAdministrator')->name('administrator.messages.save');
 
     Route::get('/administrator/Message/{mid}', 'showOneMessage')->name('oneMessageForAdministrator.show');
     Route::put('/administrator/Message/conform/{mid}', 'ConformMessage')->name('administrator.conform.message');
