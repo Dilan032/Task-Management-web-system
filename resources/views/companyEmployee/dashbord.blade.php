@@ -1,30 +1,5 @@
-@extends('layouts.userLayout')
-@section('userContent')
-
-    {{-- <div class="d-flex justify-content-between bg-primary-subtle p-1">
-        <p class="fs-3 ">Nanosoft Solutions </p>
-        <div class="dropdown text-start mt-3">
-            <a class="px-5 py-1 border text-dark"  data-bs-toggle="dropdown" aria-expanded="false">
-            @if(Auth::check())
-                <span><b>{{ Auth::user()->name }} 🔽</b></span> <br>
-            @else
-                <script>window.location = "/";</script>
-            @endif
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-center">
-            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Change Password</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a href="{{route('user.logout')}}" class="active">Logout</a></li>
-            </ul>
-        </div>
-    </div> --}}
-
-    <div class="d-flex justify-content-around mt-5 mb-4">
-        <div class="fs-4 ms-4">Priority</div>
-        <div class="fs-4 ms-4">Institute</div>
-        <div class="fs-4 ms-4">date</div>
-        <div class="fs-4 ms-4">filter section</div>
-    </div>
+@extends('layouts.companyUserLayout')
+@section('companyEmployeeContent')
 
 <hr class="me-3">
 
@@ -47,12 +22,46 @@
             icon: "success",
             title: "{{ session('success') }}",
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
             });
         </script>
         @endif
 
-<div class="container">
+        <div class="container mt-3 mb-5">
+            <form method="GET" action="">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-3">
+                        <label for="start_date" class="form-label ms-2">Priority</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Priority</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="start_date" class="form-label ms-2">Institute</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Priority</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="end_date" class="form-label">Date</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control datepicker" placeholder="YYYY-MM-DD" required>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button type="submit" class="btn btn-primary px-3">Filter</button>
+                        <button type="submit" class="btn btn-warning px-3">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+<div class="container mb-5">
             
     <section class="mt-2">
         <div class="p-2 mb-3 bg-black text-white">
@@ -123,6 +132,7 @@
                     </div>
                     
                        
+
                     <div class="col-12 col-sm-auto col-md-2">
                         @if ($oneMessage->status == 'In Queue')
                             <span class="badge rounded-pill btnInset px-5" style="background-color: #c4c000;">
@@ -173,7 +183,7 @@
         </div>
         @endforeach
         @else
-            <p>No messages found</p>
+            <p>No Task found</p>
         @endif
     </section>
 </div>

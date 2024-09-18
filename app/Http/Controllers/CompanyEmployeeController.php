@@ -21,4 +21,8 @@ class CompanyEmployeeController extends Controller
 
         return view('companyEmployee/message',['messages'=>$messages]);
     }
+
+    public function changePassword(){
+        return view('companyEmployee.changePassword');
+    }
 }

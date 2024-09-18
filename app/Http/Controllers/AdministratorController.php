@@ -183,6 +183,7 @@ class AdministratorController extends Controller
         $message->update();
 
         //get message data from message table
+        $problemSendserUserId = $message->user_id;
         $subject = $message->subject;
         $messageDetails = $message->message;
 
@@ -195,6 +196,15 @@ class AdministratorController extends Controller
         } else {
             return redirect()->route('login');
         }
+        //get problem occur user details
+        $problemSendserUser = DB::table('users')
+                            ->where('id', $problemSendserUserId)
+                            ->select('name', 'user_contact_num', 'email')
+                            ->first();
+
+        $userName = $problemSendserUser->name;
+        $user_contact_num = $problemSendserUser->user_contact_num;
+        $email = $problemSendserUser->email;
 
         //get institute details
         $instituteDetails = DB::table('institutes')
@@ -214,17 +224,22 @@ class AdministratorController extends Controller
 
 
         //get institute name, Address from institute table
-        $instituteName = $instituteDetails->institute_name;
-        $instituteAddress = $instituteDetails->institute_address;
-        $instituteContactNumber = $instituteDetails->institute_contact_num;
 
-        //get Super Admin Email Address from
-        $superAdminEmail = DB::table('users')
-            ->where('user_type', 'super admin')
-            ->pluck('email')
-            ->toArray();
+        $instituteName=$instituteDetails->institute_name;
+        $instituteAddress=$instituteDetails->institute_address;
+        $instituteContactNumber=$instituteDetails->institute_contact_num;
 
-        Mail::to($superAdminEmail)->send(new mail_for_problem($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber));
+        //get Super Admin Email Adress
+        $superAdminEmail=DB::table('users')
+                        ->where('user_type', 'super admin')
+                        ->pluck('email')
+                        ->toArray();
+            
+        Mail::to($superAdminEmail)->send(new mail_for_problem
+        ($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, 
+        $instituteName, $instituteAddress, $instituteContactNumber, 
+        $userName, $user_contact_num, $email));
+
 
         return redirect()->back()->with('success', 'User message send to the NanoSoft Solutions (Pvt)Ltd');
     }
@@ -298,21 +313,42 @@ class AdministratorController extends Controller
             return redirect()->route('login');
         }
 
-        // Get institute details
-        $instituteDetails = DB::table('institutes')->where('id', $userInstituteId)->first();
-        $instituteName = $instituteDetails->institute_name;
-        $instituteAddress = $instituteDetails->institute_address;
-        $instituteContactNumber = $instituteDetails->institute_contact_num;
 
-        // Get Super Admin Email Address
-        $superAdminEmail = DB::table('users')->where('user_type', 'super admin')->pluck('email')->toArray();
+        //get institute details
+        $instituteDetails=DB::table('institutes')
+                    ->where('id', $userInstituteId)
+                    ->first();
+        //get institute name, Address from institute table
+        $instituteName=$instituteDetails->institute_name;
+        $instituteAddress=$instituteDetails->institute_address;
+        $instituteContactNumber=$instituteDetails->institute_contact_num;
 
-        // Prepare email data
+        //get Super Admin Email Adress
+        $superAdminEmail=DB::table('users')
+                        ->where('user_type', 'super admin')
+                        ->pluck('email')
+                        ->toArray();
+        
+        //get email data for send email
+        $problemSendserUserId = $NewMessage->user_id;
         $subject = $NewMessage->subject;
         $messageDetails = $NewMessage->message;
 
-        // Send email to Super Admin
-        Mail::to($superAdminEmail)->send(new mail_for_problem($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber));
+                //get problem occur user details
+                $problemSendserUser = DB::table('users')
+                ->where('id', $problemSendserUserId)
+                ->select('name', 'user_contact_num', 'email')
+                ->first();
+
+        $userName = $problemSendserUser->name;
+        $user_contact_num = $problemSendserUser->user_contact_num;
+        $email = $problemSendserUser->email;
+
+        Mail::to($superAdminEmail)->send(new mail_for_problem
+        ($subject, $messageDetails, $administratorName, $administratorEmail, 
+        $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber,
+        $userName, $user_contact_num, $email));
+
 
         // Redirect back to 'administrator.messages' route
         return redirect()->route('administrator.messages')->with('success', 'Message sent to the NanoSoft Solutions Company.');

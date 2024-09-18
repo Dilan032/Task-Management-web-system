@@ -22,16 +22,16 @@
 
        <div class="text-center mt-3">
             <img src="{{ $message->embed('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}">
-            <h2 style="color: rgb(48, 2, 255)">Welcome to NanoSoft Solutions Bank Complaning WebApplication</h2>
+            <h2 style="color: rgb(48, 2, 255)">Welcome to NanoSoft Solutions Institute Complaning WebApplication</h2>
         </div>
 
         <div class="row d-flex justify-content-center mb-5">
             <div class="col-md-10 BackGround rounded">
                 <p class="bg-primary-subtle p-2 text-dark rounded">
                     <span class="text-center p-2">
-                        Hi {{ $userType }}, Welcome to Nanosoft Solution Bank Complaint Web App.
-                        By using this web application, you can solve any computer related problem in your bank.
-                        After submitting your question, your bank's administrator will check the problem and forward the message to Nanosoft Solution (Pvt)Ltd
+                        Hi {{ $userType }}, Welcome to Nanosoft Solution Institute Complaint Web App.
+                        By using this web application, you can solve any computer related problem in your Institute.
+                        After submitting your question, your Institute's administrator will check the problem and forward the message to Nanosoft Solution (Pvt)Ltd
                         Nanosoft Solution (Pvt)Ltd is here to solve your problem.
                     </span>
                 <p>

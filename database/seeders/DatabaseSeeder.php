@@ -16,17 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'super admin',
-            'user_type' => 'super admin',
-            'status' => 'active',
-            'email' => 'super.admin@gmail.com',
-            'user_contact_num' => '0718896345',
-            'password' => Hash::make('12345678')
-        ]);
 
-        $this->call([
-            InstituteTypesSeeder::class,
-        ]);
+        $this->call(UserSeeder::class);
+
     }
 }
