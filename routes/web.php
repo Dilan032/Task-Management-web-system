@@ -144,9 +144,9 @@ Route::controller(UserController::class)->middleware('UserType:user')->group(fun
     Route::get('/user/previous-messages', 'previousMessages')->name('user.previous.messages');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
 });
-  
-  
-  
+
+
+
 
 //for company side super admin
 Route::controller(UserController::class)->middleware('UserType:super admin')->group(function () {
@@ -186,4 +186,5 @@ Route::controller(UserController::class)->group(function () {
     Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
+
 
