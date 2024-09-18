@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorController;
@@ -74,14 +73,12 @@ Route::controller(SuperAdminController::class)
     Route::get('/superAdmin/logout', 'superAdminLogout')->name('superAdmin.logout');
 });
 
-Route::controller(SuperAdminController::class)
-    ->middleware('UserType:super admin')->group(function () {
+Route::controller(SuperAdminController::class)->middleware('UserType:super admin')->group(function () {
     Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
 });
 
 // Define route for viewing a single message
-Route::controller(ViewMessageController::class)
-    ->middleware('UserType:super admin')->group(function (){
+Route::controller(ViewMessageController::class)->middleware('UserType:super admin')->group(function (){
         Route::get('/view-message/{id}', [ViewMessageController::class, 'show'])->name('superAdmin.one.messages.view');
         Route::post('/update-message-status/{id}', [ViewMessageController::class, 'updateStatus'])->name('update.message.status');
         Route::post('/update-message-priority/{id}', [ViewMessageController::class, 'updatePriority'])->name('update.message.priority');
@@ -95,15 +92,14 @@ Route::controller(ViewMessageController::class)
 
 
 
+
 // Super Admin All Messages Section (with filtering for assigned employee, priority, progress)
-Route::controller(AllMessagesController::class)
-    ->middleware('UserType:super admin')->group(function () {
+Route::controller(AllMessagesController::class)->middleware('UserType:super admin')->group(function () {
         Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])
              ->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
         Route::get('/superAdmin/all-messages/filter', [AllMessagesController::class, 'filter'])
              ->name('messages.filter');
-
-            });
+});
 
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
@@ -117,61 +113,77 @@ Route::controller(InstituteTypesController::class)->group(function () {
 });
 
 //Company employees routes....
-Route::controller(CompanyEmployeeController::class)
-    ->middleware('UserType:company employee')->group(function () {
+Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
 
+
+//Company employees routes....
+Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
+    Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
+    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+    Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
+    Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
+});
+
+
+//Institute employees message send routes....
+Route::controller(MessageController::class)->middleware('UserType:user')->group(function (){
     //company employee view message and submit current time to message table
     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
     Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
-
 });
 
-Route::controller(MessageController::class)
-    ->middleware('UserType:user')->group(function (){
+Route::controller(MessageController::class)->middleware('UserType:user')->group(function (){
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
     Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
 });
-Route::controller(UserController::class)
-    ->middleware('UserType:user')->group(function () {
+
+Route::controller(UserController::class)->middleware('UserType:user')->group(function () {
     Route::get('/user/dashboard', 'index')->name('user.index');
     //Show the user's previous send messages
     Route::get('/user/previous-messages', 'previousMessages')->name('user.previous.messages');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
 });
+  
+  
+  
+
+//for company side super admin
+Route::controller(UserController::class)->middleware('UserType:super admin')->group(function () {
+    Route::delete('/superAdmin/users/{id}', 'deleteUserForAdmin')->name('user.delete.for.admin');
+    Route::get('/superAdmin/user/details/{id}', 'oneUserDetailsForSuperAdmin')->name('superAdmin.user.details');
+});
+
+//Institute administrator main controller.
+Route::controller(AdministratorController::class)
+    ->middleware('UserType:administrator')->group(function () {
+    Route::get('/administrator/dashboard', 'index')->name('administrator.index');
+    Route::get('/administrator/messages', 'messages')->name('administrator.messages');
+    Route::post('/administrator/messages/save', 'SaveMessageAdministrator')->name('administrator.messages.save');
+    Route::get('/administrator/Message/{mid}', 'showOneMessage')->name('oneMessageForAdministrator.show');
+    Route::put('/administrator/Message/conform/{mid}', 'ConformMessage')->name('administrator.conform.message');
+    Route::put('/administrator/Message/reject/{mid}', 'RejectMessage')->name('administrator.reject.message');
+
+    //Institute side employees edit and delete routes.
+    Route::put('/institute-employee/details/update/{id}', 'instituteEmpUpdate')->name('instituteEmp.details.update');
+    Route::delete('/institute-employee/delete/{id}', 'instituteEmpDelete')->name('institute.employee.delete');
+
+    Route::get('/administrator/announcements', 'announcements')->name('administrator.announcements');
+    Route::get('/administrator/users', 'users')->name('administrator.users');
+    Route::get('/administrator/logout', 'administratorLogout')->name('administrator.logout');
+});
+
+
+//Company side and Institute side company employee registration routes
+Route::controller(UserController::class)->group(function () {
+    Route::post('/administrator/users', 'RegisterUsers')->name('RegisterUser.save');
+    Route::post('/superAdmin/users', 'RegisterUsers')->name('RegisterUser.save');
+});
+
+//for administrators
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/details/{id}', 'oneUserDetailsForAdministrator')->name('user.details');
     Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
 
-
-
-
-//for super admin
-Route::controller(UserController::class)
-    ->middleware('UserType:super admin')->group(function () {
-    Route::delete('/superAdmin/users/{id}', 'deleteUserForAdmin')->name('user.delete.for.admin');
-    Route::get('/superAdmin/user/details/{id}', 'oneUserDetailsForSuperAdmin')->name('superAdmin.user.details');
-});
-
-//for administrator
-Route::controller(UserController::class)->group(function () {
-    Route::post('/administrator/users', 'RegisterUsers')->name('RegisterUser.save');
-    Route::post('/superAdmin/users', 'RegisterUsers')->name('RegisterUser.save');
-});
-
-Route::controller(AdministratorController::class)
-    ->middleware('UserType:administrator')->group(function () {
-    Route::get('/administrator/dashboard', 'index')->name('administrator.index');
-    Route::get('/administrator/messages', 'messages')->name('administrator.messages');
-    Route::post('/administrator/messages/save', 'SaveMessageAdministrator')->name('administrator.messages.save');
-
-    Route::get('/administrator/Message/{mid}', 'showOneMessage')->name('oneMessageForAdministrator.show');
-    Route::put('/administrator/Message/conform/{mid}', 'ConformMessage')->name('administrator.conform.message');
-    Route::put('/administrator/Message/reject/{mid}', 'RejectMessage')->name('administrator.reject.message');
-    Route::get('/administrator/announcements', 'announcements')->name('administrator.announcements');
-    Route::get('/administrator/users', 'users')->name('administrator.users');
-    Route::get('/administrator/logout', 'administratorLogout')->name('administrator.logout');
-
-});

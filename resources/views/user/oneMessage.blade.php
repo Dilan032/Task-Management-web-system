@@ -1,8 +1,8 @@
 @extends('layouts.userLayout')
 @section('userContent')
-    {{-- <div class="p-2 mb-5 bg-black text-white">
-  <span class="fs-5 ms-2">{{$messagesTableDataUser->user->name}}'s message </span>
-</div> --}}
+    <div class="d-flex justify-content-start">
+        <a href="{{ route('user.previous.messages') }}" class="btn btn-primary btn-sm" type="button">Back</a>
+    </div>
     <div class="table-responsive">
         <table class="table table-borderless rounded messageBG" style="overflow-x: hidden;">
             <thead>

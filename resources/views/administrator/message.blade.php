@@ -109,11 +109,9 @@
                         <div class="col-12 col-sm-auto col-md-6">
                             <span class="">Subject</span>
                         </div>
-                        @if (!empty($messages->first()) && $messages->first()->request !== 'pending')
-                            <div class="col-12 col-sm-auto col-md-2">
-                                <span class="">Status</span>
-                            </div>
-                        @endif
+                        <div class="col-12 col-sm-auto col-md-2">
+                            <span class="">Status</span>
+                        </div>
                         <div class="col-12 col-sm-auto col-md-1">
                             <span class="">Action</span>
                         </div>
@@ -130,10 +128,10 @@
                                     <small>{{ \Carbon\Carbon::parse($oneMessage->created_at)->format('d M Y') }}</small>
                                 </div>
                                 <div class="col-12 col-sm-auto col-md-1">
-                                    @if ($oneMessage->request == 'accept')
+                                    @if ($oneMessage->request == 'Accept')
                                         <span
                                             class="badge rounded-pill text-bg-success btnInset py-1 px-3">{{ $oneMessage->request }}</span>
-                                    @elseif ($oneMessage->request == 'reject')
+                                    @elseif ($oneMessage->request == 'Reject')
                                         <span
                                             class="badge rounded-pill text-bg-danger btnInset py-1 px-3">{{ $oneMessage->request }}</span>
                                     @else
@@ -147,24 +145,22 @@
                                     </span>
                                 </div>
 
-                                @if (!empty($oneMessage->status) && $oneMessage->request !== 'pending')
-                                    <div class="col-12 col-sm-auto col-md-2">
-                                        @php
-                                            $statusClasses = [
-                                                'Completed' => 'text-bg-success',
-                                                'Completed in next day' => 'text-bg-warning',
-                                                'Document Pending' => 'text-bg-info',
-                                                'In Progress' => 'text-bg-info',
-                                                'In Queue' => 'text-bg-info',
-                                                'Move to next day' => 'text-bg-danger',
-                                                'Postponed' => 'text-bg-danger',
-                                            ];
-                                            $statusClass = $statusClasses[$oneMessage->status] ?? 'text-bg-info';
-                                        @endphp
-                                        <span
-                                            class="badge rounded-pill {{ $statusClass }} btnInset mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
-                                    </div>
-                                @endif
+                                <div class="col-12 col-sm-auto col-md-2">
+                                    @php
+                                        $statusClasses = [
+                                            'Completed' => 'text-bg-success',
+                                            'Completed in next day' => 'text-bg-warning',
+                                            'Document Pending' => 'text-bg-info',
+                                            'In Progress' => 'text-bg-info',
+                                            'In Queue' => 'text-bg-info',
+                                            'Move to next day' => 'text-bg-danger',
+                                            'Postponed' => 'text-bg-danger',
+                                        ];
+                                        $statusClass = $statusClasses[$oneMessage->status] ?? 'text-bg-info';
+                                    @endphp
+                                    <span
+                                        class="badge rounded-pill {{ $statusClass }} btnInset mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
+                                </div>
 
                                 <div class="col-12 col-sm-auto col-md-1">
                                     <!-- Button trigger modal -->
