@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
-        .dropdown-item.in-queue { background-color: #ebe700; }
+        .dropdown-item.in-queue { background-color: #ffd637; }
         .dropdown-item.in-progress { background-color: #ff0000; }
         .dropdown-item.document-pending { background-color: #357402; }
         .dropdown-item.postponed { background-color: #ff00b3; }
@@ -15,7 +15,7 @@
         .dropdown-item.top-urgent { background-color: #995e05; }
         .dropdown-item.urgent { background-color: #ff0000; }
         .dropdown-item.medium { background-color: #357402; }
-        .dropdown-item.low { background-color: #ebe700; }
+        .dropdown-item.low { background-color: #ffd637; }
 
         .time-buttons-container {
             display: flex;
@@ -56,12 +56,23 @@
             </div>
 
             <div>
-                @if (is_null($message->start_time) && is_null($message->end_time))
-                    <button id="start-btn" class="btn btn-success" onclick="startTimer()">Start</button>
-                    <button id="end-btn" class="btn btn-danger" style="display: none;" onclick="endTimer()">End</button>
-                @elseif (!is_null($message->start_time) && is_null($message->end_time))
-                    <button id="end-btn" class="btn btn-danger" onclick="endTimer()">End</button>
-                @endif
+                <div class="d-flex justify-content-between">
+                    @if (is_null($message->start_time) && is_null($message->end_time))
+                        <!-- Accept SP Request Button -->
+                        @if ($message->sp_request !== 'Accepted')
+                            <form action="{{ route('accept.sp_request', $message->id) }}" method="POST" id="acceptSpRequestForm">
+                                @csrf
+                                <button id="accept-sp-request-btn" class="btn btn-warning me-2" onclick="submitSpRequestForm()">Accept</button>
+                            </form>
+                        @endif
+
+                        <!-- Start Button -->
+                        <button id="start-btn" class="btn btn-success me-2" onclick="startTimer()">Start</button>
+                        <button id="end-btn" class="btn btn-danger" style="display: none;" onclick="endTimer()">End</button>
+                    @elseif (!is_null($message->start_time) && is_null($message->end_time))
+                        <button id="end-btn" class="btn btn-danger" onclick="endTimer()">End</button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
@@ -86,7 +97,7 @@
                 <select name="assigned_employee" class="form-select" aria-label="Assign Employee" onchange="submitAssignEmployeeForm();">
                     <option selected disabled>Assign Employee</option>
                     @foreach($employees as $employee)
-                        <option value="{{ $employee->id }}" {{ $message->assigned_user_id == $employee->id ? 'selected' : '' }}>
+                        <option value="{{ $employee->name }}" {{ $message->assigned_employee == $employee->name ? 'selected' : '' }}>
                             {{ $employee->name }}
                         </option>
                     @endforeach
@@ -101,7 +112,7 @@
             <input type="hidden" name="priority" id="priority-input">
 
             <div class="dropdown-center me-2">
-                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
                     Priority
                 </button>
                 <ul class="dropdown-menu">
@@ -122,7 +133,7 @@
             <input type="hidden" name="progress_note" id="progress-note-input">
 
             <div class="dropdown-center">
-                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
                     Progress
                 </button>
                 <ul class="dropdown-menu">
@@ -253,6 +264,9 @@
             document.getElementById('editProgressNoteForm').submit();
             }
 
+            function submitSpRequestForm() {
+            document.getElementById('acceptSpRequestForm').submit();
+            }
 
         </script>
     </div>
@@ -275,7 +289,7 @@
                                 <div>
                                     <b>Status :</b>
                                     @if ($message->status == 'In Queue')
-                                        <span class="badge rounded-pill" style="background-color: #c4c000; color: black; padding: 5px;">
+                                        <span class="badge rounded-pill" style="background-color: #ffd637; color: black; padding: 5px;">
                                             <small>{{ $message->status }}</small>
                                         </span>
                                     @elseif ($message->status == 'In Progress')
@@ -325,7 +339,7 @@
                                             <small>{{ $message->priority }}</small>
                                         </span>
                                     @elseif ($message->priority == 'Low')
-                                        <span class="badge rounded-pill" style="background-color: #c4c000; color: black; padding: 5px;">
+                                        <span class="badge rounded-pill" style="background-color: #ffd637; color: black; padding: 5px;">
                                             <small>{{ $message->priority }}</small>
                                         </span>
                                     @else
@@ -338,7 +352,7 @@
                                 <!-- Assigned to -->
                                 <div>
                                     <b>Assigned to:</b>
-                                    <span>{{ $message->assignedUser->name ?? 'Not assigned' }}</span>
+                                    <span>{{ $message->assigned_employee ?? 'Not assigned' }}</span>
                                 </div>
                             </div>
                         </td>
@@ -370,8 +384,14 @@
                 <div class="text-end me-2 fw-light">
                     <p>
                         <span class="badge bg-secondary-subtle text-dark px-4 py-2 fw-light">
-                            📅 {{ \Carbon\Carbon::parse($message->created_at)->format('d M Y ') }}  &nbsp;&nbsp;
-                            ⏱ {{ \Carbon\Carbon::parse($message->created_at)->format('h:i A') }}
+                            @if ($message->viewed_at)
+                                <!-- If the message has been viewed, display the viewed_at time -->
+                                📅 {{ \Carbon\Carbon::parse($message->viewed_at)->format('d M Y') }} &nbsp;&nbsp;
+                                ⏱ {{ \Carbon\Carbon::parse($message->viewed_at)->format('h:i A') }}
+                            @else
+                                <!-- If the message hasn't been viewed yet, display "Not viewed yet" -->
+                                <span class="text-danger">Not viewed yet</span>
+                            @endif
                         </span>
                     </p>
                 </div>

@@ -12,12 +12,14 @@ class Message extends Model
     protected $fillable = [
         'id',
         'user_id', //Foreign key
+        'assigned_employee',
         'institute_id', //Foreign key
         'subject',
         'message',
         'priority',
         'status',
         'request',
+        'sp_request',
         'img_1',
         'img_2',
         'img_3',
@@ -26,6 +28,7 @@ class Message extends Model
         'start_time',
         'end_time',
         'progress_note',
+        'viewed_at'
     ];
 
     public function user() {
