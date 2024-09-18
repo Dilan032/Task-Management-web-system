@@ -172,7 +172,7 @@
                     <th style="height: 60px; vertical-align: middle;">Assign</th>
                     <th style="height: 60px; vertical-align: middle;">Priority</th>
                     <th style="height: 60px; vertical-align: middle;">Progress</th>
-                    <th style="height: 60px; vertical-align: middle;">Request</th>
+                    {{-- <th style="height: 60px; vertical-align: middle;">Request</th> --}}
                     <th style="height: 60px; vertical-align: middle;">Institute Name</th>
                     {{-- <th style="height: 60px; vertical-align: middle;">Institute Type</th> --}}
                     <th style="height: 60px; vertical-align: middle; width: 20%;">Subject</th>
@@ -184,7 +184,7 @@
                 @foreach ($messages as $message)
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($message->created_at)->format('Y M d') }}</td>
-                        <td>{{ $message->assigned_employee ?? 'No User Assigned' }}</td>
+                        <td>{{ $message->assigned_employee ?? '-' }}</td>
                         <td>
                             @if ($message->priority == 'Top Urgent')
                                 <span class="badge rounded-pill" style="background-color: #705601; color: black; padding: 5px;">
@@ -244,8 +244,8 @@
                             </span>
                         @endif
                         </td>
-                        <td>{{ $message->request }}</td>
-                        <td>{{ $message->institute->institute_name ?? 'No institute Name Available' }}</td>
+                        {{-- <td>{{ $message->request }}</td> --}}
+                        <td>{{ $message->institute_name ?? 'No institute Name Available' }}</td>
                         {{-- <td>{{ $message->institute->institute_type}}</td> --}}
                         <td>{{ $message->subject }}</td>
                         <td>

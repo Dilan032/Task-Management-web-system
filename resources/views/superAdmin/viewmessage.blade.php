@@ -86,7 +86,7 @@
                 <select name="assigned_employee" class="form-select" aria-label="Assign Employee" onchange="submitAssignEmployeeForm();">
                     <option selected disabled>Assign Employee</option>
                     @foreach($employees as $employee)
-                        <option value="{{ $employee->id }}" {{ $message->assigned_user_id == $employee->id ? 'selected' : '' }}>
+                        <option value="{{ $employee->name }}" {{ $message->assigned_employee == $employee->name ? 'selected' : '' }}>
                             {{ $employee->name }}
                         </option>
                     @endforeach
@@ -370,8 +370,14 @@
                 <div class="text-end me-2 fw-light">
                     <p>
                         <span class="badge bg-secondary-subtle text-dark px-4 py-2 fw-light">
-                            📅 {{ \Carbon\Carbon::parse($message->created_at)->format('d M Y ') }}  &nbsp;&nbsp;
-                            ⏱ {{ \Carbon\Carbon::parse($message->created_at)->format('h:i A') }}
+                            @if ($message->viewed_at)
+                                <!-- If the message has been viewed, display the viewed_at time -->
+                                📅 {{ \Carbon\Carbon::parse($message->viewed_at)->format('d M Y') }} &nbsp;&nbsp;
+                                ⏱ {{ \Carbon\Carbon::parse($message->viewed_at)->format('h:i A') }}
+                            @else
+                                <!-- If the message hasn't been viewed yet, display "Not viewed yet" -->
+                                <span class="text-danger">Not viewed yet</span>
+                            @endif
                         </span>
                     </p>
                 </div>

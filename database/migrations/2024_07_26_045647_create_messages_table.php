@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('img_4')->nullable();
             $table->string('img_5')->nullable();
             $table->string('progress_note')->nullable();
+            $table->timestamp('viewed_at')->nullable();
             $table->timestamps();
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();

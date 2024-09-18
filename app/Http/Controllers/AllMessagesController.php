@@ -17,21 +17,23 @@ class AllMessagesController extends Controller
         $progress = $request->input('progress');
 
         // Query to get messages with filters applied
-        $query = Message::query();
+        $query = DB::table('messages')
+            ->leftJoin('institutes', 'messages.institute_id', '=', 'institutes.id') // Join with the institutes table
+            ->select('messages.*', 'institutes.institute_name') // Select messages fields and institute_name
+            ->where('messages.request', 'Accept')  // Only show messages where request is 'Accept'
+            ->orderBy('messages.created_at', 'DESC'); // Order messages by created_at
 
-        // Build query with search and filters
-        $query = DB::table('messages')->orderBy('created_at', 'DESC');
-
+        // Apply filters
         if ($assignedUser) {
-            $query->where('assigned_employee', $assignedUser);
+            $query->where('messages.assigned_employee', $assignedUser);
         }
 
         if ($priority) {
-            $query->where('priority', $priority);
+            $query->where('messages.priority', $priority);
         }
 
         if ($progress) {
-            $query->where('status', $progress);
+            $query->where('messages.status', $progress);
         }
 
         // Paginate results
@@ -48,6 +50,7 @@ class AllMessagesController extends Controller
             'Completed' => Message::where('status', 'Completed')->count(),
         ];
 
+        // Return view with data
         return view('superAdmin.allmessages', compact('messages', 'statusCounts'));
     }
 }

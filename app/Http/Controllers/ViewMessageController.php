@@ -25,6 +25,16 @@ class ViewMessageController extends Controller
         ->first();
         $employees = User::where('user_type', 'company employee')->get(); // Get all employees with type 'company employee'
 
+        // Check if message exists and the current user is the assigned employee
+        if ($message && Auth::user()->name === $message->assigned_employee) {
+        // Update the viewed_at timestamp if it's not already set
+        if (!$message->viewed_at) {
+            $message->viewed_at = now(); // Store current timestamp
+            $message->save(); // Save the changes
+        }
+        }
+
+
         if ($message) {
             return view('superAdmin.viewmessage', compact('message', 'employees', 'oneMessage'));  // Return the view with message and employees
         } else {
@@ -38,12 +48,14 @@ class ViewMessageController extends Controller
 
     // Validate the input
     $request->validate([
-        'assigned_employee' => 'required|exists:users,id',
+        'assigned_employee' => 'required|string',
     ]);
 
-    // Update the assigned_user_id in the message
-    $message->assigned_user_id = $request->input('assigned_employee');
-    $message->save();
+    // Update the assigned_employee in the message
+    if ($message) {
+        $message->assigned_employee = $request->input('assigned_employee');
+        $message->save();
+    }
 
     return redirect()->back()->with('success', 'Employee assigned successfully!');
 }

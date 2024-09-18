@@ -27,6 +27,7 @@ class Message extends Model
         'start_time',
         'end_time',
         'progress_note',
+        'viewed_at'
     ];
 
     public function user() {
