@@ -15,6 +15,10 @@ class CompanyEmployeeController extends Controller
 
     public function messageView($id){
         $messages = Message::findorFail($id);
+
+        $messages->viewed_at = now();
+        $messages->save();
+
         return view('companyEmployee/message',['messages'=>$messages]);
     }
 
