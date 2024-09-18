@@ -20,13 +20,15 @@ return new class extends Migration
             $table->string('message');
             $table->enum('priority', ['Top Urgent(2min)', 'Urgent(5min)', 'Medium(2hrs)', 'Low(1day)'])->default('Low(1day)');
             $table->enum('status', ['In Queue', 'In Progress', 'Document Pending', 'Postponed', 'Move to next day', 'Complete in next day', 'Completed'])->default('In Queue');
-            $table->enum('request',['pending', 'accept', 'reject'])->default('pending');
+            $table->enum('request',['Pending', 'Accept', 'Reject'])->default('Pending');
+            $table->enum('sp_request',['Pending', 'Accepted'])->default('Pending');
             $table->string('img_1')->nullable();
             $table->string('img_2')->nullable();
             $table->string('img_3')->nullable();
             $table->string('img_4')->nullable();
             $table->string('img_5')->nullable();
             $table->string('progress_note')->nullable();
+            $table->timestamp('viewed_at')->nullable();
             $table->timestamps();
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();

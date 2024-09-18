@@ -11,11 +11,16 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\InstituteTypesController;
 use App\Http\Controllers\AllMessagesController;
 use App\Http\Controllers\ViewMessageController;
+use App\Http\Controllers\LoacationController;
+use App\Http\Controllers\DeviceDetectorController;
+
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
+route::get('/getDeviceDeatails', [DeviceDetectorController::class, 'getDeviceDeatails']);
+route::get('/location', [LoacationController::class, 'getLocation']);
 
 Route::get('/dashboard', function () {
     return view('404');
@@ -32,6 +37,7 @@ require __DIR__.'/auth.php';
 Route::get('/user/inactive',function(){
     return view('inactiveUserError');
 });
+
 
 Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
@@ -81,13 +87,19 @@ Route::controller(ViewMessageController::class)->middleware('UserType:super admi
         Route::post('/message/{id}/update', [ViewMessageController::class, 'updateTimesAndStatus']);
         Route::post('/messages/{id}/update-assigned-employee', [ViewMessageController::class, 'updateAssignedEmployee'])->name('update.assigned.employee');
         Route::post('/messages/{id}/update-progress-note', [ViewMessageController::class, 'updateProgressNote'])->name('update.progress.note');
-});
-
-//Super Admin All Messages Section(All Institute Tasks)
-Route::controller(AllMessagesController::class)->middleware('UserType:super admin')->group(function () {
-        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view');
-
+        Route::post('/message/{id}/accept-sp-request', [ViewMessageController::class, 'acceptSpRequest'])->name('accept.sp_request');
     });
+
+
+
+
+// Super Admin All Messages Section (with filtering for assigned employee, priority, progress)
+Route::controller(AllMessagesController::class)->middleware('UserType:super admin')->group(function () {
+        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])
+             ->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
+        Route::get('/superAdmin/all-messages/filter', [AllMessagesController::class, 'filter'])
+             ->name('messages.filter');
+});
 
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
@@ -103,16 +115,24 @@ Route::controller(InstituteTypesController::class)->group(function () {
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
-    Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
-});
+
 
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('dashboard');
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
+    Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
+    Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
 });
 
+
 //Institute employees message send routes....
+Route::controller(MessageController::class)->middleware('UserType:user')->group(function (){
+    //company employee view message and submit current time to message table
+    Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
+    Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
+});
+
 Route::controller(MessageController::class)->middleware('UserType:user')->group(function (){
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
     Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
@@ -124,6 +144,9 @@ Route::controller(UserController::class)->middleware('UserType:user')->group(fun
     Route::get('/user/previous-messages', 'previousMessages')->name('user.previous.messages');
     Route::get('/user/logout', 'userLogout')->name('user.logout');
 });
+  
+  
+  
 
 //for company side super admin
 Route::controller(UserController::class)->middleware('UserType:super admin')->group(function () {

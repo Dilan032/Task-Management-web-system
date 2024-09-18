@@ -21,6 +21,10 @@ class mail_for_problem extends Mailable
      public $administratorEmail;
      public $administratorContactNumber;
 
+     public $userName;
+     public $user_contact_num;
+     public $email;
+
      public $bankName;
      public $bankAddress;
      public $bankContactNumber;
@@ -30,7 +34,8 @@ class mail_for_problem extends Mailable
      */
     public function __construct($subject, $messageDetails,
                                 $administratorName, $administratorEmail, $administratorContactNumber, 
-                                $bankName, $bankAddress, $bankContactNumber)
+                                $bankName, $bankAddress, $bankContactNumber,
+                                $userName, $user_contact_num, $email)
     {
         $this->subject= $subject;
         $this->messageDetails= $messageDetails;
@@ -38,6 +43,10 @@ class mail_for_problem extends Mailable
         $this->administratorName= $administratorName;
         $this->administratorEmail= $administratorEmail;
         $this->administratorContactNumber= $administratorContactNumber;
+
+        $this->userName= $userName;
+        $this->user_contact_num= $user_contact_num;
+        $this->email= $email;
 
         $this->bankName= $bankName;
         $this->bankAddress= $bankAddress;
@@ -68,6 +77,11 @@ class mail_for_problem extends Mailable
                 'administratorName' => $this->administratorName,
                 'administratorEmail' => $this->administratorEmail,
                 'administratorContactNumber' => $this->administratorContactNumber,
+                
+                'userName' => $this->userName,
+                'user_contact_num' => $this->user_contact_num,
+                'email' => $this->email,
+
                 'bankName' => $this->bankName,
                 'bankAddress' => $this->bankAddress,
                 'bankContactNumber' => $this->bankContactNumber,
