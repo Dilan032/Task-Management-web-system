@@ -18,6 +18,34 @@
 
     <link rel="shortcut icon" href="{{ asset('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}" type="image/x-icon">
     <title>Nanosoft Solutions</title>
+    
+    <style>
+        .dropdown-item.in-queue { background-color: #ebe700; }
+        .dropdown-item.in-progress { background-color: #ff0000; }
+        .dropdown-item.document-pending { background-color: #357402; }
+        .dropdown-item.postponed { background-color: #ff00b3; }
+        .dropdown-item.move-next-day { background-color: #995e05; }
+        .dropdown-item.complete-next-day { background-color: #ff7300; }
+        .dropdown-item.completed { background-color: #001aff; }
+        .dropdown-item.top-urgent { background-color: #995e05; }
+        .dropdown-item.urgent { background-color: #ff0000; }
+        .dropdown-item.medium { background-color: #357402; }
+        .dropdown-item.low { background-color: #ebe700; }
+
+        .time-buttons-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .time-info {
+            margin-right: 20px;
+        }
+
+        .time-info div {
+            margin-bottom: 5px;
+        }
+    </style>
+
 </head>
 <body class="bg-light text-dark">
 
