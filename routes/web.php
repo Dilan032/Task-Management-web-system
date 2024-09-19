@@ -23,7 +23,7 @@ route::get('/getDeviceDeatails', [DeviceDetectorController::class, 'getDeviceDea
 route::get('/location', [LoacationController::class, 'getLocation']);
 
 Route::get('/dashboard', function () {
-    return view('404');
+    return view('inactiveUserError');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -117,7 +117,7 @@ Route::controller(InstituteTypesController::class)->group(function () {
 
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
-    Route::get('/companyEmployee/dashboard', 'index')->name('company.employee.dashboard');
+    Route::get('/companyEmployee/dashbord', 'index')->name('company.employee.dashbord');
 
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
