@@ -11,9 +11,22 @@ use Illuminate\Support\Facades\DB;
 class CompanyEmployeeController extends Controller
 {
     //company Employee Dashbord
-    public function index(){
+    public function index(Request $request){
 
-        $loginUserId = Auth::user()->id;
+        if (Auth::check()) {
+            // Retrieve the currently logged-in user's institute_id and user id
+            $loginUserId = Auth::user()->id;
+            $instituteId = Auth::user()->institute_id;
+        } else {
+            return redirect()->route('login');
+        }
+        
+        
+        $instituteList = DB::table('institutes')
+                    ->select('institute_name')   
+                    ->get();
+
+        //get login user id
         $employee = DB::table('users')
                 ->where('id', $loginUserId)
                 ->select('name')
@@ -21,11 +34,12 @@ class CompanyEmployeeController extends Controller
 
         $employeeName = $employee->name;
 
-        $messages =Message::with('institute')
+        $messages = Message::with('institute')
                 ->where('assigned_employee',$employeeName)
                 ->where('sp_request', 'Accepted')
                 ->get();
-        return view('companyEmployee/dashbord',['messages'=>$messages]);
+                
+        return view('companyEmployee/dashbord',['messages'=>$messages, 'instituteList'=>$instituteList]);
     }
 
     //view institute user message and store current time
