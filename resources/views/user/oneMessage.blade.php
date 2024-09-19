@@ -7,9 +7,9 @@
         <table class="table table-borderless rounded messageBG" style="overflow-x: hidden;">
             <thead>
                 <tr>
-                    <td>{{ $oneMessage->subject }}</td>
+                    <td  class="fs-4 fw-normal">{{ $oneMessage->subject }}</td>
                     <td>
-                        <div class="text-end fw-light">
+                        <div class="text-end">
                             <p>
                                 <span class="badge bg-secondary-subtle text-dark px-4 py-2 fw-light">
                                     📅 {{ \Carbon\Carbon::parse($oneMessage->created_at)->format('d M Y ') }}

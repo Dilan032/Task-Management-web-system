@@ -93,11 +93,11 @@ Route::controller(ViewMessageController::class)->middleware('UserType:super admi
 });
 
 // Super Admin All Messages Section (with filtering for assigned employee, priority, progress)
-Route::controller(AllMessagesController::class)->middleware('UserType:super admin')->group(function () {
-    Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])
-        ->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
-    Route::get('/superAdmin/all-messages/filter', [AllMessagesController::class, 'filter'])
-        ->name('messages.filter');
+Route::controller(AllMessagesController::class)
+    ->middleware('UserType:super admin')->group(function () {
+        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
+        Route::get('/superAdmin/all-messages/filter', [AllMessagesController::class, 'filter'])->name('messages.filter');
+        Route::post('/superAdmin/messages/save', [AllMessagesController::class, 'store'])->name('superAdmin.messages.save');
 });
 
 Route::controller(InstituteController::class)->group(function () {
@@ -111,9 +111,14 @@ Route::controller(InstituteTypesController::class)->group(function () {
     Route::post('/superAdmin/institute-type/update', 'UpdateInstituteType')->name('UpdateInstituteType');
 });
 
+
+
+
+
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('company.employee.dashboard');
+
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
     Route::get('/companyEmployee/password', 'changePassword')->name('change.password');

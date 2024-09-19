@@ -10,7 +10,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a> </li>
       <li class="breadcrumb-item active" aria-current="page">Message</li>
     </ol>
 </nav>
@@ -41,12 +41,31 @@
                 </script>
             @endif
 
-            
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button class="btn btn-primary me-md-2 ms-2" type="button">Start Now</button>
-    <button type="button" class="btn btn-outline-danger fw-bold">2 houre 30 minites</button>
-    <button class="btn btn-danger me-md-2 ms-2" type="button">End Now</button>
-</div>
+        <!-- Time and Buttons -->
+        <div class="time-buttons-container">
+            <div class="time-info">
+                <div id="start-time-display">
+                    @if ($messages->start_time)
+                        <b>Start Time:</b> {{ \Carbon\Carbon::parse($messages->start_time)->format('d M Y h:i:s A') }}
+                    @endif
+                </div>
+                <div id="end-time-display">
+                    @if ($messages->end_time)
+                        <b>End Time  :</b> {{ \Carbon\Carbon::parse($messages->end_time)->format('d M Y h:i:s A') }}
+                    @endif
+                </div>
+            </div>
+
+            <div>
+                @if (is_null($messages->start_time) && is_null($messages->end_time))
+                    <button id="start-btn" class="btn btn-success" onclick="startTimer()">Start</button>
+                    <button id="end-btn" class="btn btn-danger" style="display: none;" onclick="endTimer()">End</button>
+                @elseif (!is_null($messages->start_time) && is_null($messages->end_time))
+                    <button id="end-btn" class="btn btn-danger" onclick="endTimer()">End</button>
+                @endif
+            </div>
+        </div>
+    
 
       
 <section class="container-fluid">
