@@ -55,7 +55,7 @@
                         </td>
                         <td>
                             <div class="d-flex justify-content-end gap-2" style="margin-top:15px">
-                                @if ($oneMessage->request == 'pending')
+                                @if ($oneMessage->request == 'Pending')
                                     <div class="d-flex gap-2 d-flex justify-content-end">
                                         {{-- Accept button --}}
                                         <form action="{{ route('administrator.conform.message', $oneMessage->id) }}"
@@ -83,13 +83,13 @@
                                     </div>
 
                                     {{-- Message accepted --}}
-                                @elseif ($oneMessage->request == 'accept')
+                                @elseif ($oneMessage->request == 'Accept')
                                     <div class="d-flex gap-2 justify-content-md-end">
                                         <button class="btn btn-success" disabled>Accepted</button>
                                     </div>
 
                                     {{-- Message rejected --}}
-                                @elseif ($oneMessage->request == 'reject')
+                                @elseif ($oneMessage->request == 'Reject')
                                     <div class="d-flex gap-2 justify-content-md-end">
                                         <button class="btn btn-danger" disabled>Rejected</button>
                                     </div>
@@ -102,7 +102,7 @@
                     <tr>
                         <th colspan="4" class="bg-primary-subtle fw-light">
                             {{-- Task status mode showing part --}}
-                            @if ($oneMessage->request == 'accept')
+                            @if ($oneMessage->request == 'Accept')
                                 @php
                                     $statusClasses = [
                                         'Completed' => 'text-bg-success',
@@ -126,9 +126,9 @@
                             {{-- Task request mode showing part --}}
                             @php
                                 $requestClasses = [
-                                    'pending' => 'text-bg-warning',
-                                    'accept' => 'text-bg-success',
-                                    'reject' => 'text-bg-danger',
+                                    'Pending' => 'text-bg-warning',
+                                    'Accept' => 'text-bg-success',
+                                    'Reject' => 'text-bg-danger',
                                 ];
                             @endphp
                             request <span

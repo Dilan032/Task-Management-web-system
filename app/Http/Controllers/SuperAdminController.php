@@ -370,8 +370,15 @@ class SuperAdminController extends Controller
         return redirect('login');
     }
 
+    //Super admin password change function
+    public function changePassword()
+    {
+        return view('superAdmin.changePassword');
+    }
 
-// !Check these methods.....................................
+
+
+    // !Check these methods.....................................
     public function ViewOneMessages($id)
     {
         $oneMessage = Message::findorFail($id);
@@ -431,5 +438,4 @@ class SuperAdminController extends Controller
             'processingMessageCount' => $processingMessageCount
         ]);
     }
-
 }

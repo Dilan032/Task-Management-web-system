@@ -22,7 +22,7 @@
     </script>
 @endif
 
-<div class="row">
+<div class="row" style="margin-top:20px">
     <!-- Form for sending message to administrator -->
     <form action="{{ route('message.save') }}" method="POST" enctype="multipart/form-data" class="row">
         @csrf

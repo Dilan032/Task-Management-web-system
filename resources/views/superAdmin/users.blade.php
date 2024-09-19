@@ -1,17 +1,9 @@
 @extends('layouts.superAdminLayout')
 
 @section('SuperAdminContent')
-    <!-- Page Heading -->
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Company User Management</h3>
-        </div>
-    </div>
-
-    <hr class="me-3">
 
     <div class="container-fluid">
-        <div class="row align-items-center mb-3">
+        <div class="row align-items-center mt-3">
             <!-- Badge on the left, takes the full width on smaller screens -->
             <div class="col-sm-12 col-md-auto mb-3 mb-md-0">
                 <span class="badge text-bg-secondary fs-6 p-2">
@@ -37,3 +29,4 @@
     <br />
     @include('superAdmin.companyEmpManagement.overview')
 @endsection
+

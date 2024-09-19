@@ -15,16 +15,17 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         if (Auth::check()) {
             $user_id = Auth::id();
             $instituteList = DB::table('institutes')
-                                ->orderBy('created_at', 'DESC')
-                                ->get();
-            $messages =Message::with('user')
-                                ->where('user_id', $user_id)
-                                ->orderBy('created_at', 'DESC')
-                                ->get();
+                ->orderBy('created_at', 'DESC')
+                ->get();
+            $messages = Message::with('user')
+                ->where('user_id', $user_id)
+                ->orderBy('created_at', 'DESC')
+                ->get();
             return view('user.userDashboard', compact('instituteList', 'messages', 'user_id'));
         } else {
             // Redirect to the login page or show an error
@@ -37,78 +38,19 @@ class UserController extends Controller
     {
         $user_id = Auth::id();
         $instituteList = DB::table('institutes')
-                                ->orderBy('created_at', 'DESC')
-                                ->get();
-        $messages =Message::with('user')
-                                ->where('user_id', $user_id)
-                                ->orderBy('created_at', 'DESC')
-                                ->paginate(10);
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        $messages = Message::with('user')
+            ->where('user_id', $user_id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
 
         return view('user.previousMessages', compact('messages', 'instituteList'));
     }
 
-    //show selected user data
-    public function oneUserDetailsForAdministrator($id){
-        $user =User::find($id);
-        return view('administrator.userEdit', compact('user'));
-    }
-
-    //show selected user data
-    public function oneUserDetailsForSuperAdmin($id){
-        $userInstituteId = DB::table('users')
-                    ->where('id', $id)
-                    ->value('institute_id');
-
-        $instituteID = DB::table('institutes')
-                    ->where('id', $userInstituteId)->first();
-
-
-        $adminDetails = DB::table('users')
-                    ->where('institute_id', $userInstituteId)
-                    ->where('user_type', 'administrator')
-                    ->get();
-
-        $userDetails = DB::table('users')
-                    ->where('institute_id', $userInstituteId)
-                    ->where('user_type', 'user')
-                    ->get();
-
-        $user =User::find($id);
-        return view('superAdmin.editUser', compact('user', 'adminDetails', 'userDetails'));
-    }
-
-     //user update Function for administrator
-     public function UsersUpdate(Request $request , $uid){
-        $user = User::findOrFail($uid);
-
-        $rules = [
-            'user_type' => 'required|string|in:administrator,user,super admin',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'user_contact_num' => 'required|string|max:12',
-        ];
-
-        // Create validator instance and validate
-        $validator = Validator::make($request->all(), $rules);
-
-        // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $user->user_type = $request->input('user_type');
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->status = $request->input('status');
-        $user->user_contact_num = $request->input('user_contact_num');
-        $user->update();
-
-        // Redirect with a success message
-        return redirect()->back()->with('success', 'User Update successfully!');
-    }
-
     // for User Registration
-    public function RegisterUsers(Request $request){
+    public function RegisterUsers(Request $request)
+    {
         $rules = [
             'institute_id' => 'required|exists:institutes,id',
             'password' => 'required|string|min:8|max:32|confirmed',
@@ -141,19 +83,108 @@ class UserController extends Controller
         //get user register pertion details
         if (Auth::check()) {
             //get authenticate admin details
-            $RegisterAdminName=Auth::user()->name;
-            $RegisterUserType=Auth::user()->user_type;
-            $RegisterAadminEmail=Auth::user()->email;
-            $RegisterAdminContactNumber=Auth::user()->user_contact_num;
+            $RegisterAdminName = Auth::user()->name;
+            $RegisterUserType = Auth::user()->user_type;
+            $RegisterAadminEmail = Auth::user()->email;
+            $RegisterAdminContactNumber = Auth::user()->user_contact_num;
         } else {
             return redirect()->route('login');
         }
 
-        Mail::to($newUser->email)->send(new userWellcomeMessage($newUser->user_type, $newUser->name, $newUser->email, $newUser->user_contact_num, $plainPassword,
-                $RegisterAdminName, $RegisterUserType, $RegisterAadminEmail, $RegisterAdminContactNumber));
+        Mail::to($newUser->email)->send(new userWellcomeMessage(
+            $newUser->user_type,
+            $newUser->name,
+            $newUser->email,
+            $newUser->user_contact_num,
+            $plainPassword,
+            $RegisterAdminName,
+            $RegisterUserType,
+            $RegisterAadminEmail,
+            $RegisterAdminContactNumber
+        ));
 
         // Redirect with a success message
         return redirect()->back()->with('success', 'User Registration successfully!');
+    }
+
+    //show selected user data for Institute side Administrators
+    public function oneUserDetailsForAdministrator($id)
+    {
+        $user = User::find($id);
+        return view('administrator.userEdit', compact('user'));
+    }
+
+    //show selected user data for Company side Super Admin
+    public function oneUserDetailsForSuperAdmin($id)
+    {
+        $userInstituteId = DB::table('users')
+            ->where('id', $id)
+            ->value('institute_id');
+
+        $instituteID = DB::table('institutes')
+            ->where('id', $userInstituteId)->first();
+
+
+        $adminDetails = DB::table('users')
+            ->where('institute_id', $userInstituteId)
+            ->where('user_type', 'administrator')
+            ->get();
+
+        $userDetails = DB::table('users')
+            ->where('institute_id', $userInstituteId)
+            ->where('user_type', 'user')
+            ->get();
+
+        $user = User::find($id);
+        return view('superAdmin.editUser', compact('user', 'adminDetails', 'userDetails'));
+    }
+
+    //user update Function for administrator
+    public function UsersUpdate(Request $request, $uid)
+    {
+        $user = User::findOrFail($uid);
+
+        $rules = [
+            'user_type' => 'required|string|in:administrator,user,super admin',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'user_contact_num' => 'required|string|max:12',
+        ];
+
+        // Create validator instance and validate
+        $validator = Validator::make($request->all(), $rules);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user->user_type = $request->input('user_type');
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->status = $request->input('status');
+        $user->user_contact_num = $request->input('user_contact_num');
+        $user->update();
+
+        // Redirect with a success message
+        return redirect()->back()->with('success', 'User Update successfully!');
+    }
+
+
+    //Institute side administrator, user(company employee)delete function
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->back()->with('success', 'User deleted successfully.');
+    }
+
+    //Company side super admin, user(company employee)delete function
+    public function deleteUserForAdmin($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->back()->with('success', 'User deleted successfully.');
     }
 
     // [User ] for logout
@@ -167,16 +198,5 @@ class UserController extends Controller
 
         return redirect('/login');
     }
-    public function deleteUser($id){
-        $user =User::find($id);
-        $user->delete();
-        return redirect()->back()->with('success', 'User deleted successfully.');
-    }
-
-    public function deleteUserForAdmin($id){
-        $user =User::find($id);
-        $user->delete();
-        return redirect()->back()->with('success', 'User deleted successfully.');
-    }
-
 }
+

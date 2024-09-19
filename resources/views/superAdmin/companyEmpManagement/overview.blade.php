@@ -1,7 +1,6 @@
 <div class="container-fluid">
     <div class="table-responsive">
         <div class="table-wrapper">
-
             <!-- Filter and Search Section -->
             <form action="{{ route('superAdmin.users.view') }}" method="GET">
                 <div class="row mb-3">
