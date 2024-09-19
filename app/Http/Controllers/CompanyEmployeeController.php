@@ -20,10 +20,10 @@ class CompanyEmployeeController extends Controller
         } else {
             return redirect()->route('login');
         }
-        
-        
+
+
         $instituteList = DB::table('institutes')
-                    ->select('institute_name')   
+                    ->select('institute_name')
                     ->get();
 
         //get login user id
@@ -38,7 +38,7 @@ class CompanyEmployeeController extends Controller
                 ->where('assigned_employee',$employeeName)
                 ->where('sp_request', 'Accepted')
                 ->get();
-                
+
         return view('companyEmployee/dashbord',['messages'=>$messages, 'instituteList'=>$instituteList]);
     }
 
