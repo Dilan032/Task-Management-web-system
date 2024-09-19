@@ -25,12 +25,12 @@
 </script>
 @endif
 
-<nav aria-label="breadcrumb">
+{{-- <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
       <li class="breadcrumb-item active" aria-current="page">Password</li>
     </ol>
-</nav>
+</nav> --}}
 
 <div class="container mt-5">
 <div class="row d-flex justify-content-center mt-5">
