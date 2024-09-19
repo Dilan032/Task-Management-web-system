@@ -1,17 +1,20 @@
 <div class="container-fluid">
     <div class="table-responsive">
         <div class="table-wrapper">
+
             <!-- Filter and Search Section -->
             <form action="{{ route('superAdmin.users.view') }}" method="GET">
-                <div class="row mb-3">
+                <div class="row mb-3 align-items-center">
                     <!-- Search by Employee Name -->
                     <div class="col-md-4">
+                        <label for="search_employee_name">Search Employee Name:</label>
                         <input type="text" name="search_employee_name" class="form-control"
                             placeholder="Search Employee Name" value="{{ request('search_employee_name') }}">
                     </div>
 
                     <!-- Filter by Employee Type: Super Admin and Company Employee -->
                     <div class="col-md-3">
+                        <label for="filter_employee_type">Employee Type:</label>
                         <select name="filter_employee_type" class="form-select">
                             <option value="" selected>Filter by Employee Type</option>
                             <option value="super admin"
@@ -27,6 +30,7 @@
 
                     <!-- Filter by Employee Status: Online/Offline -->
                     <div class="col-md-3">
+                        <label for="filter_employee_status">Employee Status:</label>
                         <select name="filter_employee_status" class="form-select">
                             <option value="" selected>Filter by Employee Status</option>
                             <option value="online"
@@ -37,11 +41,8 @@
                     </div>
 
                     <!-- Submit and Reset Buttons -->
-                    <div class="col-md-2 d-flex justify-content-between">
-                        <!-- Apply Button -->
+                    <div class="col-md-2 d-flex justify-content-end align-items-center" style="margin-top: 20px">
                         <button type="submit" class="btn btn-primary w-50">Apply</button>
-
-                        <!-- Reset Button -->
                         <a href="{{ route('superAdmin.users.view') }}" class="btn btn-warning w-50 ms-2">Reset</a>
                     </div>
                 </div>
