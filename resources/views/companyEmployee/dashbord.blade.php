@@ -31,30 +31,32 @@
         {{-- start filter section --}}
         
         <div class="container mt-3 mb-5">
-            <form method="GET" action="">
+            <form method="GET" action="{{ route('company.employee.dashbord') }}">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-3">
                         <label for="start_date" class="form-label ms-2">Priority</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Priority</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <select class="form-select" id="priority" name="priority" aria-label="Default select example">
+                            <option selected value="">All Priority</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Top Urgent">Top Urgent</option>
+                            <option value="Urgent">Urgent</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
                         <label for="start_date" class="form-label ms-2">Institute</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Priority</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <select class="form-select" name="institute" aria-label="Default select example">
+                            <option selected value="">All Institute</option>
+                            {{-- get institute list from database --}}
+                            @foreach ( $instituteList as $instituteName )
+                                <option value="{{ $instituteName->institute_name }}">{{ $instituteName->institute_name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label for="end_date" class="form-label">Date</label>
-                        <input type="date" name="end_date" id="end_date" class="form-control datepicker" placeholder="YYYY-MM-DD" required>
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" name="date" id="date" class="form-control datepicker" placeholder="YYYY-MM-DD">
                     </div>
                     <div class="col-md-2 align-self-end">
                         <button type="submit" class="btn btn-primary px-3">Filter</button>
