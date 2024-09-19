@@ -237,10 +237,10 @@ class AdministratorController extends Controller
                         ->where('user_type', 'super admin')
                         ->pluck('email')
                         ->toArray();
-            
+
         Mail::to($superAdminEmail)->send(new mail_for_problem
-        ($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber, 
-        $instituteName, $instituteAddress, $instituteContactNumber, 
+        ($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber,
+        $instituteName, $instituteAddress, $instituteContactNumber,
         $userName, $user_contact_num, $email));
 
 
@@ -331,7 +331,7 @@ class AdministratorController extends Controller
                         ->where('user_type', 'super admin')
                         ->pluck('email')
                         ->toArray();
-        
+
         //get email data for send email
         $problemSendserUserId = $NewMessage->user_id;
         $subject = $NewMessage->subject;
@@ -348,7 +348,7 @@ class AdministratorController extends Controller
         $email = $problemSendserUser->email;
 
         Mail::to($superAdminEmail)->send(new mail_for_problem
-        ($subject, $messageDetails, $administratorName, $administratorEmail, 
+        ($subject, $messageDetails, $administratorName, $administratorEmail,
         $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber,
         $userName, $user_contact_num, $email));
 
@@ -464,6 +464,10 @@ class AdministratorController extends Controller
         }
 
         return redirect()->back()->with('success', $message);
+    }
+
+    public function changePassword(){
+        return view('administrator.changePassword');
     }
 
     // [administrator ] for logout
