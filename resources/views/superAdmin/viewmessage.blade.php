@@ -72,23 +72,23 @@
         @foreach ($errors->all() as $error)
             <script>
                 Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "{{ $error }}",
+                    icon: "error",
+                    title: "Oops...",
+                    text: "{{ $error }}",
                 });
             </script>
         @endforeach
     @endif
 
     @if (session('success'))
-    <script>
-        Swal.fire({
-        icon: "success",
-        title: "{{ session('success') }}",
-        showConfirmButton: false,
-        timer: 1000
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 1000
+            });
+        </script>
     @endif
 
     @section('SuperAdminContent')
@@ -138,7 +138,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="ms-4 breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('superAdmin.allmessages.view') }}">All issues</a>
+                        <a href="{{ route('superAdmin.allmessages.view') }}">Issues</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">{{ $message->institute->institute_name }} Message
                     </li>

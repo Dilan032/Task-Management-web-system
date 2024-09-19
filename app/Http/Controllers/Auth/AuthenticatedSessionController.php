@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
         }elseif($request->user()->user_type === 'company employee'){
 
             if($request->user()->status === 'active'){
-                $url = 'companyEmployee/dashboard';
+                $url = '/companyEmployee/dashboard';
             }else{
                 Auth::guard('web')->logout();
 
