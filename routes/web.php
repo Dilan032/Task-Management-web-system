@@ -70,6 +70,8 @@ Route::controller(SuperAdminController::class)
         Route::get('/superAdmin/messages/{id}', 'ViewOneMessages')->name('superAdmin.one.messages.view');
         Route::put('/superAdmin/messages/ProblemResolvedOrNot/{id}', 'ProblemResolvedOrNot')->name('superAdmin.problem.resolved.or.not');
 
+        Route::get('/super-admin/password', 'changePassword')->name('super.admin.change.password');
+
         Route::get('/superAdmin/logout', 'superAdminLogout')->name('superAdmin.logout');
     });
 
@@ -91,11 +93,11 @@ Route::controller(ViewMessageController::class)->middleware('UserType:super admi
 });
 
 // Super Admin All Messages Section (with filtering for assigned employee, priority, progress)
-Route::controller(AllMessagesController::class)->middleware('UserType:super admin')->group(function () {
-    Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])
-        ->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
-    Route::get('/superAdmin/all-messages/filter', [AllMessagesController::class, 'filter'])
-        ->name('messages.filter');
+Route::controller(AllMessagesController::class)
+    ->middleware('UserType:super admin')->group(function () {
+        Route::get('/superAdmin/all-messages', [AllMessagesController::class, 'index'])->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
+        Route::get('/superAdmin/all-messages/filter', [AllMessagesController::class, 'filter'])->name('messages.filter');
+        Route::post('/superAdmin/messages/save', [AllMessagesController::class, 'store'])->name('superAdmin.messages.save');
 });
 
 Route::controller(InstituteController::class)->group(function () {
@@ -111,9 +113,12 @@ Route::controller(InstituteTypesController::class)->group(function () {
 
 
 
+
+
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
-    Route::get('/companyEmployee/dashboard', 'index')->name('company.employee.dashbord');
+    Route::get('/companyEmployee/dashboard', 'index')->name('company.employee.dashboard');
+
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
     Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
@@ -164,6 +169,9 @@ Route::controller(AdministratorController::class)
 
         Route::get('/administrator/announcements', 'announcements')->name('administrator.announcements');
         Route::get('/administrator/users', 'users')->name('administrator.users');
+
+        Route::get('/administrator/password', 'changePassword')->name('administrator.change.password');
+
         Route::get('/administrator/logout', 'administratorLogout')->name('administrator.logout');
     });
 

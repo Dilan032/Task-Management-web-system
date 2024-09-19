@@ -32,11 +32,7 @@
     @endif
 
     <!-- Page Heading -->
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Institute Employees Management</h3>
-        </div>
-
+    <div class="container-fluid mt-3 mb-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('superAdmin.dashboard') }}">Dashboard</a></li>
@@ -45,8 +41,6 @@
             </ol>
         </nav>
     </div>
-
-    <hr class="me-3" style="margin-bottom:20px">
 
     <div class="container-fluid">
         <div class="table-responsive">
