@@ -72,27 +72,39 @@
         @foreach ($errors->all() as $error)
             <script>
                 Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "{{ $error }}",
+                    icon: "error",
+                    title: "Oops...",
+                    text: "{{ $error }}",
                 });
             </script>
         @endforeach
     @endif
 
     @if (session('success'))
-    <script>
-        Swal.fire({
-        icon: "success",
-        title: "{{ session('success') }}",
-        showConfirmButton: false,
-        timer: 1000
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 1000
+            });
+        </script>
     @endif
 
     @section('SuperAdminContent')
-        <div class="d-flex justify-content-end mt-3 mb-3">
+        <div class="d-flex justify-content-between mt-3 mb-3">
+            <div class="d-flex">
+                <nav aria-label="breadcrumb">
+                    <ol class="ms-4 breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('superAdmin.allmessages.view') }}">All issues</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ $message->institute->institute_name }}
+                            Message
+                        </li>
+                    </ol>
+                </nav>
+            </div>
 
             <!-- Time and Buttons -->
             <div class="time-buttons-container">
@@ -111,238 +123,130 @@
 
                 <div>
                     <div class="d-flex justify-content-end gap-2">
+
                         @if (is_null($message->start_time) && is_null($message->end_time))
                             <!-- Accept SP Request Button -->
                             @if ($message->sp_request !== 'Accepted')
-                                <form action="{{ route('accept.sp_request', $message->id) }}" method="POST"
-                                    id="acceptSpRequestForm">
+                                <form action="{{ route('accept.sp_request', $message->id) }}" method="POST" id="acceptSpRequestForm">
                                     @csrf
-                                    <button id="accept-sp-request-btn" class="btn btn-warning me-2"
-                                        onclick="submitSpRequestForm()">Accept</button>
+                                    <button id="accept-sp-request-btn" class="btn btn-warning me-2" onclick="submitSpRequestForm()">Accept</button>
                                 </form>
                             @endif
 
-                            <!-- Start Button -->
-                            <button id="start-btn" class="btn btn-success me-2" onclick="startTimer()">Start</button>
-                            <button id="end-btn" class="btn btn-danger" style="display: none;"
-                                onclick="endTimer()">End</button>
+                            <!-- Start Button (Disabled until SP request is accepted) -->
+                            <button id="start-btn" class="btn btn-success"
+                                @if ($message->sp_request !== 'Accepted')
+                                    disabled
+                                @endif
+                                onclick="startTimer()">Start</button>
+
+                            <button id="end-btn" class="btn btn-danger" style="display: none;" onclick="endTimer()">End</button>
                         @elseif (!is_null($message->start_time) && is_null($message->end_time))
                             <button id="end-btn" class="btn btn-danger" onclick="endTimer()">End</button>
                         @endif
                     </div>
                 </div>
+
             </div>
         </div>
 
-        <div class="d-flex justify-content-between mb-3">
-            <nav aria-label="breadcrumb">
-                <ol class="ms-4 breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('superAdmin.allmessages.view') }}">All issues</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $message->institute->institute_name }} Message
-                    </li>
-                </ol>
-            </nav>
+        <div class="d-flex justify-content-end mb-3">
+            <form id="assign-employee-form" action="{{ route('update.assigned.employee', $message->id) }}" method="POST">
+                @csrf
+                <div class="dropdown-center me-2">
+                    <select name="assigned_employee" class="form-select" aria-label="Assign Employee"
+                        onchange="submitAssignEmployeeForm();">
+                        <option selected disabled>Assign Employee</option>
+                        @foreach ($employees as $employee)
+                            <option value="{{ $employee->name }}"
+                                {{ $message->assigned_employee == $employee->name ? 'selected' : '' }}>
+                                {{ $employee->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </form>
 
-            <div class="d-flex">
+            <form action="{{ route('update.message.priority', $message->id) }}" method="POST">
+                @csrf
+                @method('POST')
 
-                <form id="assign-employee-form" action="{{ route('update.assigned.employee', $message->id) }}"
-                    method="POST">
-                    @csrf
-                    <div class="dropdown-center me-2">
-                        <select name="assigned_employee" class="form-select" aria-label="Assign Employee"
-                            onchange="submitAssignEmployeeForm();">
-                            <option selected disabled>Assign Employee</option>
-                            @foreach ($employees as $employee)
-                                <option value="{{ $employee->name }}"
-                                    {{ $message->assigned_employee == $employee->name ? 'selected' : '' }}>
-                                    {{ $employee->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                <input type="hidden" name="priority" id="priority-input">
+
+                <div class="dropdown-center me-2">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="width: 100px;">
+                        Priority
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item badge top-urgent" href="#"
+                                onclick="changePriority('Top Urgent')">Top Urgent (2 min)</a></li>
+                        <li><a class="dropdown-item badge urgent" href="#" onclick="changePriority('Urgent')">Urgent
+                                (5 min)</a></li>
+                        <li><a class="dropdown-item badge medium" href="#" onclick="changePriority('Medium')">Medium
+                                (2 hrs)</a></li>
+                        <li><a class="dropdown-item badge low" href="#" onclick="changePriority('Low')">Low (1
+                                day)</a></li>
+                    </ul>
+                </div>
+            </form>
+
+            <!-- Status Dropdown -->
+            <form action="{{ route('update.message.status', $message->id) }}" method="POST" id="statusForm">
+                @csrf
+                @method('POST')
+
+                <input type="hidden" name="status" id="status-input">
+                <input type="hidden" name="progress_note" id="progress-note-input">
+
+                <div class="dropdown-center">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="width: 100px;">
+                        Progress
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item badge in-queue" href="#" onclick="changeStatus('In Queue')">In
+                                Queue</a></li>
+                        <li><a class="dropdown-item badge in-progress" href="#"
+                                onclick="changeStatus('In Progress')">In Progress</a></li>
+                        <li><a class="dropdown-item badge document-pending" href="#"
+                                onclick="openProgressModal('Document Pending')">Document Pending</a></li>
+                        <li><a class="dropdown-item badge postponed" href="#"
+                                onclick="openProgressModal('Postponed')">Postponed</a></li>
+                        <li><a class="dropdown-item badge move-next-day" href="#"
+                                onclick="openProgressModal('Move to next day')">Move to next day</a></li>
+                        <li><a class="dropdown-item badge complete-next-day" href="#"
+                                onclick="openProgressModal('Complete in next day')">Complete in next day</a></li>
+                        <li><a class="dropdown-item badge completed" href="#"
+                                onclick="changeStatus('Completed')">Completed</a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <!-- Modal for Progress Note -->
+        <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="progressModalLabel">Add Progress Note</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </form>
-
-                <form action="{{ route('update.message.priority', $message->id) }}" method="POST">
-                    @csrf
-                    @method('POST')
-
-                    <input type="hidden" name="priority" id="priority-input">
-
-                    <div class="dropdown-center me-2">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false" style="width: 100px;">
-                            Priority
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item badge top-urgent" href="#"
-                                    onclick="changePriority('Top Urgent')">Top Urgent (2 min)</a></li>
-                            <li><a class="dropdown-item badge urgent" href="#"
-                                    onclick="changePriority('Urgent')">Urgent (5 min)</a></li>
-                            <li><a class="dropdown-item badge medium" href="#"
-                                    onclick="changePriority('Medium')">Medium (2 hrs)</a></li>
-                            <li><a class="dropdown-item badge low" href="#" onclick="changePriority('Low')">Low (1
-                                    day)</a></li>
-                        </ul>
+                    <div class="modal-body">
+                        <form id="progressNoteForm">
+                            <div class="mb-3">
+                                <label for="progress-note" class="form-label">Progress Note</label>
+                                <textarea class="form-control" id="progress-note" rows="3"></textarea>
+                            </div>
+                        </form>
                     </div>
-                </form>
-
-                <!-- Status Dropdown -->
-                <form action="{{ route('update.message.status', $message->id) }}" method="POST" id="statusForm">
-                    @csrf
-                    @method('POST')
-
-                    <input type="hidden" name="status" id="status-input">
-                    <input type="hidden" name="progress_note" id="progress-note-input">
-
-                    <div class="dropdown-center">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false" style="width: 100px;">
-                            Progress
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item badge in-queue" href="#" onclick="changeStatus('In Queue')">In
-                                    Queue</a></li>
-                            <li><a class="dropdown-item badge in-progress" href="#"
-                                    onclick="changeStatus('In Progress')">In Progress</a></li>
-                            <li><a class="dropdown-item badge document-pending" href="#"
-                                    onclick="openProgressModal('Document Pending')">Document Pending</a></li>
-                            <li><a class="dropdown-item badge postponed" href="#"
-                                    onclick="openProgressModal('Postponed')">Postponed</a></li>
-                            <li><a class="dropdown-item badge move-next-day" href="#"
-                                    onclick="openProgressModal('Move to next day')">Move to next day</a></li>
-                            <li><a class="dropdown-item badge complete-next-day" href="#"
-                                    onclick="openProgressModal('Complete in next day')">Complete in next day</a></li>
-                            <li><a class="dropdown-item badge completed" href="#"
-                                    onclick="changeStatus('Completed')">Completed</a></li>
-                        </ul>
-                    </div>
-                </form>
-
-                <!-- Modal for Progress Note -->
-                <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="progressModalLabel">Add Progress Note</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="progressNoteForm">
-                                    <div class="mb-3">
-                                        <label for="progress-note" class="form-label">Progress Note</label>
-                                        <textarea class="form-control" id="progress-note" rows="3"></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="submitStatusWithNote()">Submit</button>
-                            </div>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="submitStatusWithNote()">Submit</button>
                     </div>
                 </div>
             </div>
-
-            <script>
-                function changeStatus(status) {
-                    document.getElementById('status-input').value = status;
-                    event.target.closest('form').submit(); // Submit the form when a status is selected
-                }
-
-                function changePriority(priority) {
-                    document.getElementById('priority-input').value = priority;
-                    event.target.closest('form').submit(); // Submit the form when a priority is selected
-                }
-
-                function submitAssignEmployeeForm() {
-                    document.getElementById('assign-employee-form').submit();
-                }
-
-                function startTimer() {
-                    const messageId = @json($message->id); // Pass message ID from Blade to JavaScript
-                    const startTime = new Date().toLocaleString();
-                    document.getElementById('start-time-display').textContent = 'Start Time: ' + startTime;
-                    document.getElementById('start-btn').style.display = 'none';
-                    document.getElementById('end-btn').style.display = 'inline-block';
-
-                    fetch(`/message/${messageId}/start`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            }
-                        }).then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                location.reload(); // Refresh the page to show the updated status
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
-
-                function endTimer() {
-                    const messageId = @json($message->id); // Pass message ID from Blade to JavaScript
-                    const endTime = new Date().toLocaleString();
-                    document.getElementById('end-time-display').textContent = 'End Time: ' + endTime;
-                    document.getElementById('end-btn').style.display = 'none';
-
-                    fetch(`/message/${messageId}/end`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            }
-                        }).then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                location.reload(); // Refresh the page to show the updated status
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
-
-                let selectedStatus = '';
-
-                function openProgressModal(status) {
-                    selectedStatus = status;
-                    const modal = new bootstrap.Modal(document.getElementById('progressModal'));
-                    modal.show();
-                }
-
-                function submitStatusWithNote() {
-                    const progressNote = document.getElementById('progress-note').value;
-                    document.getElementById('status-input').value = selectedStatus;
-                    document.getElementById('progress-note-input').value = progressNote;
-
-                    // Submit the form after setting the status and progress note
-                    document.getElementById('statusForm').submit();
-                }
-
-                function changeStatus(status) {
-                    document.getElementById('status-input').value = status;
-                    document.getElementById('statusForm').submit();
-                }
-
-                // Function to open the edit progress note modal
-                function openProgressEditModal() {
-                    const modal = new bootstrap.Modal(document.getElementById('editProgressNoteModal'));
-                    modal.show();
-                }
-
-                // Function to submit the form from the modal
-                function submitEditProgressNoteForm() {
-                    document.getElementById('editProgressNoteForm').submit();
-                }
-
-                function submitSpRequestForm() {
-                    document.getElementById('acceptSpRequestForm').submit();
-                }
-            </script>
         </div>
 
         <section class="container">
@@ -655,6 +559,103 @@
         </div>
 
     @endsection
+
+    <script>
+        function changeStatus(status) {
+            document.getElementById('status-input').value = status;
+            event.target.closest('form').submit(); // Submit the form when a status is selected
+        }
+
+        function changePriority(priority) {
+            document.getElementById('priority-input').value = priority;
+            event.target.closest('form').submit(); // Submit the form when a priority is selected
+        }
+
+        function submitAssignEmployeeForm() {
+            document.getElementById('assign-employee-form').submit();
+        }
+
+        function startTimer() {
+            const messageId = @json($message->id); // Pass message ID from Blade to JavaScript
+            const startTime = new Date().toLocaleString();
+            document.getElementById('start-time-display').textContent = 'Start Time: ' + startTime;
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('end-btn').style.display = 'inline-block';
+
+            fetch(`/message/${messageId}/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        location.reload(); // Refresh the page to show the updated status
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function endTimer() {
+            const messageId = @json($message->id); // Pass message ID from Blade to JavaScript
+            const endTime = new Date().toLocaleString();
+            document.getElementById('end-time-display').textContent = 'End Time: ' + endTime;
+            document.getElementById('end-btn').style.display = 'none';
+
+            fetch(`/message/${messageId}/end`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        location.reload(); // Refresh the page to show the updated status
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        let selectedStatus = '';
+
+        function openProgressModal(status) {
+            selectedStatus = status;
+            const modal = new bootstrap.Modal(document.getElementById('progressModal'));
+            modal.show();
+        }
+
+        function submitStatusWithNote() {
+            const progressNote = document.getElementById('progress-note').value;
+            document.getElementById('status-input').value = selectedStatus;
+            document.getElementById('progress-note-input').value = progressNote;
+
+            // Submit the form after setting the status and progress note
+            document.getElementById('statusForm').submit();
+        }
+
+        function changeStatus(status) {
+            document.getElementById('status-input').value = status;
+            document.getElementById('statusForm').submit();
+        }
+
+        // Function to open the edit progress note modal
+        function openProgressEditModal() {
+            const modal = new bootstrap.Modal(document.getElementById('editProgressNoteModal'));
+            modal.show();
+        }
+
+        // Function to submit the form from the modal
+        function submitEditProgressNoteForm() {
+            document.getElementById('editProgressNoteForm').submit();
+        }
+
+        function submitSpRequestForm() {
+            document.getElementById('acceptSpRequestForm').submit();
+        }
+    </script>
+
 </body>
 
 </html>

@@ -168,14 +168,20 @@
                     </select>
                 </div>
 
-            <div class="form-group col-md-3 d-flex justify-content-between" style="height: 38px; margin-top: 24px;">
-                <button type="submit" class="btn btn-primary w-50">Filter</button>
-                <a href="{{ route('superAdmin.allmessages.view') }}" class="btn btn-warning ms-1 w-50">Reset</a>
-                <button class="btn btn-success ms-1 w-50" type="button" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop2" style="margin-left:10px">
-                        Add issue
-                </button>
-            </div>
+                <div class="form-group col-md-3 d-flex justify-content-between" style="height: 38px; margin-top: 24px;">
+                    <!-- Filter Button with fixed width -->
+                    <button type="submit" class="btn btn-primary" style="width: 100px;">Filter</button>
+
+                    <!-- Reset Button with fixed width -->
+                    <a href="{{ route('superAdmin.allmessages.view') }}" class="btn btn-warning ms-1" style="width: 100px;">Reset</a>
+
+                    <!-- Add Issue Button with fixed width -->
+                    <button class="btn btn-success ms-1" type="button" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop2" style="width: 150px; margin-left: 10px;">
+                        Add Issue
+                    </button>
+                </div>
+
         </form>
 
         <!-- Modal -->
