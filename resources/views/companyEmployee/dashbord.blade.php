@@ -29,9 +29,9 @@
 
 
         {{-- start filter section --}}
-        
+
         <div class="container mt-3 mb-5">
-            <form method="GET" action="{{ route('company.employee.dashbord') }}">
+            <form method="GET" action="{{ route('company.employee.dashboard') }}">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-3">
                         <label for="start_date" class="form-label ms-2">Priority</label>
@@ -82,7 +82,7 @@
                 </tr>
             </thead>
             <tbody style="text-align:center">
-   
+
             @if (!empty($messages))
             @foreach ($messages as $oneMessage)
                     <tr>
@@ -157,7 +157,7 @@
                                 </div>
                             </form>
                         </td>
-                        
+
                     </tr>
             @endforeach
             @else
