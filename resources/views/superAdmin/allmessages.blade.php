@@ -120,7 +120,6 @@
         </div>
 
         <section class="px-4 mb-4">
-
             <!-- Filter Form -->
             <section class="px-4 mb-4">
                 <form action="{{ route('superAdmin.allmessages.view') }}" method="GET" class="form-inline row">
