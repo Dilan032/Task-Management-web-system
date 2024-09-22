@@ -28,11 +28,9 @@
         @endif
 
 
-        {{-- start filter section --}}
-
         {{-- Start filter section --}}
 <div class="container mt-3 mb-5">
-    <form action="{{ route('company.employee.dashboard') }}" method="GET" class="form-inline row">
+    <form action="{{ route('company.employee.dashbord') }}" method="GET" class="form-inline row">
         {{-- Filter by institute --}}
         <div class="form-group col-md-3">
             <label for="institute" class="mr-2">Institute :</label>
@@ -77,7 +75,7 @@
             <!-- Filter Button -->
             <button type="submit" class="btn btn-primary" style="width: 120px;">Filter</button>
             <!-- Reset Button -->
-            <a href="{{ route('company.employee.dashboard') }}" class="btn btn-warning ms-1" style="width: 120px;">Reset</a>
+            <a href="{{ route('company.employee.dashbord') }}" class="btn btn-warning ms-1" style="width: 120px;">Reset</a>
         </div>
     </form>
 </div>

@@ -11,7 +11,7 @@
 <div class= "d-flex">
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('company.employee.dashboard') }}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('company.employee.dashbord') }}">Home</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ $messages->institute->institute_name }} Message</li>
     </ol>
 </nav>
