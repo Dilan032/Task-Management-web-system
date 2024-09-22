@@ -117,6 +117,12 @@ Route::controller(CompanyEmployeeController::class)->middleware('UserType:compan
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
     Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
+    Route::post('/companyEmployee/update-message-status/{id}', 'updateStatus')->name('com.update.message.status');
+    Route::post('/companyEmployee/update-message-priority/{id}', 'updatePriority')->name('com.update.message.priority');
+    Route::post('/companyEmployee/message/{id}/start', 'startTimer')->name('com.message.start');
+    Route::post('/companyEmployee/message/{id}/end', 'endTimer')->name('com.message.end');
+    Route::post('/companyEmployee/message/{id}/update', 'updateTimesAndStatus');
+    Route::post('/companyEmployee/messages/{id}/update-progress-note', 'updateProgressNote')->name('com.update.progress.note');
 });
 
 
