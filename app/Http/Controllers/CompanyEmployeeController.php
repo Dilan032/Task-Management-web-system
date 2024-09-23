@@ -39,7 +39,7 @@ class CompanyEmployeeController extends Controller
                 ->where('sp_request', 'Accepted')
                 ->get();
 
-        return view('companyEmployee/dashbord',['messages'=>$messages, 'instituteList'=>$instituteList]);
+        return view('companyEmployee/dashboard',['messages'=>$messages, 'instituteList'=>$instituteList]);
     }
 
     //view institute user message and store current time

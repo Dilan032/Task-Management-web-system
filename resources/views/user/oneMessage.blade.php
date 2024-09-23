@@ -1,7 +1,7 @@
 @extends('layouts.userLayout')
 @section('userContent')
-    <div class="d-flex justify-content-start">
-        <a href="{{ route('user.previous.messages') }}" class="btn btn-primary btn-sm" type="button">Back</a>
+    <div class="d-flex justify-content-start mb-3">
+        <a href="{{ route('user.previous.messages') }}" class="btn btn-primary" type="button">Back</a>
     </div>
     <div class="table-responsive">
         <table class="table table-borderless rounded messageBG" style="overflow-x: hidden;">

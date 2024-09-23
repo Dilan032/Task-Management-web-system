@@ -18,7 +18,7 @@
 
     <link rel="shortcut icon" href="{{ asset('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}" type="image/x-icon">
     <title>Nanosoft Solutions</title>
-    
+
     <style>
         .dropdown-item.in-queue { background-color: #ebe700; }
         .dropdown-item.in-progress { background-color: #ff0000; }
@@ -56,6 +56,9 @@
     <div class="container">
         @yield('companyEmployeeContent')
     </div>
+
+
+    <x-footer />
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

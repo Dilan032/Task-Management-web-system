@@ -33,15 +33,6 @@
             padding-right: 0;
             padding-left: 0;
         }
-
-        /* Body background image */
-        body {
-            background-image: url('{{ asset('images/background image name') }}');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }
     </style>
 
     <title>Nanosoft Solutions</title>
@@ -56,6 +47,8 @@
             @yield('SuperAdminContent')
         </div>
     </div>
+
+    <x-footer />
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

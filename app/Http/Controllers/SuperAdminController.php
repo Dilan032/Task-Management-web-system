@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Message;
 use App\Models\Institute;
@@ -20,7 +21,21 @@ class SuperAdminController extends Controller
     //Super Admin Dashboard View Method
     public function superAdminDashboard()
     {
-        return view('superAdmin\superAdminDashboard');
+        // Count total number of company employees and institutes in the system
+        $employeeCount = User::whereIn('user_type', ['super admin', 'company employee'])->count();
+        $instituteCount = Institute::count();
+
+        // Get the total number of messages(issues) in the system(today)
+        $issuesCount = Message::whereDate('created_at', Carbon::today())->count();
+
+        return view('superAdmin\superAdminDashboard',
+        [
+            'totalEmployees' => $employeeCount,
+            'totalInstitutes' => $instituteCount,
+            'issuesInToday' => $issuesCount
+        ]);
+
+
     }
 
     //Update the company employees details method (institute and company side)

@@ -1,90 +1,68 @@
-<!-- Remove the container if you want to extend the Footer to full width. -->
-<footer class="text-white text-center text-lg-start bg-dark" style="margin-top: 5%;">
-
-    <!-- Grid container -->
-    <div class="container p-4">
-        <!--Grid row-->
-        <div class="row mt-4">
-
-            <!-- About Company Column -->
-            <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase mb-4">About Company</h5>
-
-                <p>
-                    We are a leading company dedicated to providing top-notch services to our customers.
-                    Our goal is to deliver excellence and build trust.
-                </p>
-
-                <p>
-                    Contact us for any inquiries or collaboration opportunities.
-                </p>
-
-                <div class="mt-4">
-                    <!-- Social Media Links -->
-                    <a href="#" class="btn btn-light btn-lg me-2"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="btn btn-light btn-lg me-2"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="btn btn-light btn-lg me-2"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="btn btn-light btn-lg"><i class="fab fa-instagram"></i></a>
+<footer id="site-footer" class="mt-5">
+    <div class="bg-success bg-opacity-25 py-2">
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <h5 class="pb-3"><i class="fa-solid fa-user-group pe-1"></i> About us</h5>
+                    <span class="text-secondary">We are a company specializing in creating computer software. Our company
+                        provides customized software systems for cooperative warehouses, cooperative cities,
+                        microfinance institutions.
+                    </span>
+                </div>
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <h5 class="pb-3"><i class="fa-solid fa-link pe-1"></i>Our Services</h5>
+                    <ul>
+                        <li><span class="text-decoration-none link-secondary">Payroll systems</span></li>
+                        <li><span class="text-decoration-none link-secondary">HR Management Systems</span>
+                        <li><span class="text-decoration-none link-secondary">Hardware restoration</span></li>
+                        <li><span class="text-decoration-none link-secondary">Security camera systems</span></li>
+                        <li><span class="text-decoration-none link-secondary">Bank systems</span></li>
+                        <li><span class="text-decoration-none link-secondary">Server build</span></li>
+                    </ul>
+                </div>
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <h5 class="pb-2"><i class="fa-solid fa-location-dot pe-1"></i>Contact Details</h5>
+                    <div style="margin-left:15px">
+                        <p>
+                            <span class="fw-lighter">📞 0777777777 </span> <br>
+                        </p>
+                        <p>
+                            <span class="fw-lighter">📧 nanosoftsolution@gmail.com</span> <br>
+                        </p>
+                    </div>
+                    <h5 class="pb-2"><i class="fa-solid fa-location-dot pe-1"></i> Our location</h5>
+                    <div style="margin-left:15px">
+                        <span class="text-secondary">
+                            No.227/A, Gettuwana Road,<br>
+                            Kurunegala.<br>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <h5 class="pb-3"><i class="fa-solid fa-paper-plane pe-1"></i> Stay updated</h5>
+                    <form>
+                        <input type="email" class="w-100 mb-2 form-control" name=""
+                            placeholder="Add email for touch latest news!">
+                        <button class="w-100 btn btn-dark">Subscribe now</button>
+                    </form>
                 </div>
             </div>
-            <!--Grid column-->
-
-            <!-- Search and Contact Info Column -->
-            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase mb-4">Contact Us</h5>
-
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <i class="fas fa-home me-2"></i> Warsaw, 00-967, Poland
-                    </li>
-                    <li class="mb-3">
-                        <i class="fas fa-envelope me-2"></i> contact@example.com
-                    </li>
-                    <li class="mb-3">
-                        <i class="fas fa-phone me-2"></i> +48 234 567 88
-                    </li>
-                </ul>
-
-                {{-- <h5 class="text-uppercase mt-4">Search</h5>
-                <div class="form-outline form-white">
-                    <input type="text" id="formControlLg" class="form-control" placeholder="Search..." />
-                </div> --}}
-            </div>
-            <!--Grid column-->
-
-            <!-- Opening Hours Column -->
-            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase mb-4">Opening Hours</h5>
-
-                <table class="table text-white">
-                    <tbody>
-                        <tr>
-                            <td>Mon - Thu:</td>
-                            <td>8am - 9pm</td>
-                        </tr>
-                        <tr>
-                            <td>Fri - Sat:</td>
-                            <td>8am - 1am</td>
-                        </tr>
-                        <tr>
-                            <td>Sunday:</td>
-                            <td>9am - 10pm</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!--Grid column-->
-
         </div>
-        <!--Grid row-->
     </div>
-    <!-- Grid container -->
-
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2024 Copyright:
-        <a class="text-white" href="#">nanosoftsolutions.com</a>
+    <div class="bg-dark py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a class="btn btn-outline-secondary" href="#"><i
+                                    class="bi bi-facebook"></i></a></li>
+                        <li class="list-inline-item"><a class="btn btn-outline-secondary" href="#"><i
+                                    class="bi bi-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-12"><span class="text-secondary pt-1 float-md-end float-sm-start">Copyright
+                        &copy; 2024</span></div>
+            </div>
+        </div>
     </div>
-    <!-- Copyright -->
-
 </footer>

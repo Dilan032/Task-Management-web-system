@@ -22,8 +22,6 @@
     </script>
 @endif
 
-
-
 <!-- Filter Section -->
 <form action="{{ route('administrator.users') }}" method="GET" class="mt-3">
     <div class="row mb-3 align-items-end">
