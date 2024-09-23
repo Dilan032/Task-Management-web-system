@@ -77,4 +77,46 @@ class MessageController extends Controller
 
         return view('user.oneMessage', compact('oneMessage', 'messagesTableDataUser'));
     }
+
+     //function for document pending then user can send support
+     public function sendSupportMessage(Request $request, $mid){
+
+        $message = Message::findOrFail($mid);
+
+        // Define validation rules
+        $rules = [
+            'support_description' => 'nullable|String',
+            'support_img_1' => 'nullable|image|max:4096',
+            'support_img_2' => 'nullable|image|max:4096',
+            'support_img_3' => 'nullable|image|max:4096',
+            'support_img_4' => 'nullable|image|max:4096',
+            'support_img_5' => 'nullable|image|max:4096',
+        ];
+
+        // Check rules
+        $validator = Validator::make($request->all(), $rules);
+
+        // If rules fail
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // add support message
+        $message->support_description = $request->input('support_description');
+
+        // Handle image uploads
+        $imageFields = ['support_img_1', 'support_img_2', 'support_img_3', 'support_img_4', 'support_img_5'];
+        foreach ($imageFields as $field) {
+            if ($request->hasFile($field)) {
+                $imageName = uniqid() . '_' . $field . '.' . $request->$field->extension();
+                $request->$field->move(public_path('images/MessageWithProblem'), $imageName);
+                $message->$field = $imageName;
+            }
+        }
+
+        // Save the message to the database
+        $message->save();
+
+        return redirect()->back()->with('success', 'support message send to the Nanosoft Solutions (Pvt)Ltd');
+    }
 }

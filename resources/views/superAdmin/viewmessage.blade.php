@@ -654,6 +654,10 @@
             </div>
         </div>
 
+
+    {{-- if company employee requered addtional document (that user upload documet show hear) --}}
+    @include('components.user.supportMessage')
+
     @endsection
 </body>
 

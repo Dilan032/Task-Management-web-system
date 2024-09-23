@@ -1,7 +1,9 @@
 @extends('layouts.userLayout')
 @section('userContent')
 
-    @include('components.user.emailForm')
+    <section class="m-5">
+        @include('components.user.emailForm')
+    </section>
 
     {{-- <section class="text-center mb-5" style="--bs-bg-opacity: .5;" id="particles-js"></section> --}}
     {{-- @if (Auth::check())

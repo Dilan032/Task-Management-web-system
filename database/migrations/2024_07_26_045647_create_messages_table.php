@@ -33,6 +33,13 @@ return new class extends Migration
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
 
+            //for document pending [ get support_description and images]
+            $table->string('support_description')->nullable();
+            $table->string('support_img_1')->nullable();
+            $table->string('support_img_2')->nullable();
+            $table->string('support_img_3')->nullable();
+            $table->string('support_img_4')->nullable();
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
         });

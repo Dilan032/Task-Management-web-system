@@ -45,3 +45,71 @@ a:hover{
     text-decoration: none;
     cursor: pointer;
 }
+
+
+
+    /* upload document button for ping effect */
+    .ping {
+        position: relative;
+        display: inline-block;
+      }
+  
+      /* The animated background circle */
+      .ping::before {
+        content: '';
+        position: absolute;
+        top: -120%;
+        left: 1%;
+        width: 150px;
+        height: 150px;
+        background-color: rgba(0, 30, 255, 0.3); /* Blue background with transparency */
+        border-radius: 100%;
+        transform: translate(-50%, -50%);
+        z-index: -1; /* Places it behind the button */
+        -webkit-animation: ping 0.8s ease-in-out infinite both;
+        animation: ping 0.8s ease-in-out infinite both;
+      }
+  
+      /* Button style */
+      .ping button {
+        position: relative;
+        z-index: 1;
+      }
+  
+      /* Ping animation */
+      @-webkit-keyframes ping {
+        0% {
+          -webkit-transform: scale(0.2);
+                  transform: scale(0.2);
+          opacity: 0.8;
+        }
+        80% {
+          -webkit-transform: scale(1.2);
+                  transform: scale(1.2);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: scale(2.2);
+                  transform: scale(2.2);
+          opacity: 0;
+        }
+      }
+  
+      @keyframes ping {
+        0% {
+          -webkit-transform: scale(0.2);
+                  transform: scale(0.2);
+          opacity: 0.8;
+        }
+        80% {
+          -webkit-transform: scale(1.2);
+                  transform: scale(1.2);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: scale(2.2);
+                  transform: scale(2.2);
+          opacity: 0;
+        }
+      }
+  

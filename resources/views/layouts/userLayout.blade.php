@@ -37,6 +37,7 @@
     {{-- Footer (if needed) --}}
     {{-- @include('components.footer') --}}
 
+    
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1hbK99w1Z9rBfbZ3Tsw1Axu+Z2t7lVE5EZ2qpp" crossorigin="anonymous"></script>
 

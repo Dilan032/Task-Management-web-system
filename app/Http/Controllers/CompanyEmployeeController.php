@@ -44,12 +44,12 @@ class CompanyEmployeeController extends Controller
 
     //view institute user message and store current time
     public function messageView($id){
-        $messages = Message::findorFail($id);
+        $oneMessage = Message::findorFail($id);
 
-        $messages->viewed_at = now();
-        $messages->save();
+        $oneMessage->viewed_at = now();
+        $oneMessage->save();
 
-        return view('companyEmployee/message',['messages'=>$messages]);
+        return view('companyEmployee/message',['oneMessage'=>$oneMessage]);
     }
 
     //change company employee password

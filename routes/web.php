@@ -117,7 +117,7 @@ Route::controller(InstituteTypesController::class)->group(function () {
 
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
-    Route::get('/companyEmployee/dashbord', 'index')->name('company.employee.dashbord');
+    Route::get('/companyEmployee/dashboard', 'index')->name('company.employee.dashbord');
 
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
@@ -135,6 +135,8 @@ Route::controller(CompanyEmployeeController::class)->middleware('UserType:compan
 Route::controller(MessageController::class)->middleware('UserType:user')->group(function () {
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
     Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
+    //send support message details to message table
+    Route::post('/user/Message/{mid}', 'sendSupportMessage')->name('send.support.message');
 });
 
 Route::controller(UserController::class)->middleware('UserType:user')->group(function () {
