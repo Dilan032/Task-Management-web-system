@@ -3,6 +3,24 @@
     <div class="d-flex justify-content-start mb-3">
         <a href="{{ route('user.previous.messages') }}" class="btn btn-primary" type="button">Back</a>
     </div>
+
+ 
+        @if (($oneMessage->status == "Document Pending") && !empty($oneMessage->support_description) || !empty($oneMessage->support_img_1) || !empty($oneMessage->support_img_2) || !empty($oneMessage->support_img_3) || !empty($oneMessage->support_img_4) || !empty($oneMessage->support_img_5))
+            {{-- Re-upload the document pending button --}}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-outline-primary ping" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropSendMessage">Re-upload the document</button>
+            </div>
+        @elseif ($oneMessage->status == "Document Pending")
+            {{-- document pending button --}}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-outline-primary ping" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropSendMessage">Upload Document</button>
+            </div>
+        @endif
+
+    {{-- include document upload model --}}
+    @include('components.user.documentPendingModel')
+    
+
     <div class="table-responsive">
         <table class="table table-borderless rounded messageBG" style="overflow-x: hidden;">
             <thead>
@@ -75,104 +93,117 @@
         </table>
     </div>
 
-    <!-- Thumbnail Images -->
-    <div class="container mt-3 mb-5">
+
+     <!-- Thumbnail Images -->
+     <div class="container mt-4 mb-5">
         <p class="fs-6">Pictures of the problem areas :</p>
         <div class="p-3 mb-2 bg-primary-subtle text-black problemImageMainBG rounded">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-2 py-2">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_1) }}" alt="empty"
-                        class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal1">
-                </div>
-                <div class="col-md-2 py-2">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_2) }}" alt="empty"
-                        class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal2">
-                </div>
-                <div class="col-md-2 py-2">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_3) }}" alt="empty"
-                        class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal3">
-                </div>
-                <div class="col-md-2 py-2">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_4) }}" alt="empty"
-                        class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal4">
-                </div>
-                <div class="col-md-2 py-2">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_5) }}" alt="empty"
-                        class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal5">
-                </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-2 py-2">
+                <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_1) }}" alt="empty"
+                class="img-thumbnail problemImage ionHover" data-bs-toggle="modal" data-bs-target="#imageModal1">
             </div>
+
+            <div class="col-md-2 py-2">
+                <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_2) }}" alt="empty"
+                class="img-thumbnail problemImage ionHover" data-bs-toggle="modal" data-bs-target="#imageModal2">
+            </div>
+
+            <div class="col-md-2 py-2">
+                <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_3) }}" alt="empty"
+                class="img-thumbnail problemImage ionHover" data-bs-toggle="modal" data-bs-target="#imageModal3">
+            </div>
+
+            <div class="col-md-2 py-2">
+                <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_4) }}" alt="empty"
+                class="img-thumbnail problemImage ionHover" data-bs-toggle="modal" data-bs-target="#imageModal4">
+            </div>
+
+            <div class="col-md-2 py-2">
+                <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_5) }}" alt="empty"
+                class="img-thumbnail problemImage ionHover" data-bs-toggle="modal" data-bs-target="#imageModal5">
+            </div>
+
+
+        </div>
         </div>
     </div>
 
 
-    <!-- Modals -->
-    <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_1) }}" alt="empty"
-                        class="img-fluid">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+     <!-- Modals -->
+     <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_1) }}" alt="empty" class="img-fluid">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
+  </div>
 
-    <div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_2) }}" alt="empty"
-                        class="img-fluid">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+  <div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_2) }}" alt="empty" class="img-fluid">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
+  </div>
 
-    <div class="modal fade" id="imageModal3" tabindex="-1" aria-labelledby="imageModalLabel3" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_3) }}" alt="empty"
-                        class="img-fluid">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+  <div class="modal fade" id="imageModal3" tabindex="-1" aria-labelledby="imageModalLabel3" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_3) }}" alt="empty" class="img-fluid">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
+  </div>
 
-    <div class="modal fade" id="imageModal4" tabindex="-1" aria-labelledby="imageModalLabel4" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_4) }}" alt="empty"
-                        class="img-fluid">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+  <div class="modal fade" id="imageModal4" tabindex="-1" aria-labelledby="imageModalLabel4" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_4) }}" alt="empty" class="img-fluid">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
+  </div>
 
-    <div class="modal fade" id="imageModal5" tabindex="-1" aria-labelledby="imageModalLabel5" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="{{ asset('images/MessageWithProblem/' . $oneMessage->img_5) }}" alt="empty"
-                        class="img-fluid">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+  <div class="modal fade" id="imageModal5" tabindex="-1" aria-labelledby="imageModalLabel5" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_5) }}" alt="empty" class="img-fluid">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
+  </div>
+
+
+
+
+    <hr>
+    
+    
+    {{-- if company employee requered addtional document (that user upload documet show hear) --}}
+    @include('components.user.supportMessage')
+
+
 @endsection

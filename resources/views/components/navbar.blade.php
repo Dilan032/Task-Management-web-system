@@ -118,7 +118,7 @@
                 <ul class="nav nav-underline me-auto mb-2 mb-lg-0" style="margin-left:40px;">
                     <li class="nav-item mb-2">
                         <a class="nav-link {{ Route::currentRouteName() == 'company.employee.dashboard' ? 'active' : '' }}"
-                            aria-current="page" href="{{ route('company.employee.dashbord') }}">Dashboard</a>
+                            aria-current="page" href="{{ route('company.employee.dashboard') }}">Dashboard</a>
                     </li>
                 </ul>
 
