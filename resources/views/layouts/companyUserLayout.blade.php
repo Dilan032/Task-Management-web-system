@@ -34,11 +34,10 @@
 
         .time-buttons-container {
             display: flex;
-            align-items: center;
         }
 
         .time-info {
-            margin-right: 20px;
+            margin-right: 5px;
         }
 
         .time-info div {

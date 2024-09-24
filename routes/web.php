@@ -117,16 +117,23 @@ Route::controller(InstituteTypesController::class)->group(function () {
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('company.employee.dashboard');
-
     Route::get('/companyEmployee/message/{id}', 'messageView')->name('message');
     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
     Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
+    Route::post('/companyEmployee/update-message-status/{id}', 'updateStatus')->name('com.update.message.status');
+    Route::post('/companyEmployee/update-message-priority/{id}', 'updatePriority')->name('com.update.message.priority');
+    Route::post('/companyEmployee/message/{id}/start', 'startTimer')->name('com.message.start');
+    Route::post('/companyEmployee/message/{id}/end', 'endTimer')->name('com.message.end');
+    Route::post('/companyEmployee/message/{id}/update', 'updateTimesAndStatus');
+    Route::post('/companyEmployee/messages/{id}/update-progress-note', 'updateProgressNote')->name('com.update.progress.note');
 });
 
 
 Route::controller(MessageController::class)->middleware('UserType:user')->group(function () {
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');
     Route::get('/user/Message/{mid}', 'showOneMessage')->name('oneMessageForUser.show');
+    //send support message details to message table
+    Route::post('/user/Message/{mid}', 'sendSupportMessage')->name('send.support.message');
 });
 
 Route::controller(UserController::class)->middleware('UserType:user')->group(function () {

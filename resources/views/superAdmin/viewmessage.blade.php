@@ -558,6 +558,10 @@
             </div>
         </div>
 
+
+    {{-- if company employee requered addtional document (that user upload documet show hear) --}}
+    @include('components.user.supportMessage')
+
     @endsection
 
     <script>
@@ -582,6 +586,16 @@
             document.getElementById('start-btn').style.display = 'none';
             document.getElementById('end-btn').style.display = 'inline-block';
 
+            // Show loading alert
+            Swal.fire({
+                title: 'Starting...',
+                text: 'Please wait while the timer starts.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Show loading spinner
+                }
+            });
+
             fetch(`/message/${messageId}/start`, {
                     method: 'POST',
                     headers: {
@@ -591,10 +605,14 @@
                 }).then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
+                        Swal.close(); // Close the alert on success
                         location.reload(); // Refresh the page to show the updated status
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    Swal.fire('Error', 'There was a problem starting the timer.', 'error');
+                    console.error('Error:', error);
+                });
         }
 
         function endTimer() {
@@ -602,6 +620,16 @@
             const endTime = new Date().toLocaleString();
             document.getElementById('end-time-display').textContent = 'End Time: ' + endTime;
             document.getElementById('end-btn').style.display = 'none';
+
+            // Show loading alert
+            Swal.fire({
+                title: 'Ending...',
+                text: 'Please wait while the timer ends.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Show loading spinner
+                }
+            });
 
             fetch(`/message/${messageId}/end`, {
                     method: 'POST',
@@ -612,10 +640,14 @@
                 }).then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
+                        Swal.close(); // Close the alert on success
                         location.reload(); // Refresh the page to show the updated status
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    Swal.fire('Error', 'There was a problem ending the timer.', 'error');
+                    console.error('Error:', error);
+                });
         }
 
         let selectedStatus = '';
@@ -655,6 +687,7 @@
             document.getElementById('acceptSpRequestForm').submit();
         }
     </script>
+
 
 </body>
 
