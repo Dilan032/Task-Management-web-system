@@ -217,11 +217,7 @@
       </div>
   </div>
 
-
-
-
     <hr>
-
 
     {{-- if company employee requered addtional document (that user upload documet show hear) --}}
     @include('components.user.supportMessage')

@@ -21,8 +21,7 @@
                             </td>
                             <td>
                                 @if ($msg->request == 'Accept')
-                                    <span
-                                        class="badge rounded-pill text-bg-success mt-1 py-1 px-3">{{ $msg->request }}</span>
+                                    <span class="badge rounded-pill text-bg-success mt-1 py-1 px-3">{{ $msg->request }}</span>
                                 @elseif ($msg->request == 'Reject')
                                     <span
                                         class="badge rounded-pill text-bg-danger mt-1 py-1 px-3">{{ $msg->request }}</span>
@@ -62,6 +61,7 @@
                                         {{ $msg->status }}
                                     </span>
                                 @elseif ($msg->status == 'Completed')
+
                                     <span class="badge rounded-pill px-5" style="background-color: #003c96;">
                                         {{ $msg->status }}
                                     </span>

@@ -109,23 +109,23 @@
                         </td>
                         <td>
                             @if ($oneMessage->priority == 'Top Urgent')
-                                <span class="badge rounded-pill px-2 btnInset" style="background-color: #705601;">
+                                <span class="badge rounded-pill px-2 " style="background-color: #705601;">
                                     {{ $oneMessage->priority }}
                                 </span>
                             @elseif ($oneMessage->priority == 'Urgent')
-                                <span class="badge rounded-pill px-3 ms-1 btnInset" style="background-color: #f32121;">
+                                <span class="badge rounded-pill px-3 ms-1 " style="background-color: #f32121;">
                                     {{ $oneMessage->priority }}
                                 </span>
                             @elseif ($oneMessage->priority == 'Medium')
-                                <span class="badge rounded-pill px-3 btnInset" style="background-color: #51a800;">
+                                <span class="badge rounded-pill px-3 " style="background-color: #51a800;">
                                     {{ $oneMessage->priority }}
                                 </span>
                             @elseif ($oneMessage->priority == 'Low')
-                                <span class="badge rounded-pill px-4 ms-1 btnInset" style="background-color: #c4c000;">
+                                <span class="badge rounded-pill px-4 ms-1 " style="background-color: #c4c000;">
                                     {{ $oneMessage->priority }}
                                 </span>
                             @else
-                                <span class="badge rounded-pill text-bg-info btnInset text-dark py-1 px-4">
+                                <span class="badge rounded-pill text-bg-info  text-dark py-1 px-4">
                                     {{ $oneMessage->priority }}
                                 </span>
                             @endif
@@ -134,35 +134,35 @@
                         <td>{{ $oneMessage->institute->institute_address }}</td>
                         <td>
                             @if ($oneMessage->status == 'In Queue')
-                                <span class="badge rounded-pill btnInset px-5" style="background-color: #c4c000;">
+                                <span class="badge rounded-pill  px-5" style="background-color: #c4c000;">
                                     {{ $oneMessage->status }}
                                 </span>
                             @elseif ($oneMessage->status == 'In Progress')
-                                <span class="badge rounded-pill btnInset px-5" style="background-color: #f32121;">
+                                <span class="badge rounded-pill  px-5" style="background-color: #f32121;">
                                     {{ $oneMessage->status }}
                                 </span>
                             @elseif ($oneMessage->status == 'Document Pending')
-                                <span class="badge rounded-pill btnInset px-4" style="background-color: #51a800;">
+                                <span class="badge rounded-pill  px-4" style="background-color: #51a800;">
                                     {{ $oneMessage->status }}
                                 </span>
                             @elseif ($oneMessage->status == 'Postponed')
-                                <span class="badge rounded-pill btnInset px-5" style="background-color: #f436f4; color: black;">
+                                <span class="badge rounded-pill  px-5" style="background-color: #f436f4; color: black;">
                                     {{ $oneMessage->status }}
                                 </span>
                             @elseif ($oneMessage->status == 'Move to Next Day')
-                                <span class="badge rounded-pill btnInset ms-3" style="background-color: #705601;">
+                                <span class="badge rounded-pill  ms-3" style="background-color: #705601;">
                                     {{ $oneMessage->status }}
                                 </span>
                             @elseif ($oneMessage->status == 'Complete in Next Day')
-                                <span class="badge rounded-pill btnInset" style="background-color: #df7700; color: black;">
+                                <span class="badge rounded-pill " style="background-color: #df7700; color: black;">
                                     {{ $oneMessage->status }}
                                 </span>
                             @elseif ($oneMessage->status == 'Completed')
-                                <span class="badge rounded-pill btnInset px-5" style="background-color: #003c96;">
+                                <span class="badge rounded-pill  px-5" style="background-color: #003c96;">
                                     {{ $oneMessage->status }}
                                 </span>
                             @else
-                                <span class="badge rounded-pill text-bg-info text-dark py-1 px-4 btnInset">
+                                <span class="badge rounded-pill text-bg-info text-dark py-1 px-4 ">
                                     {{ $oneMessage->status }}
                                 </span>
                             @endif
