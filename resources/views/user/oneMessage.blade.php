@@ -25,11 +25,11 @@
         <table class="table table-borderless rounded messageBG" style="overflow-x: hidden;">
             <thead>
                 <tr>
-                    <td  class="fs-4 fw-normal">{{ $oneMessage->subject }}</td>
+                    <td  class="fs-5 fw-normal">Topic : {{ $oneMessage->subject }}</td>
                     <td>
                         <div class="text-end">
                             <p>
-                                <span class="badge bg-secondary-subtle text-dark px-4 py-2 fw-light">
+                                <span class="badge bg-secondary-subtle text-dark fw-light">
                                     📅 {{ \Carbon\Carbon::parse($oneMessage->created_at)->format('d M Y ') }}
                                     &nbsp;&nbsp; ⏱
                                     {{ \Carbon\Carbon::parse($oneMessage->created_at)->format('h:i A') }}
@@ -42,43 +42,64 @@
             <tbody class="table-group-divider">
                 <tr>
                     <td colspan="4" class="bg-primary-subtle text-black">
-                        <span class="fw-light">Progress</span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                        <span class="fw-light">Progress :</span>
 
-                        @if ($oneMessage->status == 'Completed')
-                            <span
-                                class="badge rounded text-bg-success  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
-                        @elseif ($oneMessage->status == 'Completed in next day')
-                            <span
-                                class="badge rounded text-bg-warning  mt-1 py-1 px-2">{{ $oneMessage->status }}</span>
-                        @elseif ($oneMessage->status == 'Document Pending')
-                            <span
-                                class="badge rounded text-bg-info  mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
-                        @elseif ($oneMessage->status == 'In Progress')
-                            <span
-                                class="badge rounded text-bg-info  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
-                        @elseif ($oneMessage->status == 'In Queue')
-                            <span
-                                class="badge rounded text-bg-info  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
-                        @elseif ($oneMessage->status == 'Move to next day')
-                            <span
-                                class="badge rounded text-bg-danger  mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
-                        @elseif ($oneMessage->status == 'Postpond')
-                            <span
-                                class="badge rounded text-bg-danger  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
-                        @else
-                            <span
-                                class="badge rounded text-bg-info  mt-1 text-dark py-1 px-4">{{ $oneMessage->status }}</span>
-                        @endif
-
-                        <span class="fw-light">request</span>
+                        @if ($oneMessage->status == 'In Queue')
+                                            <span class="badge rounded-pill"
+                                                style="background-color: #ffd637; color: black; padding: 5px;">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @elseif ($oneMessage->status == 'In Progress')
+                                            <span class="badge rounded-pill"
+                                                style="background-color: #f32121; color: black; padding: 5px;">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @elseif ($oneMessage->status == 'Document Pending')
+                                            <span class="badge rounded-pill"
+                                                style="background-color: #51a800; color: black; padding: 5px;">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @elseif ($oneMessage->status == 'Postponed')
+                                            <span class="badge rounded-pill"
+                                                style="background-color: #f436f4; color: black; padding: 5px;">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @elseif ($oneMessage->status == 'Move to Next Day')
+                                            <span class="badge rounded-pill"
+                                                style="background-color: #705601; color: black; padding: 5px;">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @elseif ($oneMessage->status == 'Complete in Next Day')
+                                            <span class="badge rounded-pill"
+                                                style="background-color: #df7700; color: black; padding: 5px;">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @elseif ($oneMessage->status == 'Completed')
+                                            <span class="badge rounded-pill"
+                                                style="background-color: #003c96; color: black; padding: 5px;">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @else
+                                            <span class="badge rounded-pill text-bg-info text-dark py-1 px-4">
+                                                <small>{{ $oneMessage->status }}</small>
+                                            </span>
+                                        @endif
+                            </div>
+                            <div>
+                        <span class="fw-light">Request :</span>
 
                         @if ($oneMessage->request == 'accept')
-                            <span class="badge text-bg-success  py-1 px-3">{{ $oneMessage->request }}</span>
+                            <span class="badge rounded-pill text-bg-success py-1 px-3">{{ $oneMessage->request }}</span>
                         @elseif ($oneMessage->request == 'reject')
-                            <span class="badge text-bg-danger  py-1 px-3">{{ $oneMessage->request }}</span>
+                            <span class="badge rounded-pill text-bg-danger py-1 px-3">{{ $oneMessage->request }}</span>
                         @else
-                            <span class="badge text-bg-warning  py-1 px-2">{{ $oneMessage->request }}</span>
+                            <span class="badge rounded-pill text-bg-warning py-1 px-3">{{ $oneMessage->request }}</span>
                         @endif
+                            </div>
+                            <div></div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -196,11 +217,7 @@
       </div>
   </div>
 
-
-
-
     <hr>
-
 
     {{-- if company employee requered addtional document (that user upload documet show hear) --}}
     @include('components.user.supportMessage')
