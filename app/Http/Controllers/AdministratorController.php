@@ -180,7 +180,12 @@ class AdministratorController extends Controller
                 ->where('id', $mid)
                 ->first();
 
-            return view('administrator.messageOne', compact('oneMessage', 'messagesTableDataUser'));
+            // Determine the display name based on the user's type
+            $userName = ($messagesTableDataUser->user->user_type == 'super admin' || $messagesTableDataUser->user->user_type == 'company employee')
+                ? 'Nanosoft Solution'
+                : $messagesTableDataUser->user->name;
+
+            return view('administrator.messageOne', compact('oneMessage', 'messagesTableDataUser', 'userName'));
         } else {
             // Redirect to the login page or show an error
             return redirect()->route('login');

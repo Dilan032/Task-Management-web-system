@@ -25,9 +25,10 @@
         </script>
     @endif
 
-    <div class="container">
+    <div class="mt-4">
+
+        <!-- Filter Section -->
         <div class="mt-3">
-            <!-- Filter Section -->
             <form action="{{ route('administrator.messages') }}" method="GET">
                 <div class="row mb-3 align-items-end">
                     <!-- Filter by Date Range -->
@@ -87,7 +88,6 @@
             </form>
         </div>
 
-
         @include('components.administrator.messageModel')
 
         <div class="bg-warning-subtle text-dark text-center fw-lighter">
@@ -97,90 +97,92 @@
             </small>
         </div>
 
-        <section class="mt-1">
-            <div class="p-2 mb-3 bg-black text-white">
-                <div class="text-center d-none d-sm-inline">
-                    <div class="row">
-                        <div class="col-12 col-sm-auto col-md-2">
-                            <span class="">Date</span>
-                        </div>
-                        <div class="col-12 col-sm-auto col-md-1">
-                            <span class="">Request</span>
-                        </div>
-                        <div class="col-12 col-sm-auto col-md-6">
-                            <span class="">Subject</span>
-                        </div>
-                        <div class="col-12 col-sm-auto col-md-2">
-                            <span class="">Status</span>
-                        </div>
-                        <div class="col-12 col-sm-auto col-md-1">
-                            <span class="">Action</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @if ($messages->isNotEmpty())
-                @foreach ($messages as $oneMessage)
-                    <div class="p-1 mb-3 bg-white text-dark messageBG rounded">
-                        <div class="text-center">
-                            <div class="row">
-                                <div class="col-12 col-sm-auto col-md-2">
-                                    <small>{{ \Carbon\Carbon::parse($oneMessage->created_at)->format('d M Y') }}</small>
-                                </div>
-                                <div class="col-12 col-sm-auto col-md-1">
-                                    @if ($oneMessage->request == 'Accept')
-                                        <span
-                                            class="badge rounded-pill text-bg-success btnInset py-1 px-3">{{ $oneMessage->request }}</span>
-                                    @elseif ($oneMessage->request == 'Reject')
-                                        <span
-                                            class="badge rounded-pill text-bg-danger btnInset py-1 px-3">{{ $oneMessage->request }}</span>
-                                    @else
-                                        <span
-                                            class="badge rounded-pill text-bg-warning btnInset py-1">{{ $oneMessage->request }}</span>
-                                    @endif
-                                </div>
-                                <div class="col-12 col-sm-auto col-md-6">
-                                    <span>
-                                        <small>{{ $oneMessage->subject }}</small>
-                                    </span>
-                                </div>
-
-                                <div class="col-12 col-sm-auto col-md-2">
-                                    @php
-                                        $statusClasses = [
-                                            'Completed' => 'text-bg-success',
-                                            'Completed in next day' => 'text-bg-warning',
-                                            'Document Pending' => 'text-bg-info',
-                                            'In Progress' => 'text-bg-info',
-                                            'In Queue' => 'text-bg-info',
-                                            'Move to next day' => 'text-bg-danger',
-                                            'Postponed' => 'text-bg-danger',
-                                        ];
-                                        $statusClass = $statusClasses[$oneMessage->status] ?? 'text-bg-info';
-                                    @endphp
+        <!-- Table Section -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr style="text-align:center">
+                        <th style="height: 60px; vertical-align: middle;">Date</th>
+                        <th style="height: 60px; vertical-align: middle;">Request</th>
+                        <th style="height: 60px; vertical-align: middle;">Subject</th>
+                        <th style="height: 60px; vertical-align: middle;">
+                            Status
+                            @if (request('status'))
+                                <span class="position-relative">
                                     <span
-                                        class="badge rounded-pill {{ $statusClass }} btnInset mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
-                                </div>
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $messages->total() }}
+                                        <span class="visually-hidden">filtered status</span>
+                                    </span>
+                                </span>
+                            @endif
+                        </th>
+                        <th style="height: 60px; vertical-align: middle;">Action</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center">
+                    @if (!empty($messages))
+                        @foreach ($messages as $msg)
+                            <tr>
+                                <td style="vertical-align: middle;">
+                                    <small>{{ \Carbon\Carbon::parse($msg->created_at)->format('d M Y') }}</small>
+                                </td>
 
-                                <div class="col-12 col-sm-auto col-md-1">
-                                    <!-- Button trigger modal -->
-                                    <div class="d-grid gap-2 btnShado">
-                                        <a href="{{ route('oneMessageForAdministrator.show', $oneMessage->id) }}"
-                                            class="btn btn-primary btn-sm" type="button">View</a>
+                                @php
+                                    // Define class mappings for request statuses
+                                    $requestClasses = [
+                                        'Accept' => 'text-bg-success',
+                                        'Reject' => 'text-bg-danger',
+                                    ];
+                                    // Default to warning if not 'Accept' or 'Reject'
+                                    $requestClass = $requestClasses[$msg->request] ?? 'text-bg-warning';
+
+                                    // Define class mappings for message statuses
+                                    $statusClasses = [
+                                        'In Queue' => 'background-color: #c4c000;',
+                                        'In Progress' => 'background-color: #f32121;',
+                                        'Document Pending' => 'background-color: #51a800;',
+                                        'Postponed' => 'background-color: #f436f4; color: black;',
+                                        'Move to Next Day' => 'background-color: #705601;',
+                                        'Complete in Next Day' => 'background-color: #df7700; color: black;',
+                                        'Completed' => 'background-color: #003c96;',
+                                    ];
+                                    // Default to info if no match
+                                    $statusClass = $statusClasses[$msg->status] ?? 'background-color: #d1e7dd;';
+                                @endphp
+
+                                <td style="vertical-align: middle;">
+                                    <span
+                                        class="badge rounded-pill {{ $requestClass }} py-1 px-4">{{ $msg->request }}</span>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <small>{{ $msg->subject }}</small>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <span class="badge rounded-pill py-1 px-4" style="{{ $statusClass }}">
+                                        {{ $msg->status }}
+                                    </span>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <div class="d-grid gap-2">
+                                        <a href="{{ route('oneMessageForAdministrator.show', $msg->id) }}"
+                                            class="btn btn-outline-primary btn-sm" type="button">View</a>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-                <!-- Pagination links -->
-                <div style="margin-top:30px">
-                    {{ $messages->links() }}
-                </div>
-            @else
-                <p>No messages found</p>
-            @endif
-        </section>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <p>No Task found</p>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Links -->
+        <div style="margin-top:30px">
+            {{ $messages->links() }}
+        </div>
+
     </div>
+
 @endsection

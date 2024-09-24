@@ -27,13 +27,13 @@
 
     <section class="container">
         <div class="table-responsive">
-            <a href="{{ route('administrator.messages') }}" class="btn btn-primary mb-1" type="button">Back</a>
+            <a href="{{ route('administrator.messages') }}" class="btn btn-primary mb-1 mt-4" type="button">Back</a>
             <table class="table table-borderless rounded messageBG">
                 <thead>
                     <tr>
                         <td>
                             <div style="font-size: 17px;">
-                                <b>{{ $messagesTableDataUser->user->name }}</b>'s submited issue :
+                                <b>{{ $userName }}</b>'s submitted issue:
                             </div>
                         </td>
                         <td>
@@ -181,7 +181,7 @@
         @endfor
     </section>
 
-    
+
         {{-- if company employee requered addtional document (that user upload documet show hear) --}}
         @include('components.user.supportMessage')
 

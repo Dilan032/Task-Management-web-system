@@ -23,7 +23,7 @@
 @endif
 
 <!-- Filter Section -->
-<form action="{{ route('administrator.users') }}" method="GET" class="mt-3">
+<form action="{{ route('administrator.users') }}" method="GET" class="mt-4">
     <div class="row mb-3 align-items-end">
 
         <!-- Search by Employee Name -->
