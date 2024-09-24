@@ -78,7 +78,7 @@
                                             </span>
                                         @elseif ($oneMessage->status == 'Completed')
                                             <span class="badge rounded-pill"
-                                                style="background-color: #003c96; color: black; padding: 5px;">
+                                                style="background-color: #003c96; color: white; padding: 5px;">
                                                 <small>{{ $oneMessage->status }}</small>
                                             </span>
                                         @else

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('assigned_employee');//This column store the assigned company employee
             $table->string('subject');
             $table->string('message');
-            $table->enum('priority', ['Top Urgent(2min)', 'Urgent(5min)', 'Medium(2hrs)', 'Low(1day)'])->default('Low(1day)');
+            $table->enum('priority', ['Top Urgent', 'Urgent', 'Medium', 'Low'])->default('Low');
             $table->enum('status', ['In Queue', 'In Progress', 'Document Pending', 'Postponed', 'Move to next day', 'Complete in next day', 'Completed'])->default('In Queue');
             $table->enum('request',['Pending', 'Accept', 'Reject'])->default('Pending');
             $table->enum('sp_request',['Pending', 'Accepted'])->default('Pending');
@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('support_img_2')->nullable();
             $table->string('support_img_3')->nullable();
             $table->string('support_img_4')->nullable();
+            $table->string('support_img_5')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
