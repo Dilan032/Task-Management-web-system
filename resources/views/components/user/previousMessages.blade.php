@@ -1,36 +1,27 @@
-<div class="margin-top:20px">
+<div class="mt-5">
 
-    <div class="p-2 mt-3 bg-black text-white">
-        <div class="text-center d-none d-sm-inline">
-            <div class="row">
-                <div class="col-12 col-sm-auto col-md-2">
-                    <span class="">Date</span>
-                </div>
-                <div class="col-12 col-sm-auto col-md-1">
-                    <span class="">Request</span>
-                </div>
-                <div class="col-12 col-sm-auto col-md-6">
-                    <span class="">Subject</span>
-                </div>
-                <div class="col-12 col-sm-auto col-md-2">
-                    <span class="">Progress</span>
-                </div>
-                <div class="col-12 col-sm-auto col-md-1">
-                    <span class="">Action</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    @foreach ($messages as $msg)
-        {{-- start message content --}}
-        <div class="mb-3 bg-primary-subtle text-black messageBG rounded">
-            <div class="text-center">
-                <div class="row">
-                    <div class="col-12 col-sm-auto col-md-2">
+     <!-- Table Section -->
+     <div class="table-responsive">
+     <table class="table table-sm align-middle">
+        <thead class="table-dark">
+            <tr style="text-align:center">
+                <td style="height: 30px; ">Date</td>
+                <td style="height: 30px; ">Request</td>
+                <td style="height: 30px;  ">Subject</td>
+                <td style="height: 30px; ">Progress</td>
+                <td style="height: 30px; ">Action</td>
+            </tr>
+        </thead>
+        <tbody style="text-align:center">
+
+        @if (!empty($messages))
+        @foreach ($messages as $msg)
+                <tr>
+                    <td>
                         <small>{{ \Carbon\Carbon::parse($msg->created_at)->format('d M Y') }}</small>
-                    </div>
-                    <div class="col-12 col-sm-auto col-md-1">
+                    </td> 
+                    <td>
                         @if ($msg->request == 'Accept')
                             <span
                                 class="badge rounded-pill text-bg-success btnInset mt-1 py-1 px-3">{{ $msg->request }}</span>
@@ -41,50 +32,61 @@
                             <span
                                 class="badge rounded-pill text-bg-warning btnInset mt-1 py-1 px-2">{{ $msg->request }}</span>
                         @endif
-                    </div>
-                    <div class="col-12 col-sm-auto col-md-6">
-                        <span>
-                            <small>{{ $msg->subject }}</small>
-                        </span>
-                    </div>
-                    <div class="col-12 col-sm-auto col-md-2">
-                        @if ($msg->status == 'Completed')
-                            <span
-                                class="badge rounded-pill text-bg-success btnInset mt-1 py-1 px-5">{{ $msg->status }}</span>
-                        @elseif ($msg->status == 'Completed in next day')
-                            <span
-                                class="badge rounded-pill text-bg-warning btnInset mt-1 py-1 px-2">{{ $msg->status }}</span>
-                        @elseif ($msg->status == 'Document Pending')
-                            <span
-                                class="badge rounded-pill text-bg-info btnInset mt-1 py-1 px-4">{{ $msg->status }}</span>
+                    </td>   
+                    <td>
+                        <small>{{ $msg->subject }}</small>
+                    </td> 
+                    <td style="vertical-align: middle;">
+                        @if ($msg->status == 'In Queue')
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #c4c000;">
+                                {{ $msg->status }}
+                            </span>
                         @elseif ($msg->status == 'In Progress')
-                            <span
-                                class="badge rounded-pill text-bg-info btnInset mt-1 py-1 px-5">{{ $msg->status }}</span>
-                        @elseif ($msg->status == 'In Queue')
-                            <span
-                                class="badge rounded-pill text-bg-info btnInset mt-1 py-1 px-5">{{ $msg->status }}</span>
-                        @elseif ($msg->status == 'Move to next day')
-                            <span
-                                class="badge rounded-pill text-bg-danger btnInset mt-1 py-1 px-4">{{ $msg->status }}</span>
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #f32121;">
+                                {{ $msg->status }}
+                            </span>
+                        @elseif ($msg->status == 'Document Pending')
+                            <span class="badge rounded-pill btnInset px-4" style="background-color: #51a800;">
+                                {{ $msg->status }}
+                            </span>
                         @elseif ($msg->status == 'Postponed')
-                            <span
-                                class="badge rounded-pill text-bg-danger btnInset mt-1 py-1 px-5">{{ $msg->status }}</span>
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #f436f4; color: black;">
+                                {{ $msg->status }}
+                            </span>
+                        @elseif ($msg->status == 'Move to Next Day')
+                            <span class="badge rounded-pill btnInset ms-3" style="background-color: #705601;">
+                                {{ $msg->status }}
+                            </span>
+                        @elseif ($msg->status == 'Complete in Next Day')
+                            <span class="badge rounded-pill btnInset" style="background-color: #df7700; color: black;">
+                                {{ $msg->status }}
+                            </span>
+                        @elseif ($msg->status == 'Completed')
+                            <span class="badge rounded-pill btnInset px-5" style="background-color: #003c96;">
+                                {{ $msg->status }}
+                            </span>
                         @else
-                            <span
-                                class="badge rounded-pill text-bg-info btnInset mt-1 text-dark py-1 px-4">{{ $msg->status }}</span>
+                            <span class="badge rounded-pill text-bg-info text-dark py-1 px-4 btnInset">
+                                {{ $msg->status }}
+                            </span>
                         @endif
-                    </div>
-                    <div class="col-12 col-sm-auto col-md-1">
+                    </td>   
+                    <td>
                         <!-- Button trigger modal -->
                         <div class="d-grid gap-2">
                             <a href="{{ route('oneMessageForUser.show', $msg->id) }}" class="btn btn-primary btn-sm"
                                 type="button">View</a>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
+                    </td>          
+                </tr>
+        @endforeach
+        @else
+            <p>No Task found</p>
+        @endif
+
+        </tbody>
+    </table>
+     </div>
 
     {{-- Pagination links --}}
     <div style="margin-top:30px">

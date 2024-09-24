@@ -6,7 +6,6 @@
 </head>
 <body>
 @section('companyEmployeeContent')
-
 <div class= "d-flex justify-content-between mt-3 mb-3">
 <div class= "d-flex">
 <nav aria-label="breadcrumb">
@@ -129,8 +128,6 @@
                     });
                 </script>
             @endif
-
-
 
 <!-- Modal for Progress Note -->
 <div class="modal fade" id="progressModal2" tabindex="-1" aria-labelledby="progressModalLabel"
@@ -325,19 +322,19 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
             <div class="p-1 mb-2 bg-primary-subtle text-dark problemImageMainBG rounded">
                 <div class="row d-flex justify-content-center mx-auto">
                     <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_1) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal1">
+                        <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_1) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal1">
                     </div>
                     <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_2) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal2">
+                        <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_2) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal2">
                     </div>
                     <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_3) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal3">
+                        <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_3) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal3">
                     </div>
                     <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_4) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal4">
+                        <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_4) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal4">
                     </div>
                     <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_5) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal5">
+                        <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_5) }}" alt="empty" class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal5">
                     </div>
                 </div>
             </div>
@@ -349,7 +346,7 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
                   <div class="modal-body">
-                      <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_1) }}" alt="Full Image 1" class="img-fluid">
+                      <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_1) }}" alt="Full Image 1" class="img-fluid">
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -362,7 +359,7 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
                   <div class="modal-body">
-                      <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_2) }}" alt="Full Image 2" class="img-fluid">
+                      <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_2) }}" alt="Full Image 2" class="img-fluid">
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -375,7 +372,7 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
                   <div class="modal-body">
-                      <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_3) }}" alt="Full Image 3" class="img-fluid">
+                      <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_3) }}" alt="Full Image 3" class="img-fluid">
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -388,7 +385,7 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
                   <div class="modal-body">
-                      <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_4) }}" alt="Full Image 4" class="img-fluid">
+                      <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_4) }}" alt="Full Image 4" class="img-fluid">
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -401,7 +398,7 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content">
                   <div class="modal-body">
-                      <img src="{{ asset('images/MessageWithProblem/'.$messages-> img_5) }}" alt="Full Image 5" class="img-fluid">
+                      <img src="{{ asset('images/MessageWithProblem/'.$oneMessage-> img_5) }}" alt="Full Image 5" class="img-fluid">
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -420,16 +417,16 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
             <span class="fs-5 fw-normal">Institute Details</span>
             <p>
                 <div class="p-1 mb-1 bg-white text-dark rounded shado">
-                    <span class="fw-normal">Name :</span> {{$messages->institute->institute_name}}
+                    <span class="fw-normal">Name :</span> {{$oneMessage->institute->institute_name}}
                 </div>
                 <div class="p-1 mb-1 bg-white text-dark rounded shado">
-                    <span class="fw-normal">Address :</span> {{$messages->institute->institute_address}}
+                    <span class="fw-normal">Address :</span> {{$oneMessage->institute->institute_address}}
                 </div>
                 <div class="p-1 mb-1 bg-white text-dark rounded shado">
-                    <span class="fw-normal">Contact Number :</span> {{$messages->institute->institute_contact_num}}
+                    <span class="fw-normal">Contact Number :</span> {{$oneMessage->institute->institute_contact_num}}
                 </div>
                 <div class="p-1 mb-1 bg-white text-dark rounded shado">
-                    <span class="fw-normal">Email :</span> {{$messages->institute->email}}
+                    <span class="fw-normal">Email :</span> {{$oneMessage->institute->email}}
                 </div>
             </p>
         </div>
@@ -437,13 +434,13 @@ aria-labelledby="editProgressNoteModalLabel" aria-hidden="true">
             <span class="mt-5 mt-md-0 fs-5 fw-normal">Message Sender Details</span>
             <p>
                 <div class="p-1 mb-1 bg-white text-dark rounded shado">
-                    <span class="fw-normal">Name :</span> {{$messages->user->name}}
+                    <span class="fw-normal">Name :</span> {{$oneMessage->user->name}}
                 </div>
                 <div class="p-1 mb-1 bg-white text-dark rounded shado">
-                    <span class="fw-normal">Contact Number :</span> {{$messages->user->user_contact_num}}
+                    <span class="fw-normal">Contact Number :</span> {{$oneMessage->user->user_contact_num}}
                 </div>
                 <div class="p-1 mb-1 bg-white text-dark rounded shado">
-                    <span class="fw-normal">Email :</span> {{$messages->user->email}}
+                    <span class="fw-normal">Email :</span> {{$oneMessage->user->email}}
                 </div>
             </p>
         </div>

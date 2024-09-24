@@ -51,7 +51,6 @@ class CompanyEmployeeController extends Controller
         ]);
     }
 
-
     //view institute user message and store current time
     public function messageView($id)
     {
@@ -63,6 +62,7 @@ class CompanyEmployeeController extends Controller
     }
 
     return view('companyEmployee/message', ['messages' => $messages]);
+
     }
 
     //change company employee password
