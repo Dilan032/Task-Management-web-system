@@ -463,7 +463,7 @@
                                             </span>
                                         @elseif ($message->status == 'Completed')
                                             <span class="badge rounded-pill"
-                                                style="background-color: #003c96; color: black; padding: 5px;">
+                                                style="background-color: #003c96; color: white; padding: 5px;">
                                                 <small>{{ $message->status }}</small>
                                             </span>
                                         @else

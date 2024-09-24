@@ -1,13 +1,5 @@
 @extends('layouts.superAdminLayout')
 
-<!-- Font Awesome Free 6.x CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js"></script>
-
-
 @section('SuperAdminContent')
 
     <!-- Display validation errors -->
@@ -54,10 +46,4 @@
 
 @endsection
 
-<!-- Font Awesome Free 6.x JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
-<!-- Font Awesome SVG Framework -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
