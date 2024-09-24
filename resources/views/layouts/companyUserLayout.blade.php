@@ -18,7 +18,7 @@
 
     <link rel="shortcut icon" href="{{ asset('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}" type="image/x-icon">
     <title>Nanosoft Solutions</title>
-    
+
     <style>
         .dropdown-item.in-queue { background-color: #ebe700; }
         .dropdown-item.in-progress { background-color: #ff0000; }
@@ -34,11 +34,10 @@
 
         .time-buttons-container {
             display: flex;
-            align-items: center;
         }
 
         .time-info {
-            margin-right: 20px;
+            margin-right: 5px;
         }
 
         .time-info div {
