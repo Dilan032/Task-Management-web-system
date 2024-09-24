@@ -29,56 +29,63 @@
 
 
         {{-- Start filter section --}}
-<div class="container mt-3 mb-5">
-    <form action="{{ route('company.employee.dashbord') }}" method="GET" class="form-inline row">
-        {{-- Filter by institute --}}
-        <div class="form-group col-md-3">
-            <label for="institute" class="mr-2">Institute :</label>
-            <select name="institute_id" class="form-control w-100">
-                <option value="">None</option>
-                @foreach ($assignedInstitutes as $institute)
-                    <option value="{{ $institute->id }}" {{ request()->institute_id == $institute->id ? 'selected' : '' }}>
-                        {{ $institute->institute_name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
 
-        {{-- Filter by priority --}}
-        <div class="form-group col-md-3">
-            <label for="priority" class="mr-2">Priority :</label>
-            <select name="priority" class="form-control w-100">
-                <option value="">None</option>
-                <option value="Top Urgent" {{ request()->priority == 'Top Urgent' ? 'selected' : '' }}>Top Urgent</option>
-                <option value="Urgent" {{ request()->priority == 'Urgent' ? 'selected' : '' }}>Urgent</option>
-                <option value="Medium" {{ request()->priority == 'Medium' ? 'selected' : '' }}>Medium</option>
-                <option value="Low" {{ request()->priority == 'Low' ? 'selected' : '' }}>Low</option>
-            </select>
-        </div>
+        <div class="container mt-3 mb-5">
+            <form action="{{ route('company.employee.dashboard') }}" method="GET" class="form-inline row">
+                {{-- Filter by institute --}}
+                <div class="form-group col-md-3">
+                    <label for="institute" class="mr-2">Institute :</label>
+                    <select name="institute_id" class="form-control w-100">
+                        <option value="">None</option>
+                        @foreach ($assignedInstitutes as $institute)
+                            <option value="{{ $institute->id }}" {{ request()->institute_id == $institute->id ? 'selected' : '' }}>
+                                {{ $institute->institute_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-        {{-- Filter by progress/status --}}
-        <div class="form-group col-md-3">
-            <label for="progress" class="mr-2">Progress :</label>
-            <select name="progress" class="form-control w-100">
-                <option value="">None</option>
-                <option value="In Queue" {{ request()->progress == 'In Queue' ? 'selected' : '' }}>In Queue</option>
-                <option value="In Progress" {{ request()->progress == 'In Progress' ? 'selected' : '' }}>In Progress</option>
-                <option value="Document Pending" {{ request()->progress == 'Document Pending' ? 'selected' : '' }}>Document Pending</option>
-                <option value="Postponed" {{ request()->progress == 'Postponed' ? 'selected' : '' }}>Postponed</option>
-                <option value="Move to Next Day" {{ request()->progress == 'Move to Next Day' ? 'selected' : '' }}>Move to Next Day</option>
-                <option value="Complete in Next Day" {{ request()->progress == 'Complete in Next Day' ? 'selected' : '' }}>Complete in Next Day</option>
-                <option value="Completed" {{ request()->progress == 'Completed' ? 'selected' : '' }}>Completed</option>
-            </select>
-        </div>
+                {{-- Filter by priority --}}
+                <div class="form-group col-md-3">
+                    <label for="priority" class="mr-2">Priority :</label>
+                    <select name="priority" class="form-control w-100">
+                        <option value="">None</option>
+                        <option value="Top Urgent" {{ request()->priority == 'Top Urgent' ? 'selected' : '' }}>Top Urgent</option>
+                        <option value="Urgent" {{ request()->priority == 'Urgent' ? 'selected' : '' }}>Urgent</option>
+                        <option value="Medium" {{ request()->priority == 'Medium' ? 'selected' : '' }}>Medium</option>
+                        <option value="Low" {{ request()->priority == 'Low' ? 'selected' : '' }}>Low</option>
+                    </select>
+                </div>
 
-        <div class="form-group col-md-3 d-flex justify-content-between" style="height: 38px; margin-top: 24px;">
-            <!-- Filter Button -->
-            <button type="submit" class="btn btn-primary" style="width: 120px;">Filter</button>
-            <!-- Reset Button -->
-            <a href="{{ route('company.employee.dashbord') }}" class="btn btn-warning ms-1" style="width: 120px;">Reset</a>
+                {{-- Filter by progress/status --}}
+                <div class="form-group col-md-3">
+                    <label for="progress" class="mr-2">Progress :</label>
+                    <select name="progress" class="form-control w-100">
+                        <option value="">None</option>
+                        <option value="In Queue" {{ request()->progress == 'In Queue' ? 'selected' : '' }}>In Queue</option>
+                        <option value="In Progress" {{ request()->progress == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                        <option value="Document Pending" {{ request()->progress == 'Document Pending' ? 'selected' : '' }}>Document Pending</option>
+                        <option value="Postponed" {{ request()->progress == 'Postponed' ? 'selected' : '' }}>Postponed</option>
+                        <option value="Move to Next Day" {{ request()->progress == 'Move to Next Day' ? 'selected' : '' }}>Move to Next Day</option>
+                        <option value="Complete in Next Day" {{ request()->progress == 'Complete in Next Day' ? 'selected' : '' }}>Complete in Next Day</option>
+                        <option value="Completed" {{ request()->progress == 'Completed' ? 'selected' : '' }}>Completed</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-3" style="margin-top: 18px;">
+                    <div class="row mt-2">
+                        <!-- Filter Button -->
+                        <div class="col-6" style="width: 140px;">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
+                        <!-- Reset Button -->
+                        <div class="col-6"  style="width: 140px;">
+                            <a href="{{ route('company.employee.dashboard') }}" class="btn btn-warning w-100" style="width: 120px;">Reset</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
 
         {{-- end filter section --}}
 

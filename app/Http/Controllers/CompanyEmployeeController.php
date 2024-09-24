@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class CompanyEmployeeController extends Controller
 {
-    //company Employee Dashbord
+    //company Employee Dashboard
     public function index(Request $request) {
         $loginUserId = Auth::user()->id;
         $employee = DB::table('users')->where('id', $loginUserId)->select('name')->first();
@@ -45,7 +45,7 @@ class CompanyEmployeeController extends Controller
         // Get filtered messages
         $messages = $messagesQuery->get();
 
-        return view('companyEmployee/dashbord', [
+        return view('companyEmployee/dashboard', [
             'messages' => $messages,
             'assignedInstitutes' => $assignedInstitutes,
         ]);
