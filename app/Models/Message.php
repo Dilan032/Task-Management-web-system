@@ -28,7 +28,13 @@ class Message extends Model
         'start_time',
         'end_time',
         'progress_note',
-        'viewed_at'
+        'viewed_at',
+        'support_description',
+        'support_img_1',
+        'support_img_2',
+        'support_img_3',
+        'support_img_4',
+        'support_img_5'
     ];
 
     public function user() {
