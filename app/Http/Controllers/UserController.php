@@ -55,7 +55,7 @@ class UserController extends Controller
             'institute_id' => 'required|exists:institutes,id',
             'password' => 'required|string|min:8|max:32|confirmed',
             'user_contact_num' => 'required|string|max:12',
-            'email' => 'required|string|email|max:255|unique:users,email',
+            'email' => 'required|string|email|max:255|unique:users,email', 
             'user_type' => 'required|string|in:administrator,user',
             'name' => 'required|string|max:255',
         ];

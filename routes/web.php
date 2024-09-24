@@ -13,7 +13,7 @@ use App\Http\Controllers\AllMessagesController;
 use App\Http\Controllers\ViewMessageController;
 use App\Http\Controllers\LoacationController;
 use App\Http\Controllers\DeviceDetectorController;
-
+use App\Http\Controllers\UserActivityController;
 
 Route::get('/', function () {
     return view('auth.login');
