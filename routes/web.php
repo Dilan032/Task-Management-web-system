@@ -42,6 +42,9 @@ Route::controller(SuperAdminController::class)
 
         Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
 
+        //View all users (Super Admins, Company Employees) route
+        Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
+
         //Company Employees Details Update and Delete routes
         Route::put('/company-employee/details/update/{id}', 'companyEmpUpdate')->name('companyEmp.details.update');
         Route::delete('/company-employee/delete/{id}', 'companyEmpDelete')->name('company.employee.delete');
@@ -71,9 +74,9 @@ Route::controller(SuperAdminController::class)
         Route::get('/superAdmin/logout', 'superAdminLogout')->name('superAdmin.logout');
     });
 
-Route::controller(SuperAdminController::class)->middleware('UserType:super admin')->group(function () {
-    Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
-});
+// Route::controller(SuperAdminController::class)->middleware('UserType:super admin')->group(function () {
+//     Route::get('/superAdmin/users', 'ViewUsers')->name('superAdmin.users.view');
+// });
 
 // Define route for viewing a single message
 Route::controller(ViewMessageController::class)->middleware('UserType:super admin')->group(function () {
@@ -125,13 +128,6 @@ Route::controller(CompanyEmployeeController::class)->middleware('UserType:compan
     Route::post('/companyEmployee/messages/{id}/update-progress-note', 'updateProgressNote')->name('com.update.progress.note');
 });
 
-
-//Institute employees message send routes....
-//company employee view message and submit current time to message table
-// Route::controller(MessageController::class)->middleware('UserType:user')->group(function (){
-//     Route::post('/companyEmployee/message/{id}', 'messageView')->name('company.employee.messageView');
-//     Route::get('/companyEmployee/password', 'changePassword')->name('change.password');
-// });
 
 Route::controller(MessageController::class)->middleware('UserType:user')->group(function () {
     Route::post('/user/dashboard', 'SaveMessage')->name('message.save');

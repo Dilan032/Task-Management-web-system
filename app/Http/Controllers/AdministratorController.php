@@ -17,8 +17,7 @@ use Illuminate\Support\Facades\Validator;
 class AdministratorController extends Controller
 {
     //Institute administrator dashboard view load function
-    // TODO : Modify this function.
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::check()) {
             $instituteId = Auth::user()->institute_id;
@@ -65,70 +64,80 @@ class AdministratorController extends Controller
             ->where('status', 'inactive')
             ->count();
 
-        //get message table details
+        //get message table details send by institute employee
         $NumMessages = DB::table('messages')
             ->where('institute_id', $instituteId)
             ->count();
 
-        $NumPendingMsg = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->where('request', 'pending')
-            ->count();
-        $NumAcceptMsg = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->where('request', 'accept')
-            ->count();
-        $NumRejectMsg = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->where('request', 'reject')
-            ->count();
+        // $NumPendingMsg = DB::table('messages')
+        //     ->where('institute_id', $instituteId)
+        //     ->where('request', 'pending')
+        //     ->count();
+        // $NumAcceptMsg = DB::table('messages')
+        //     ->where('institute_id', $instituteId)
+        //     ->where('request', 'accept')
+        //     ->count();
+        // $NumRejectMsg = DB::table('messages')
+        //     ->where('institute_id', $instituteId)
+        //     ->where('request', 'reject')
+        //     ->count();
 
-        // message status count
-        $NumSolvedMsg = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->where('status', 'solved')
-            ->count();
-        $NumNotSolvedMsg = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->where('status', 'not resolved')
-            ->where('request', 'accept')
-            ->count();
-        $NumProcessing = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->where('status', 'Processing')
-            ->count();
-        $NumViewed = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->where('status', 'Viewed')
-            ->count();
+        // Get the selected filter from the request
+        $filter = $request->input('filter', 'today'); // Default to 'today'
 
-        $superAdminDetails = DB::table('users')
-            ->where('user_type', 'super admin')
-            ->get();
+        // Base query for messages
+        $messagesQuery = DB::table('messages')->where('institute_id', $instituteId);
 
-        return view(
-            'administrator.administratorDashbord',
+        // Apply filter based on selection
+        if ($filter === 'yesterday') {
+            $messagesQuery->whereDate('created_at', now()->subDay());
+        } elseif ($filter === 'last_week') {
+            $messagesQuery->whereDate('created_at', '>=', now()->subWeek());
+        } elseif ($filter === 'last_month') {
+            $messagesQuery->whereDate('created_at', '>=', now()->subMonth());
+        } else {
+            // Default is today
+            $messagesQuery->whereDate('created_at', now());
+        }
 
-            [
-                'institute' => $institute,
-                'userName' => $userName,
-                'NumAdministrators' => $NumAdministrators,
-                'NumUsers' => $NumUsers,
-                'NumActiveUsers' => $NumActiveUsers,
-                'NumInactiveUsers' => $NumInactiveUsers,
-                'NumActiveAdministrators' => $NumActiveAdministrators,
-                'NumInactiveAdministrators' => $NumInactiveAdministrators,
-                'NumMessages' => $NumMessages,
-                'NumPendingMsg' => $NumPendingMsg,
-                'NumAcceptMsg' => $NumAcceptMsg,
-                'NumRejectMsg' => $NumRejectMsg,
-                'NumSolvedMsg' => $NumSolvedMsg,
-                'NumNotSolvedMsg' => $NumNotSolvedMsg,
-                'superAdminDetails' => $superAdminDetails,
-                'NumProcessing' => $NumProcessing,
-                'NumViewed' => $NumViewed
-            ]
-        );
+        // Count messages based on the filter
+        $NumMessages = $messagesQuery->count();
+
+        // Count specific message requests based on the same filter
+        $NumPendingMsg = $messagesQuery->clone()->where('request', 'pending')->count();
+        $NumAcceptMsg = $messagesQuery->clone()->where('request', 'accept')->count();
+        $NumRejectMsg = $messagesQuery->clone()->where('request', 'reject')->count();
+
+        // Message status count
+        $NumSolvedMsg = $messagesQuery->clone()->where('status', 'Completed')->count();
+        $NumDocPendingMsg = $messagesQuery->clone()->where('status', 'Document Pending')->count();
+
+        // Count for processing statuses
+        $NumProcessing = $messagesQuery->clone()->whereIn('status', [
+            'In Queue',
+            'In Progress',
+            'Postponed',
+            'Move to next day',
+            'Complete in next day'
+        ])->count();
+
+        return view('administrator.administratorDashbord', [
+            'institute' => $institute,
+            'userName' => $userName,
+            'NumAdministrators' => $NumAdministrators,
+            'NumUsers' => $NumUsers,
+            'NumActiveUsers' => $NumActiveUsers,
+            'NumInactiveUsers' => $NumInactiveUsers,
+            'NumActiveAdministrators' => $NumActiveAdministrators,
+            'NumInactiveAdministrators' => $NumInactiveAdministrators,
+            'NumMessages' => $NumMessages,
+            'NumPendingMsg' => $NumPendingMsg,
+            'NumAcceptMsg' => $NumAcceptMsg,
+            'NumRejectMsg' => $NumRejectMsg,
+            'NumSolvedMsg' => $NumSolvedMsg,
+            'NumDocPendingMsg' => $NumDocPendingMsg,
+            'NumProcessing' => $NumProcessing,
+        ]);
     }
 
     //Institute administrator message showing function.
@@ -201,9 +210,9 @@ class AdministratorController extends Controller
         }
         //get problem occur user details
         $problemSendserUser = DB::table('users')
-                            ->where('id', $problemSendserUserId)
-                            ->select('name', 'user_contact_num', 'email')
-                            ->first();
+            ->where('id', $problemSendserUserId)
+            ->select('name', 'user_contact_num', 'email')
+            ->first();
 
         $userName = $problemSendserUser->name;
         $user_contact_num = $problemSendserUser->user_contact_num;
@@ -228,20 +237,29 @@ class AdministratorController extends Controller
 
         //get institute name, Address from institute table
 
-        $instituteName=$instituteDetails->institute_name;
-        $instituteAddress=$instituteDetails->institute_address;
-        $instituteContactNumber=$instituteDetails->institute_contact_num;
+        $instituteName = $instituteDetails->institute_name;
+        $instituteAddress = $instituteDetails->institute_address;
+        $instituteContactNumber = $instituteDetails->institute_contact_num;
 
         //get Super Admin Email Adress
-        $superAdminEmail=DB::table('users')
-                        ->where('user_type', 'super admin')
-                        ->pluck('email')
-                        ->toArray();
+        $superAdminEmail = DB::table('users')
+            ->where('user_type', 'super admin')
+            ->pluck('email')
+            ->toArray();
 
-        Mail::to($superAdminEmail)->send(new mail_for_problem
-        ($subject, $messageDetails, $administratorName, $administratorEmail, $administratorContactNumber,
-        $instituteName, $instituteAddress, $instituteContactNumber,
-        $userName, $user_contact_num, $email));
+        Mail::to($superAdminEmail)->send(new mail_for_problem(
+            $subject,
+            $messageDetails,
+            $administratorName,
+            $administratorEmail,
+            $administratorContactNumber,
+            $instituteName,
+            $instituteAddress,
+            $instituteContactNumber,
+            $userName,
+            $user_contact_num,
+            $email
+        ));
 
 
         return redirect()->back()->with('success', 'User message send to the NanoSoft Solutions (Pvt)Ltd');
@@ -318,39 +336,48 @@ class AdministratorController extends Controller
 
 
         //get institute details
-        $instituteDetails=DB::table('institutes')
-                    ->where('id', $userInstituteId)
-                    ->first();
+        $instituteDetails = DB::table('institutes')
+            ->where('id', $userInstituteId)
+            ->first();
         //get institute name, Address from institute table
-        $instituteName=$instituteDetails->institute_name;
-        $instituteAddress=$instituteDetails->institute_address;
-        $instituteContactNumber=$instituteDetails->institute_contact_num;
+        $instituteName = $instituteDetails->institute_name;
+        $instituteAddress = $instituteDetails->institute_address;
+        $instituteContactNumber = $instituteDetails->institute_contact_num;
 
         //get Super Admin Email Adress
-        $superAdminEmail=DB::table('users')
-                        ->where('user_type', 'super admin')
-                        ->pluck('email')
-                        ->toArray();
+        $superAdminEmail = DB::table('users')
+            ->where('user_type', 'super admin')
+            ->pluck('email')
+            ->toArray();
 
         //get email data for send email
         $problemSendserUserId = $NewMessage->user_id;
         $subject = $NewMessage->subject;
         $messageDetails = $NewMessage->message;
 
-                //get problem occur user details
-                $problemSendserUser = DB::table('users')
-                ->where('id', $problemSendserUserId)
-                ->select('name', 'user_contact_num', 'email')
-                ->first();
+        //get problem occur user details
+        $problemSendserUser = DB::table('users')
+            ->where('id', $problemSendserUserId)
+            ->select('name', 'user_contact_num', 'email')
+            ->first();
 
         $userName = $problemSendserUser->name;
         $user_contact_num = $problemSendserUser->user_contact_num;
         $email = $problemSendserUser->email;
 
-        Mail::to($superAdminEmail)->send(new mail_for_problem
-        ($subject, $messageDetails, $administratorName, $administratorEmail,
-        $administratorContactNumber, $instituteName, $instituteAddress, $instituteContactNumber,
-        $userName, $user_contact_num, $email));
+        Mail::to($superAdminEmail)->send(new mail_for_problem(
+            $subject,
+            $messageDetails,
+            $administratorName,
+            $administratorEmail,
+            $administratorContactNumber,
+            $instituteName,
+            $instituteAddress,
+            $instituteContactNumber,
+            $userName,
+            $user_contact_num,
+            $email
+        ));
 
 
         // Redirect back to 'administrator.messages' route
@@ -466,7 +493,8 @@ class AdministratorController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
-    public function changePassword(){
+    public function changePassword()
+    {
         return view('administrator.changePassword');
     }
 

@@ -26,7 +26,6 @@
             });
         </script>
         @endif
-
         {{-- Start filter section --}}
         <div class="container mt-3 mb-5">
             <form action="{{ route('company.employee.dashboard') }}" method="GET" class="form-inline row">

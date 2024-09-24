@@ -49,6 +49,7 @@ class CompanyEmployeeController extends Controller
             'messages' => $messages,
             'assignedInstitutes' => $assignedInstitutes,
         ]);
+
     }
 
     //view institute user message and store current time

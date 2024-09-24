@@ -30,12 +30,13 @@
     {{-- Navbar --}}
     <x-navbar />
 
-    <div class="container">
+    {{-- Page content --}}
+    <div class="container" style="margin-top:30px">
         @yield('userContent')
     </div>
 
-    {{-- Footer (if needed) --}}
-    {{-- @include('components.footer') --}}
+    {{-- Footer --}}
+    <x-footer />
 
     
     <!-- jQuery -->

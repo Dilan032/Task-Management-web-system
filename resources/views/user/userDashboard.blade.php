@@ -1,6 +1,7 @@
 @extends('layouts.userLayout')
 @section('userContent')
 
+
     <section class="m-5">
         @include('components.user.emailForm')
     </section>

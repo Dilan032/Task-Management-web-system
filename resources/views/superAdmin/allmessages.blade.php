@@ -1,125 +1,146 @@
-<!DOCTYPE html>
+@extends('layouts.superAdminLayout')
 
-<head>
-    @extends('layouts.superAdminLayout')
-    <style>
-        /* Flexbox Container for Status Counts */
-        .status-container {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px;
-            margin-bottom: 20px;
-            background-color: #cccccc;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+<!-- Display validation errors -->
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "{{ $error }}",
+            });
+        </script>
+    @endforeach
+@endif
 
-        .status-box {
-            flex: 1;
-            text-align: center;
-            padding: 5px;
-            margin: 5px;
-            color: white;
-            border-radius: 5px;
-            font-size: 14px;
-        }
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: "success",
+            title: "{{ session('success') }}",
+            showConfirmButton: false,
+            timer: 1000
+        });
+    </script>
+@endif
 
-        .status-in-queue {
-            background-color: #ffd637;
-        }
+<style>
+    /* Flexbox Container for Status Counts */
+    .status-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        margin-bottom: 20px;
+        background-color: #cccccc;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
 
-        /* Green */
-        .status-in-progress {
-            background-color: #f32121;
-        }
+    .status-box {
+        flex: 1;
+        text-align: center;
+        padding: 5px;
+        margin: 5px;
+        color: white;
+        border-radius: 5px;
+        font-size: 14px;
+    }
 
-        /* Blue */
-        .status-document-pending {
-            background-color: #51a800;
-        }
+    .status-in-queue {
+        background-color: #ffd637;
+    }
 
-        /* Orange */
-        .status-postponed {
-            background-color: #f436f4;
-        }
+    /* Green */
+    .status-in-progress {
+        background-color: #f32121;
+    }
 
-        /* Red */
-        .status-move-next-day {
-            background-color: #705601;
-        }
+    /* Blue */
+    .status-document-pending {
+        background-color: #51a800;
+    }
 
-        /* Purple */
-        .status-complete-next-day {
-            background-color: #df7700;
-        }
+    /* Orange */
+    .status-postponed {
+        background-color: #f436f4;
+    }
 
-        /* Amber */
-        .status-completed {
-            background-color: #003c96;
-        }
+    /* Red */
+    .status-move-next-day {
+        background-color: #705601;
+    }
 
-        /* Teal */
+    /* Purple */
+    .status-complete-next-day {
+        background-color: #df7700;
+    }
 
-        .status-box span {
-            display: block;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-    </style>
-</head>
+    /* Amber */
+    .status-completed {
+        background-color: #003c96;
+    }
 
-<body>
-    @section('SuperAdminContent')
+    /* Teal */
 
-        <div class="row mt-3 mb-4 d-flex justify-content-center">
-            <div class="col-md-12">
-                <div class="p-2 mb-2 bg-white text-black rounded shado">
+    .status-box span {
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+</style>
 
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-md-12">
-                            <!-- Responsive flex-wrap and gap between status boxes -->
-                            <div class="d-flex flex-wrap justify-content-between p-2 mb-2 text-dark rounded">
-                                <div class="p-2 status-box status-in-queue mb-2" style="flex: 1 1 10%; min-width: 150px;">
-                                    In Queue
-                                    <span>{{ $statusCounts['In Queue'] }}</span>
-                                </div>
-                                <div class="p-2 status-box status-in-progress mb-2" style="flex: 1 1 10%; min-width: 150px;">
-                                    In Progress
-                                    <span>{{ $statusCounts['In Progress'] }}</span>
-                                </div>
-                                <div class="p-2 status-box status-document-pending mb-2"
-                                    style="flex: 1 1 10%; min-width: 150px;">
-                                    Document Pending
-                                    <span>{{ $statusCounts['Document Pending'] }}</span>
-                                </div>
-                                <div class="p-2 status-box status-postponed mb-2" style="flex: 1 1 10%; min-width: 150px;">
-                                    Postponed
-                                    <span>{{ $statusCounts['Postponed'] }}</span>
-                                </div>
-                                <div class="p-2 status-box status-move-next-day mb-2"
-                                    style="flex: 1 1 10%; min-width: 150px;">
-                                    Move to Next Day
-                                    <span>{{ $statusCounts['Move to Next Day'] }}</span>
-                                </div>
-                                <div class="p-2 status-box status-complete-next-day mb-2"
-                                    style="flex: 1 1 10%; min-width: 150px;">
-                                    Complete in Next Day
-                                    <span>{{ $statusCounts['Complete in Next Day'] }}</span>
-                                </div>
-                                <div class="p-2 status-box status-completed mb-2" style="flex: 1 1 10%; min-width: 150px;">
-                                    Completed
-                                    <span>{{ $statusCounts['Completed'] }}</span>
-                                </div>
+@section('SuperAdminContent')
+
+    <div class="row mt-3 mb-4 d-flex justify-content-center">
+        <div class="col-md-12">
+            <div class="p-2 mb-2 bg-white text-black rounded shado">
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12">
+                        <!-- Responsive flex-wrap and gap between status boxes -->
+                        <div class="d-flex flex-wrap justify-content-between p-2 mb-2 text-dark rounded">
+                            <div class="p-2 status-box status-in-queue mb-2" style="flex: 1 1 10%; min-width: 150px;">
+                                In Queue
+                                <span>{{ $statusCounts['In Queue'] }}</span>
+                            </div>
+                            <div class="p-2 status-box status-in-progress mb-2" style="flex: 1 1 10%; min-width: 150px;">
+                                In Progress
+                                <span>{{ $statusCounts['In Progress'] }}</span>
+                            </div>
+                            <div class="p-2 status-box status-document-pending mb-2"
+                                style="flex: 1 1 10%; min-width: 150px;">
+                                Document Pending
+                                <span>{{ $statusCounts['Document Pending'] }}</span>
+                            </div>
+                            <div class="p-2 status-box status-postponed mb-2" style="flex: 1 1 10%; min-width: 150px;">
+                                Postponed
+                                <span>{{ $statusCounts['Postponed'] }}</span>
+                            </div>
+                            <div class="p-2 status-box status-move-next-day mb-2" style="flex: 1 1 10%; min-width: 150px;">
+                                Move to Next Day
+                                <span>{{ $statusCounts['Move to Next Day'] }}</span>
+                            </div>
+                            <div class="p-2 status-box status-complete-next-day mb-2"
+                                style="flex: 1 1 10%; min-width: 150px;">
+                                Complete in Next Day
+                                <span>{{ $statusCounts['Complete in Next Day'] }}</span>
+                            </div>
+                            <div class="p-2 status-box status-completed mb-2" style="flex: 1 1 10%; min-width: 150px;">
+                                Completed
+                                <span>{{ $statusCounts['Completed'] }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
+    <section class="px-4 mb-4">
+        <!-- Filter Form -->
         <section class="px-4 mb-4">
+
             <!-- Filter Form -->
             <section class="px-4 mb-4">
                 <form action="{{ route('superAdmin.allmessages.view') }}" method="GET" class="form-inline row">
@@ -143,6 +164,9 @@
                             <option value="Low" {{ request()->priority == 'Low' ? 'selected' : '' }}>Low</option>
                         </select>
                     </div>
+
+
+
 
                     {{-- filter from the issue progress --}}
                     <div class="form-group col-md-3">
@@ -484,7 +508,5 @@
                     {{ $messages->links() }}
                 </div>
             </section>
-
-        @endsection
-
-</body>
+        </section>
+    @endsection
