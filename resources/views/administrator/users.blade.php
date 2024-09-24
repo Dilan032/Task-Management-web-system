@@ -73,7 +73,7 @@
 @include('components.superAdmin.users.registerUsers')
 
 <div class="table-responsive">
-    <div class="table-wrapper">
+    <div class="table-wrapper mt-4">
         <!-- Table Section -->
         <table class="table table-bordered">
             <thead class="table-dark">

@@ -4,7 +4,7 @@
         <a href="{{ route('user.previous.messages') }}" class="btn btn-primary" type="button">Back</a>
     </div>
 
- 
+
         @if (($oneMessage->status == "Document Pending") && !empty($oneMessage->support_description) || !empty($oneMessage->support_img_1) || !empty($oneMessage->support_img_2) || !empty($oneMessage->support_img_3) || !empty($oneMessage->support_img_4) || !empty($oneMessage->support_img_5))
             {{-- Re-upload the document pending button --}}
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -19,7 +19,7 @@
 
     {{-- include document upload model --}}
     @include('components.user.documentPendingModel')
-    
+
 
     <div class="table-responsive">
         <table class="table table-borderless rounded messageBG" style="overflow-x: hidden;">
@@ -46,38 +46,38 @@
 
                         @if ($oneMessage->status == 'Completed')
                             <span
-                                class="badge rounded text-bg-success btnInset mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-success  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
                         @elseif ($oneMessage->status == 'Completed in next day')
                             <span
-                                class="badge rounded text-bg-warning btnInset mt-1 py-1 px-2">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-warning  mt-1 py-1 px-2">{{ $oneMessage->status }}</span>
                         @elseif ($oneMessage->status == 'Document Pending')
                             <span
-                                class="badge rounded text-bg-info btnInset mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-info  mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
                         @elseif ($oneMessage->status == 'In Progress')
                             <span
-                                class="badge rounded text-bg-info btnInset mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-info  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
                         @elseif ($oneMessage->status == 'In Queue')
                             <span
-                                class="badge rounded text-bg-info btnInset mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-info  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
                         @elseif ($oneMessage->status == 'Move to next day')
                             <span
-                                class="badge rounded text-bg-danger btnInset mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-danger  mt-1 py-1 px-4">{{ $oneMessage->status }}</span>
                         @elseif ($oneMessage->status == 'Postpond')
                             <span
-                                class="badge rounded text-bg-danger btnInset mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-danger  mt-1 py-1 px-5">{{ $oneMessage->status }}</span>
                         @else
                             <span
-                                class="badge rounded text-bg-info btnInset mt-1 text-dark py-1 px-4">{{ $oneMessage->status }}</span>
+                                class="badge rounded text-bg-info  mt-1 text-dark py-1 px-4">{{ $oneMessage->status }}</span>
                         @endif
 
                         <span class="fw-light">request</span>
 
                         @if ($oneMessage->request == 'accept')
-                            <span class="badge text-bg-success btnInset py-1 px-3">{{ $oneMessage->request }}</span>
+                            <span class="badge text-bg-success  py-1 px-3">{{ $oneMessage->request }}</span>
                         @elseif ($oneMessage->request == 'reject')
-                            <span class="badge text-bg-danger btnInset py-1 px-3">{{ $oneMessage->request }}</span>
+                            <span class="badge text-bg-danger  py-1 px-3">{{ $oneMessage->request }}</span>
                         @else
-                            <span class="badge text-bg-warning btnInset py-1 px-2">{{ $oneMessage->request }}</span>
+                            <span class="badge text-bg-warning  py-1 px-2">{{ $oneMessage->request }}</span>
                         @endif
                     </td>
                 </tr>
@@ -200,8 +200,8 @@
 
 
     <hr>
-    
-    
+
+
     {{-- if company employee requered addtional document (that user upload documet show hear) --}}
     @include('components.user.supportMessage')
 

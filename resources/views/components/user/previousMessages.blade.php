@@ -22,13 +22,13 @@
                             <td>
                                 @if ($msg->request == 'Accept')
                                     <span
-                                        class="badge rounded-pill text-bg-success btnInset mt-1 py-1 px-3">{{ $msg->request }}</span>
+                                        class="badge rounded-pill text-bg-success  mt-1 py-1 px-3">{{ $msg->request }}</span>
                                 @elseif ($msg->request == 'Reject')
                                     <span
-                                        class="badge rounded-pill text-bg-danger btnInset mt-1 py-1 px-3">{{ $msg->request }}</span>
+                                        class="badge rounded-pill text-bg-danger  mt-1 py-1 px-3">{{ $msg->request }}</span>
                                 @else
                                     <span
-                                        class="badge rounded-pill text-bg-warning btnInset mt-1 py-1 px-2">{{ $msg->request }}</span>
+                                        class="badge rounded-pill text-bg-warning  mt-1 py-1 px-2">{{ $msg->request }}</span>
                                 @endif
                             </td>
                             <td>
@@ -36,37 +36,37 @@
                             </td>
                             <td style="vertical-align: middle;">
                                 @if ($msg->status == 'In Queue')
-                                    <span class="badge rounded-pill btnInset px-5" style="background-color: #c4c000;">
+                                    <span class="badge rounded-pill  px-5" style="background-color: #c4c000;">
                                         {{ $msg->status }}
                                     </span>
                                 @elseif ($msg->status == 'In Progress')
-                                    <span class="badge rounded-pill btnInset px-5" style="background-color: #f32121;">
+                                    <span class="badge rounded-pill  px-5" style="background-color: #f32121;">
                                         {{ $msg->status }}
                                     </span>
                                 @elseif ($msg->status == 'Document Pending')
-                                    <span class="badge rounded-pill btnInset px-4" style="background-color: #51a800;">
+                                    <span class="badge rounded-pill  px-4" style="background-color: #51a800;">
                                         {{ $msg->status }}
                                     </span>
                                 @elseif ($msg->status == 'Postponed')
-                                    <span class="badge rounded-pill btnInset px-5"
+                                    <span class="badge rounded-pill  px-5"
                                         style="background-color: #f436f4; color: black;">
                                         {{ $msg->status }}
                                     </span>
                                 @elseif ($msg->status == 'Move to Next Day')
-                                    <span class="badge rounded-pill btnInset ms-3" style="background-color: #705601;">
+                                    <span class="badge rounded-pill  ms-3" style="background-color: #705601;">
                                         {{ $msg->status }}
                                     </span>
                                 @elseif ($msg->status == 'Complete in Next Day')
-                                    <span class="badge rounded-pill btnInset"
+                                    <span class="badge rounded-pill "
                                         style="background-color: #df7700; color: black;">
                                         {{ $msg->status }}
                                     </span>
                                 @elseif ($msg->status == 'Completed')
-                                    <span class="badge rounded-pill btnInset px-5" style="background-color: #003c96;">
+                                    <span class="badge rounded-pill  px-5" style="background-color: #003c96;">
                                         {{ $msg->status }}
                                     </span>
                                 @else
-                                    <span class="badge rounded-pill text-bg-info text-dark py-1 px-4 btnInset">
+                                    <span class="badge rounded-pill text-bg-info text-dark py-1 px-4 ">
                                         {{ $msg->status }}
                                     </span>
                                 @endif

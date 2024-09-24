@@ -45,25 +45,15 @@
         <span class="badge text-bg-secondary fs-6 p-2 me-3">
             Issues received today: {{ $issuesInToday }}
         </span>
-
-        <button type="button" class="btn btn-warning ms-auto position-relative me-3" id="importantButton">
-            <i class="fa-solid fa-triangle-exclamation fa-beat"></i>
-
-            Important
-
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                99+
-                <span class="visually-hidden">unread messages</span>
-            </span>
-        </button>
     </div>
 
-    <div class="d-flex flex-wrap align-items-center mt-3">
-        {{-- @include('components.superAdmin.dashboard.charts') --}}
-    </div>
 
+    <div style="margin-top:50px; margin-left:40px">
+        @include('components.superAdmin.dashboard.activity-feed')
+    </div>
 
 @endsection
+
 <!-- Font Awesome Free 6.x JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
 <!-- Font Awesome SVG Framework -->
@@ -71,10 +61,3 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-
-{{-- --}}
-
-{{-- <div class="d-flex-container flex-wrap mt-3" id="importantIssuesSection">
-        @include('components.superAdmin.imporatanIssues')
-    </div> --}}
