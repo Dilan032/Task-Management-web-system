@@ -15,7 +15,7 @@ class InstituteController extends Controller
         // validation rules
         $rules = [
             'institute_contact_num' => 'required|string|max:10',
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|email|max:255|unique:institutes,email',
             'institute_address' => 'required|string|max:255',
             'institute_name' => 'required|string|max:255',
             'institute_type' => 'required|string|max:255',
