@@ -1,4 +1,4 @@
-<footer id="site-footer" class="mt-5">
+<footer id="site-footer" style="padding-top: 100px">
     <div class="bg-success bg-opacity-25 py-2">
         <div class="container py-3">
             <div class="row">
