@@ -25,18 +25,43 @@ class SuperAdminController extends Controller
         $employeeCount = User::whereIn('user_type', ['super admin', 'company employee'])->count();
         $instituteCount = Institute::count();
 
-        // Get the total number of messages(issues) in the system(today)
+        // Get the total number of messages (issues) in the system today
         $issuesCount = Message::whereDate('created_at', Carbon::today())->count();
 
-        return view('superAdmin\superAdminDashboard',
-        [
+        // Fetch all messages and their counts by status
+        $messages = Message::all();
+        $PendingMsg = $messages->where('status', 'Pending')->count();
+        $AcceptMsg = $messages->where('status', 'Accept')->count();
+        $RejectMsg = $messages->where('status', 'Reject')->count();
+
+        $SolvedMsg = $messages->where('status', 'Completed')->count();
+        $DocPendingMsg = $messages->where('status', 'Document Pending')->count();
+        $processingStatuses = [
+            'In Queue',
+            'In Progress',
+            'Postponed',
+            'Move to next day',
+            'Complete in next day',
+        ];
+        $ProcessingMsg = $messages->whereIn('status', $processingStatuses)->count();
+
+        // Count total messages received today
+        $totalMessages = $messages->count();
+
+        return view('superAdmin.superAdminDashboard', [
             'totalEmployees' => $employeeCount,
             'totalInstitutes' => $instituteCount,
-            'issuesInToday' => $issuesCount
+            'issuesInToday' => $issuesCount,
+            'totalMessages' => $totalMessages, // Pass total messages to the view
+            'PendingMsg' => $PendingMsg,
+            'AcceptMsg' => $AcceptMsg,
+            'RejectMsg' => $RejectMsg,
+            'SolvedMsg' => $SolvedMsg,
+            'DocPendingMsg' => $DocPendingMsg,
+            'ProcessingMsg' => $ProcessingMsg,
         ]);
-
-
     }
+
 
     //Update the company employees details method (institute and company side)
     public function companyEmpUpdate(Request $request, $id) // Company Employee Details Update function

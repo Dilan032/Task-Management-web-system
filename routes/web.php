@@ -110,10 +110,6 @@ Route::controller(InstituteTypesController::class)->group(function () {
     Route::post('/superAdmin/institute-type/update', 'UpdateInstituteType')->name('UpdateInstituteType');
 });
 
-
-
-
-
 //Company employees routes....
 Route::controller(CompanyEmployeeController::class)->middleware('UserType:company employee')->group(function () {
     Route::get('/companyEmployee/dashboard', 'index')->name('company.employee.dashboard');

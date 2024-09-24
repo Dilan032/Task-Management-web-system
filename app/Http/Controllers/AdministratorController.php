@@ -16,127 +16,76 @@ use Illuminate\Support\Facades\Validator;
 
 class AdministratorController extends Controller
 {
-    //Institute administrator dashboard view load function
+    // Institute administrator dashboard view load function
     public function index(Request $request)
     {
-        if (Auth::check()) {
-            $instituteId = Auth::user()->institute_id;
-            $userName = Auth::user()->name;
-        } else {
-            // Redirect to the login page or show an error
-            return redirect()->route('login');
+        // Ensure the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login'); // Redirect if not authenticated
         }
 
-        $institute = DB::table('institutes')
-            ->where('id', $instituteId)
-            ->first();
+        // Fetch the current user's institute ID and name
+        $instituteId = Auth::user()->institute_id;
+        $userName = Auth::user()->name;
 
-        $NumAdministrators = DB::table('users')
+        // Fetch institute details
+        $institute = DB::table('institutes')->where('id', $instituteId)->first();
+
+        // Count administrators and their statuses
+        $NumAdministrators = DB::table('users')->where('institute_id', $instituteId)->where('user_type', 'administrator')->count();
+        $NumActiveAdministrators = DB::table('users')->where('institute_id', $instituteId)->where('user_type', 'administrator')->where('status', 'active')->count();
+        $NumInactiveAdministrators = DB::table('users')->where('institute_id', $instituteId)->where('user_type', 'administrator')->where('status', 'inactive')->count();
+
+        // Count users and their statuses
+        $NumUsers = DB::table('users')->where('institute_id', $instituteId)->where('user_type', 'user')->count();
+        $NumActiveUsers = DB::table('users')->where('institute_id', $instituteId)->where('user_type', 'user')->where('status', 'active')->count();
+        $NumInactiveUsers = DB::table('users')->where('institute_id', $instituteId)->where('user_type', 'user')->where('status', 'inactive')->count();
+
+        // Fetch today's messages based on created_at
+        $today = now()->startOfDay(); // Get the start of today
+        $messages = DB::table('messages')
             ->where('institute_id', $instituteId)
-            ->where('user_type', 'administrator')
-            ->count();
+            ->whereDate('created_at', $today)
+            ->get();
 
-        $NumActiveAdministrators = DB::table('users')
-            ->where('institute_id', $instituteId)
-            ->where('user_type', 'administrator')
-            ->where('status', 'active')
-            ->count();
-        $NumInactiveAdministrators = DB::table('users')
-            ->where('institute_id', $instituteId)
-            ->where('user_type', 'administrator')
-            ->where('status', 'inactive')
-            ->count();
+        // Count messages by their status
+        $PendingMsg = $messages->where('request', 'Pending')->count();
+        $AcceptMsg = $messages->where('request', 'Accept')->count();
+        $RejectMsg = $messages->where('request', 'Reject')->count();
 
-        // count institute users
-        $NumUsers = DB::table('users')
-            ->where('institute_id', $instituteId)
-            ->where('user_type', 'user')
-            ->count();
-
-        $NumActiveUsers = DB::table('users')
-            ->where('institute_id', $instituteId)
-            ->where('user_type', 'user')
-            ->where('status', 'active')
-            ->count();
-        $NumInactiveUsers = DB::table('users')
-            ->where('institute_id', $instituteId)
-            ->where('user_type', 'user')
-            ->where('status', 'inactive')
-            ->count();
-
-        //get message table details send by institute employee
-        $NumMessages = DB::table('messages')
-            ->where('institute_id', $instituteId)
-            ->count();
-
-        // $NumPendingMsg = DB::table('messages')
-        //     ->where('institute_id', $instituteId)
-        //     ->where('request', 'pending')
-        //     ->count();
-        // $NumAcceptMsg = DB::table('messages')
-        //     ->where('institute_id', $instituteId)
-        //     ->where('request', 'accept')
-        //     ->count();
-        // $NumRejectMsg = DB::table('messages')
-        //     ->where('institute_id', $instituteId)
-        //     ->where('request', 'reject')
-        //     ->count();
-
-        // Get the selected filter from the request
-        $filter = $request->input('filter', 'today'); // Default to 'today'
-
-        // Base query for messages
-        $messagesQuery = DB::table('messages')->where('institute_id', $instituteId);
-
-        // Apply filter based on selection
-        if ($filter === 'yesterday') {
-            $messagesQuery->whereDate('created_at', now()->subDay());
-        } elseif ($filter === 'last_week') {
-            $messagesQuery->whereDate('created_at', '>=', now()->subWeek());
-        } elseif ($filter === 'last_month') {
-            $messagesQuery->whereDate('created_at', '>=', now()->subMonth());
-        } else {
-            // Default is today
-            $messagesQuery->whereDate('created_at', now());
-        }
-
-        // Count messages based on the filter
-        $NumMessages = $messagesQuery->count();
-
-        // Count specific message requests based on the same filter
-        $NumPendingMsg = $messagesQuery->clone()->where('request', 'pending')->count();
-        $NumAcceptMsg = $messagesQuery->clone()->where('request', 'accept')->count();
-        $NumRejectMsg = $messagesQuery->clone()->where('request', 'reject')->count();
-
-        // Message status count
-        $NumSolvedMsg = $messagesQuery->clone()->where('status', 'Completed')->count();
-        $NumDocPendingMsg = $messagesQuery->clone()->where('status', 'Document Pending')->count();
-
-        // Count for processing statuses
-        $NumProcessing = $messagesQuery->clone()->whereIn('status', [
+        $SolvedMsg = $messages->where('status', 'Completed')->count();
+        $DocPendingMsg = $messages->where('status', 'Document Pending')->count();
+        $processingStatuses = [
             'In Queue',
             'In Progress',
             'Postponed',
             'Move to next day',
-            'Complete in next day'
-        ])->count();
+            'Complete in next day',
+        ];
 
+        // Count messages with the specified statuses
+        $ProcessingMsg = $messages->whereIn('status', $processingStatuses)->count();
+
+        // Count total messages received today
+        $totalMessages = $messages->count();
+
+        // Return data to the view
         return view('administrator.administratorDashbord', [
             'institute' => $institute,
             'userName' => $userName,
             'NumAdministrators' => $NumAdministrators,
+            'NumActiveAdministrators' => $NumActiveAdministrators,
+            'NumInactiveAdministrators' => $NumInactiveAdministrators,
             'NumUsers' => $NumUsers,
             'NumActiveUsers' => $NumActiveUsers,
             'NumInactiveUsers' => $NumInactiveUsers,
-            'NumActiveAdministrators' => $NumActiveAdministrators,
-            'NumInactiveAdministrators' => $NumInactiveAdministrators,
-            'NumMessages' => $NumMessages,
-            'NumPendingMsg' => $NumPendingMsg,
-            'NumAcceptMsg' => $NumAcceptMsg,
-            'NumRejectMsg' => $NumRejectMsg,
-            'NumSolvedMsg' => $NumSolvedMsg,
-            'NumDocPendingMsg' => $NumDocPendingMsg,
-            'NumProcessing' => $NumProcessing,
+            'PendingMsg' => $PendingMsg,
+            'AcceptMsg' => $AcceptMsg,
+            'RejectMsg' => $RejectMsg,
+            'SolvedMsg' => $SolvedMsg,
+            'DocPendingMsg' => $DocPendingMsg,
+            'ProcessingMsg' => $ProcessingMsg,
+            'totalMessages' => $totalMessages, // Pass total messages to the view
         ]);
     }
 
@@ -159,7 +108,7 @@ class AdministratorController extends Controller
             }
 
             // Get messages with pagination
-            $messages = $query->orderBy('created_at', 'DESC')->paginate(5);
+            $messages = $query->orderBy('created_at', 'DESC')->paginate(10);
 
             return view('administrator.message', ['messages' => $messages]);
         } else {
@@ -421,7 +370,7 @@ class AdministratorController extends Controller
         }
 
         // Paginate the results
-        $employees = $employeeQuery->paginate(5);
+        $employees = $employeeQuery->paginate(10);
 
         // Pass the data to the view
         return view('administrator.user_overview', [

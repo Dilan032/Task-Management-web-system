@@ -90,15 +90,14 @@
 
         @include('components.administrator.messageModel')
 
-        <div class="bg-warning-subtle text-dark text-center fw-lighter">
-            <small>
-                It is the manager's responsibility to confirm or reject messages.
-                After confirming the message, Nanosoft Solutions will receive the message.
-            </small>
-        </div>
-
         <!-- Table Section -->
         <div class="table-responsive">
+            <div class="bg-warning-subtle text-dark text-center fw-lighter mt-4">
+                <small>
+                    It is the manager's responsibility to confirm or reject messages.
+                    After confirming the message, Nanosoft Solutions will receive the message.
+                </small>
+            </div>
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr style="text-align:center">
