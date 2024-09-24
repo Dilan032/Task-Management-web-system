@@ -97,7 +97,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="ms-4 breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('superAdmin.allmessages.view') }}">All issues</a>
+                            <a href="{{ route('superAdmin.allmessages.view') }}">All Issues</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">{{ $message->institute->institute_name }}
                             Message
@@ -298,7 +298,7 @@
                                             </span>
                                         @elseif ($message->status == 'Completed')
                                             <span class="badge rounded-pill"
-                                                style="background-color: #003c96; color: black; padding: 5px;">
+                                                style="background-color: #003c96; color: white; padding: 5px;">
                                                 <small>{{ $message->status }}</small>
                                             </span>
                                         @else
