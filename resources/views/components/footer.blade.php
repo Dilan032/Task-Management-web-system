@@ -1,3 +1,16 @@
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Subscribed!',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>
+@endif
+
+
 <footer id="site-footer" style="padding-top: 100px">
     <div class="bg-success bg-opacity-25 py-2">
         <div class="container py-3">
@@ -21,7 +34,7 @@
                     </ul>
                 </div>
                 <div class="col-xl-3 col-md-6 col-sm-12">
-                    <h5 class="pb-2"><i class="fa-solid fa-location-dot pe-1"></i>Contact Details</h5>
+                    <h5 class="pb-2"><i class="fas fa-phone-volume pe-2"></i>Contact Details</h5>
                     <div style="margin-left:15px">
                         <p>
                             <span class="fw-lighter">📞 0777777777 </span> <br>
@@ -40,10 +53,11 @@
                 </div>
                 <div class="col-xl-3 col-md-6 col-sm-12">
                     <h5 class="pb-3"><i class="fa-solid fa-paper-plane pe-1"></i> Stay updated</h5>
-                    <form>
-                        <input type="email" class="w-100 mb-2 form-control" name=""
-                            placeholder="Add email for touch latest news!">
-                        <button class="w-100 btn btn-dark">Subscribe now</button>
+                    <form action="{{ route('newsEmail.store') }}" method="POST">
+                        @csrf
+                        <input type="email" class="w-100 mb-2 form-control" name="email"
+                               placeholder="Add email for the latest news!">
+                        <button type="submit" class="w-100 btn btn-dark">Subscribe now</button>
                     </form>
                 </div>
             </div>
