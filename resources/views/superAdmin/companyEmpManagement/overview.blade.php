@@ -70,7 +70,7 @@
                         <th style="height: 60px; vertical-align: middle;">Mobile Number</th>
                         <th style="height: 60px; vertical-align: middle; width: 20%;">Email</th>
                         {{-- <th style="height: 60px; vertical-align: middle;">Last Seen</th> --}}
-                        <th style="height: 60px; vertical-align: middle;">
+                        {{-- <th style="height: 60px; vertical-align: middle;">
                             Status
                             @if (request('filter_employee_status'))
                                 <span class="position-relative">
@@ -81,7 +81,7 @@
                                     </span>
                                 </span>
                             @endif
-                        </th>
+                        </th> --}}
                         <th style="height: 60px; vertical-align: middle;">Actions</th>
                     </tr>
                 </thead>
@@ -92,13 +92,13 @@
                             <td>{{ $employee->user_type }}</td>
                             <td>{{ $employee->user_contact_num }}</td>
                             <td>{{ $employee->email }}</td>
-                            <td class="py-2 text-center">
+                            {{-- <td class="py-2 text-center">
                                 @if (Cache::has('user-online' . $employee->id))
                                     <span class="text-green-500">Online</span>
                                 @else
                                     <span class="text-gray-500">Offline</span>
                                 @endif
-                            </td>
+                            </td> --}}
                             <td>
                                 <!-- Edit Modal Trigger -->
                                 <a href="#editCompanyEmpModal{{ $employee->id }}" class="edit" title="Edit"
