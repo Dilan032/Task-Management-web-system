@@ -55,6 +55,12 @@ class SuperAdminController extends Controller
             ->select('priority', 'status', 'assigned_employee', 'institute_id', 'subject', 'created_at', 'id')
             ->paginate(10);
 
+        // Count issues where status is not 'completed'
+        $nonCompletedIssuesCount = Message::where('assigned_employee', 'SA-Upali Sir')
+            ->where('status', '!=', 'completed')
+            ->count();
+
+
         return view('superAdmin.superAdminDashboard', [
             'totalEmployees' => $employeeCount,
             'totalInstitutes' => $instituteCount,
@@ -66,7 +72,8 @@ class SuperAdminController extends Controller
             'SolvedMsg' => $SolvedMsg,
             'DocPendingMsg' => $DocPendingMsg,
             'ProcessingMsg' => $ProcessingMsg,
-            'issues' => $issues
+            'issues' => $issues,
+            'nonCompletedIssuesCount' => $nonCompletedIssuesCount
         ]);
     }
 
@@ -76,10 +83,32 @@ class SuperAdminController extends Controller
         $issues = Message::where('assigned_employee', 'SA-Upali Sir')
             ->with('institute', 'user')
             ->select([
-                'id','user_id','assigned_employee','institute_id','subject','message','priority','status','request',
-                'sp_request','img_1','img_2','img_3','img_4','img_5','start_time','end_time','progress_note',
-                'viewed_at','support_description','support_img_1','support_img_2','support_img_3','support_img_4',
-                'support_img_5','created_at'
+                'id',
+                'user_id',
+                'assigned_employee',
+                'institute_id',
+                'subject',
+                'message',
+                'priority',
+                'status',
+                'request',
+                'sp_request',
+                'img_1',
+                'img_2',
+                'img_3',
+                'img_4',
+                'img_5',
+                'start_time',
+                'end_time',
+                'progress_note',
+                'viewed_at',
+                'support_description',
+                'support_img_1',
+                'support_img_2',
+                'support_img_3',
+                'support_img_4',
+                'support_img_5',
+                'created_at'
             ])
             ->paginate(10);
 
@@ -255,13 +284,13 @@ class SuperAdminController extends Controller
         }
 
         //Apply filter for employee status (online/offline)
-        if ($request->filled('filter_employee_status')) {
-            if ($request->filter_employee_status === 'online') {
-                $employeeQuery->whereNotNull('last_seen');
-            } elseif ($request->filter_employee_status === 'offline') {
-                $employeeQuery->whereNull('last_seen');
-            }
-        }
+        // if ($request->filled('filter_employee_status')) {
+        //     if ($request->filter_employee_status === 'online') {
+        //         $employeeQuery->whereNotNull('last_seen');
+        //     } elseif ($request->filter_employee_status === 'offline') {
+        //         $employeeQuery->whereNull('last_seen');
+        //     }
+        // }
 
         // Paginate the result
         $employees = $employeeQuery->paginate(5);
@@ -329,7 +358,7 @@ class SuperAdminController extends Controller
         }
 
         // Paginate results
-        $institute = $instituteQuery->paginate(3);
+        $institute = $instituteQuery->paginate(10);
 
         // Get total counts
         $instituteCount = Institute::count();

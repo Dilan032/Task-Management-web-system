@@ -1,5 +1,16 @@
 @extends('layouts.superAdminLayout')
 
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>
+@endif
+
 @section('SuperAdminContent')
     <div class="container-fluid">
         <div class="row align-items-center mt-3">

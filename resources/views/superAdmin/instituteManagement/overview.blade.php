@@ -87,7 +87,13 @@
                     @foreach ($institute as $item)
                         <tr>
                             <td>
-                                <a href="{{ route('institute.employees.view', ['id' => $item->id]) }}">{{ $item->institute_name }}</a>
+                                @if (!empty($item->assigned_employee))
+                                    <a
+                                        href="{{ route('institute.employees.view', ['id' => $item->id]) }}">{{ $item->institute_name }}</a>
+                                @else
+                                    <span class="text-muted"
+                                        style="cursor: not-allowed;">{{ $item->institute_name }}</span>
+                                @endif
                             </td>
                             <td>{{ $item->institute_type }}</td>
                             <td>{{ $item->institute_address }}</td>
@@ -273,7 +279,6 @@
                                 </div>
                             </div>
                         </div>
-
                     @endforeach
                 </tbody>
             </table>

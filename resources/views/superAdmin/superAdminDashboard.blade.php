@@ -40,24 +40,28 @@
             Issues received today: {{ $issuesInToday }}
         </span>
 
-        @if (auth()->user() && auth()->user()->id === 1)
-            <a href="{{ route('superAdmin.important.issue', $issues->first()->id) }}"
+        @if (auth()->user() && auth()->user()->id === 1 && $nonCompletedIssuesCount > 0)
+            <a href="{{ route('superAdmin.important.issue', $issues->firstWhere('status', '!=', 'completed')->id) }}"
                 class="btn btn-warning ms-auto position-relative">
                 <i class="fas fa-triangle-exclamation fa-beat"></i>
                 <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
-                    {{ $issues->total() }}
+                    {{ $nonCompletedIssuesCount }}
                     <span class="visually-hidden">important messages</span>
                 </span>
                 Action Required
             </a>
         @endif
 
-
         {{-- @include('components.superAdmin.dashboard.imporatanIssues') --}}
     </div>
 
-    <div style="margin-top:50px; margin-left:40px">
-        @include('components.superAdmin.dashboard.activity-feed')
+    <div class="row" style="margin-top:50px;">
+        <div class="col-md-4">
+            @include('components.superAdmin.dashboard.activity-feed')
+        </div>
+        <div class="col-md-8">
+            @include('components.superAdmin.dashboard.news-send')
+        </div>
     </div>
 
 @endsection
