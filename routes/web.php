@@ -2,18 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AdministratorController;
-use App\Http\Controllers\CompanyEmployeeController;
-use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InstituteController;
+use App\Http\Controllers\LoacationController;
+use App\Http\Controllers\NewsEmailController;
 use App\Http\Controllers\SuperAdminController;
-use App\Http\Controllers\InstituteTypesController;
 use App\Http\Controllers\AllMessagesController;
 use App\Http\Controllers\ViewMessageController;
-use App\Http\Controllers\LoacationController;
-use App\Http\Controllers\DeviceDetectorController;
 use App\Http\Controllers\UserActivityController;
+use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\DeviceDetectorController;
+use App\Http\Controllers\InstituteTypesController;
+use App\Http\Controllers\CompanyEmployeeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -39,6 +40,8 @@ Route::controller(SuperAdminController::class)
     ->middleware('UserType:super admin')->group(function () {
 
         Route::get('/superAdmin/dashboard', 'superAdminDashboard')->name('superAdmin.dashboard');
+
+        Route::get('/superAdmin/important-issue', 'showImportantIssue')->name('superAdmin.important.issue');
 
         Route::post('/superAdmin/register', 'RegisterSuperAdmin')->name('RegisterSuperAdmin.save');
 
@@ -97,7 +100,7 @@ Route::controller(AllMessagesController::class)
         Route::get('/superAdmin/all-messages', 'index')->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
         Route::get('/superAdmin/all-messages/filter', 'filter')->name('messages.filter');
         Route::post('/superAdmin/messages/save', 'store')->name('superAdmin.messages.save');
-});
+    });
 
 Route::controller(InstituteController::class)->group(function () {
     Route::post('/superAdmin/institute', 'RegisterInstitute')->name('RegisterInstitute.save');
@@ -183,3 +186,12 @@ Route::controller(UserController::class)->group(function () {
     Route::put('/user/details/update/{id}', 'UsersUpdate')->name('user.details.update');
     Route::delete('/user/delete/{id}', 'deleteUser')->name('user.delete');
 });
+
+
+// Route::controller(NewsEmailController::class)->middleware('UserType:administrator,super admin,user,company employee')->group(function () {
+
+
+
+// });
+
+Route::post('/subscribe', [NewsEmailController::class, 'store'])->name('newsEmail.store');

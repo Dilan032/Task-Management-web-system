@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Message;
 use App\Models\Institute;
+use App\Models\NewsEmail;
 use Illuminate\Http\Request;
 use App\Models\InstituteTypes;
 use App\Mail\userWellcomeMessage;
@@ -48,6 +49,12 @@ class SuperAdminController extends Controller
         // Count total messages received today
         $totalMessages = $messages->count();
 
+        //This laravel query support to get Important Action Required Issues to the Special Super Admin
+        $issues = Message::where('assigned_employee', 'SA-Upali Sir')
+            ->with('institute')
+            ->select('priority', 'status', 'assigned_employee', 'institute_id', 'subject', 'created_at', 'id')
+            ->paginate(10);
+
         return view('superAdmin.superAdminDashboard', [
             'totalEmployees' => $employeeCount,
             'totalInstitutes' => $instituteCount,
@@ -59,6 +66,26 @@ class SuperAdminController extends Controller
             'SolvedMsg' => $SolvedMsg,
             'DocPendingMsg' => $DocPendingMsg,
             'ProcessingMsg' => $ProcessingMsg,
+            'issues' => $issues
+        ]);
+    }
+
+    public function showImportantIssue()
+    {
+        // Fetch the specific important issue by ID
+        $issues = Message::where('assigned_employee', 'SA-Upali Sir')
+            ->with('institute', 'user')
+            ->select([
+                'id','user_id','assigned_employee','institute_id','subject','message','priority','status','request',
+                'sp_request','img_1','img_2','img_3','img_4','img_5','start_time','end_time','progress_note',
+                'viewed_at','support_description','support_img_1','support_img_2','support_img_3','support_img_4',
+                'support_img_5','created_at'
+            ])
+            ->paginate(10);
+
+        // Return the view with the issue details
+        return view('components.superAdmin.dashboard.importantIssues', [
+            'issues' => $issues
         ]);
     }
 
