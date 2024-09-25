@@ -437,22 +437,6 @@ class SuperAdminController extends Controller
         return redirect('login');
     }
 
-    public function storeNewsEmail(Request $request)
-    {
-        // Validate the input
-        $request->validate([
-            'email' => 'required|email|unique:news_emails,email',
-        ]);
-
-        // Store the email in the database
-        NewsEmail::create([
-            'email' => $request->input('email'),
-        ]);
-
-        // Redirect back or to a success page with a message
-        return redirect()->back()->with('success', 'Thank you for subscribing!');
-    }
-
     //Super admin password change function
     public function changePassword()
     {
