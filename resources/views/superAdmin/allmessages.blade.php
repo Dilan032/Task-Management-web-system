@@ -199,7 +199,7 @@
                         <button type="submit" class="btn btn-primary me-2" style="padding-inline-start: 10px">Apply</button>
                         <a href="{{ route('superAdmin.allmessages.view') }}" class="btn btn-warning me-2">Reset</a>
                         <button class="btn btn-success" type="button" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
+                            data-bs-target="#staticBackdrop2">
                             Add
                         </button>
                     </div>
