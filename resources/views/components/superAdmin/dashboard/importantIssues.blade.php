@@ -9,7 +9,7 @@
 
     <nav aria-label="breadcrumb" class="ms-3 mt-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('superAdmin.dashboard') }}">Dashbord</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('superAdmin.dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page">Important Action Required Issues Section</li>
         </ol>
     </nav>
@@ -24,7 +24,8 @@
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#flush-collapse{{ $issue->id }}" aria-expanded="false"
                             aria-controls="flush-collapse{{ $issue->id }}">
-                            <b>{{ $issue->institute->institute_name }}</b> : {{ $issue->subject }} - {{ \Carbon\Carbon::parse($issue->created_at)->format('Y M d') }}
+                            <b>{{ $issue->institute->institute_name }}</b> : {{ $issue->subject }} -
+                            {{ \Carbon\Carbon::parse($issue->created_at)->format('Y M d') }}
                         </button>
                     </h2>
                     <div id="flush-collapse{{ $issue->id }}" class="accordion-collapse collapse"
@@ -101,27 +102,28 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3">
+                            {{-- <div class="row mt-3">
                                 <div class="col-md-4">
                                     <strong>Images:</strong>
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($issue->{'img_' . $i})
-                                            <img src="{{ asset('path_to_images/' . $issue->{'img_' . $i}) }}"
+                                            <img src="{{ asset('images/MessageWithProblem/' . $issue->{'img_' . $i}) }}"
                                                 alt="Image {{ $i }}" class="img-thumbnail" width="100">
                                         @endif
                                     @endfor
                                 </div>
+
                                 <div class="col-md-4">
                                     <strong>Support Images:</strong>
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($issue->{'support_img_' . $i})
-                                            <img src="{{ asset('path_to_support_images/' . $issue->{'support_img_' . $i}) }}"
+                                            <img src="{{ asset('images/MessageWithProblem/' . $issue->{'support_img_' . $i}) }}"
                                                 alt="Support Image {{ $i }}" class="img-thumbnail"
                                                 width="100">
                                         @endif
                                     @endfor
-                                </div>
-                                <div class="col-md-4">
+                                </div> --}}
+                                <div class="col-md-12" style="margin-left:12px">
                                     <strong>Viewed At:</strong> {{ $issue->viewed_at }}
                                 </div>
                             </div>

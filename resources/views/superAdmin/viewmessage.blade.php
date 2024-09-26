@@ -127,20 +127,20 @@
                         @if (is_null($message->start_time) && is_null($message->end_time))
                             <!-- Accept SP Request Button -->
                             @if ($message->sp_request !== 'Accepted')
-                                <form action="{{ route('accept.sp_request', $message->id) }}" method="POST" id="acceptSpRequestForm">
+                                <form action="{{ route('accept.sp_request', $message->id) }}" method="POST"
+                                    id="acceptSpRequestForm">
                                     @csrf
-                                    <button id="accept-sp-request-btn" class="btn btn-warning me-2" onclick="submitSpRequestForm()">Accept</button>
+                                    <button id="accept-sp-request-btn" class="btn btn-warning me-2"
+                                        onclick="submitSpRequestForm()">Accept</button>
                                 </form>
                             @endif
 
                             <!-- Start Button (Disabled until SP request is accepted) -->
-                            <button id="start-btn" class="btn btn-success"
-                                @if ($message->sp_request !== 'Accepted')
-                                    disabled
-                                @endif
+                            <button id="start-btn" class="btn btn-success" @if ($message->sp_request !== 'Accepted') disabled @endif
                                 onclick="startTimer()">Start</button>
 
-                            <button id="end-btn" class="btn btn-danger" style="display: none;" onclick="endTimer()">End</button>
+                            <button id="end-btn" class="btn btn-danger" style="display: none;"
+                                onclick="endTimer()">End</button>
                         @elseif (!is_null($message->start_time) && is_null($message->end_time))
                             <button id="end-btn" class="btn btn-danger" onclick="endTimer()">End</button>
                         @endif
@@ -424,101 +424,45 @@
             <p class="fw-light">Pictures of the problem areas :</p>
             <div class="p-3 mb-2 bg-primary-subtle text-secondary-emphasis problemImageMainBG rounded">
                 <div class="row d-flex justify-content-center mx-auto">
-                    <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_1) }}" alt="empty"
-                            class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal1">
-                    </div>
-                    <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_2) }}" alt="empty"
-                            class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal2">
-                    </div>
-                    <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_3) }}" alt="empty"
-                            class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal3">
-                    </div>
-                    <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_4) }}" alt="empty"
-                            class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal4">
-                    </div>
-                    <div class="col-md-2 p-2">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_5) }}" alt="empty"
-                            class="img-thumbnail problemImage ionHover" data-toggle="modal" data-target="#imageModal5">
-                    </div>
+                    @for ($i = 1; $i <= 5; $i++)
+                        @php
+                            $img = 'img_' . $i;
+                        @endphp
+                        @if (!empty($message->$img))
+                            <div class="col-md-2 p-2">
+                                <img src="{{ asset('images/MessageWithProblem/' . $message->$img) }}"
+                                    alt="Image {{ $i }}" class="img-thumbnail problemImage ionHover"
+                                    data-toggle="modal" data-target="#imageModal{{ $i }}">
+                            </div>
+                        @endif
+                    @endfor
                 </div>
             </div>
         </div>
-
 
         <!-- Modals -->
-        <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_1) }}" alt="Full Image 1"
-                            class="img-fluid">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        @for ($i = 1; $i <= 5; $i++)
+            @php
+                $img = 'img_' . $i;
+            @endphp
+            @if (!empty($message->$img))
+                <div class="modal fade" id="imageModal{{ $i }}" tabindex="-1"
+                    aria-labelledby="imageModalLabel{{ $i }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img src="{{ asset('images/MessageWithProblem/' . $message->$img) }}"
+                                    alt="Full Image {{ $i }}" class="img-fluid">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            @endif
+        @endfor
 
-        <div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_2) }}" alt="Full Image 2"
-                            class="img-fluid">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="imageModal3" tabindex="-1" aria-labelledby="imageModalLabel3" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_3) }}" alt="Full Image 3"
-                            class="img-fluid">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="imageModal4" tabindex="-1" aria-labelledby="imageModalLabel4" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_4) }}" alt="Full Image 4"
-                            class="img-fluid">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="imageModal5" tabindex="-1" aria-labelledby="imageModalLabel5" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <img src="{{ asset('images/MessageWithProblem/' . $message->img_5) }}" alt="Full Image 5"
-                            class="img-fluid">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Institute Details -->
         <hr>
@@ -559,8 +503,8 @@
         </div>
 
 
-    {{-- if company employee requered addtional document (that user upload documet show hear) --}}
-    @include('components.user.supportMessage')
+        {{-- if company employee requered addtional document (that user upload documet show hear) --}}
+        @include('components.user.supportMessage')
 
     @endsection
 
