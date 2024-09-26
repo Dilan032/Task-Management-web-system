@@ -141,12 +141,20 @@
                                             @csrf
                                             @method('PUT')
 
-                                            <!-- Employee Name and Status Group -->
+                                            <!-- First Name, Last Name, and Status Group -->
                                             <div class="input-group mb-3" style="padding-bottom:15px">
-                                                <span class="input-group-text">Employee Name & Status</span>
-                                                <input type="text" name="name" aria-label="Employee Name"
-                                                    class="form-control" placeholder="Employee Name"
-                                                    value="{{ old('name', $employee->name) }}" required>
+                                                <span class="input-group-text">First Name</span>
+                                                <input type="text" name="first_name" aria-label="First Name"
+                                                    class="form-control" placeholder="First Name"
+                                                    value="{{ old('first_name', explode(' ', $employee->name)[0]) }}"
+                                                    required>
+
+                                                <span class="input-group-text">Last Name</span>
+                                                <input type="text" name="last_name" aria-label="Last Name"
+                                                    class="form-control" placeholder="Last Name"
+                                                    value="{{ old('last_name', explode(' ', $employee->name)[1] ?? '') }}"
+                                                    required>
+
                                                 <select name="status" aria-label="Status" class="form-select">
                                                     <option value="active"
                                                         {{ $employee->status == 'active' ? 'selected' : '' }}>Active

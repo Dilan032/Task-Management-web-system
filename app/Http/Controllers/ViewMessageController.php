@@ -23,7 +23,7 @@ class ViewMessageController extends Controller
         ->where('id', $mid)
         ->orderBy('created_at', 'DESC')
         ->first();
-        $employees = User::where('user_type', 'company employee')->get(); // Get all employees with type 'company employee'
+        $employees = User::whereIn('user_type', ['company employee', 'super admin'])->get(); // Get all employees with type 'company employee'
 
         // Check if message exists and the current user is the assigned employee
         if ($message && Auth::user()->name === $message->assigned_employee) {
