@@ -5,7 +5,7 @@
 
         <div class="d-flex justify-content-between">
             {{-- Today's total recived messages --}}
-            <p class="fs-4 ms-3 mt-2">All Messages <span
+            <p class="fs-4 ms-3 mt-2">All Issues <span
                     class="badge text-bg-light px-4 btnShado">{{ $totalMessages }}</span></p>
         </div>
 
