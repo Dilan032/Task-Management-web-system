@@ -49,17 +49,21 @@ class SuperAdminController extends Controller
         // Count total messages received today
         $totalMessages = $messages->count();
 
-        //This laravel query support to get Important Action Required Issues to the Special Super Admin
-        $issues = Message::where('assigned_employee', 'SA-Upali Sir')
-            ->with('institute')
-            ->select('priority', 'status', 'assigned_employee', 'institute_id', 'subject', 'created_at', 'id')
-            ->paginate(10);
+        // Check if the logged-in user is the super admin with ID 1
+        if (Auth::id() === 1) {
+            // This Laravel query gets important action-required issues for the super admin
+            $issues = Message::with('institute')
+                ->select('priority', 'status', 'assigned_employee', 'institute_id', 'subject', 'created_at', 'id')
+                ->paginate(10);
 
-        // Count issues where status is not 'completed'
-        $nonCompletedIssuesCount = Message::where('assigned_employee', 'SA-Upali Sir')
-            ->where('status', '!=', 'completed')
-            ->count();
-
+            // Count issues where status is not 'completed'
+            $nonCompletedIssuesCount = Message::where('status', '!=', 'completed')
+                ->count();
+        } else {
+            // If the logged-in user is not super admin with ID 1, no issues will be shown
+            $issues = collect();
+            $nonCompletedIssuesCount = 0;
+        }
 
         return view('superAdmin.superAdminDashboard', [
             'totalEmployees' => $employeeCount,
@@ -77,47 +81,52 @@ class SuperAdminController extends Controller
         ]);
     }
 
+
     public function showImportantIssue()
     {
-        // Fetch the specific important issue by ID
-        $issues = Message::where('assigned_employee', 'SA-Upali Sir')
-            ->with('institute', 'user')
-            ->select([
-                'id',
-                'user_id',
-                'assigned_employee',
-                'institute_id',
-                'subject',
-                'message',
-                'priority',
-                'status',
-                'request',
-                'sp_request',
-                'img_1',
-                'img_2',
-                'img_3',
-                'img_4',
-                'img_5',
-                'start_time',
-                'end_time',
-                'progress_note',
-                'viewed_at',
-                'support_description',
-                'support_img_1',
-                'support_img_2',
-                'support_img_3',
-                'support_img_4',
-                'support_img_5',
-                'created_at'
-            ])
-            ->paginate(10);
+        // Check if the logged-in user is the super admin with ID 1
+        if (Auth::id() === 1) {
+            // Fetch the specific important issue by ID for the super admin
+            $issues = Message::with('institute', 'user')
+                ->select([
+                    'id',
+                    'user_id',
+                    'assigned_employee',
+                    'institute_id',
+                    'subject',
+                    'message',
+                    'priority',
+                    'status',
+                    'request',
+                    'sp_request',
+                    'img_1',
+                    'img_2',
+                    'img_3',
+                    'img_4',
+                    'img_5',
+                    'start_time',
+                    'end_time',
+                    'progress_note',
+                    'viewed_at',
+                    'support_description',
+                    'support_img_1',
+                    'support_img_2',
+                    'support_img_3',
+                    'support_img_4',
+                    'support_img_5',
+                    'created_at'
+                ])
+                ->paginate(10);
+        } else {
+            // If the logged-in user is not super admin with ID 1, no issues will be shown
+            $issues = collect();
+        }
 
         // Return the view with the issue details
         return view('components.superAdmin.dashboard.importantIssues', [
             'issues' => $issues
         ]);
     }
-
 
     //Update the company employees details method (institute and company side)
     public function companyEmpUpdate(Request $request, $id) // Company Employee Details Update function
