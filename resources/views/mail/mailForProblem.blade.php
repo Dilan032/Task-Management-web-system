@@ -22,7 +22,7 @@
 
        <div class="text-center mt-3">
             <img src="{{ $message->embed('images/CompanyLogo/nanosoftSolutions Company Logo.png') }}">
-            <h2 class="pb-4" style="color: rgb(48, 2, 255)">NanoSoft Solutions Bank Complaning WebApplication</h2>
+            <h2 class="pb-4" style="color: rgb(48, 2, 255)">NanoSoft Solutions Institute Complaning WebApplication</h2>
         </div>
 
         <div class="row mb-5">
@@ -65,6 +65,10 @@
 
             </div>
         </div>
+
+        {{-- <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-5">
+            <a href="#" class="me-md-2 px-5">Visit to Institute Complaint Web Application</a>
+        </div> --}}
 
     </div>
 </body>

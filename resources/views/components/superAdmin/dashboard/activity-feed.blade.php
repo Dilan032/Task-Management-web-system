@@ -23,7 +23,7 @@
                     📜Document Pending
                     <span class="badge text-bg-warning px-5">{{ $DocPendingMsg }}</span>
                 </div>
-                <div class="fs-6 fw-light d-flex justify-content-between px-4 mt-2">
+                <div class="fs-6 fw-light d-flex justify-content-between px-4 mt-2 mb-3">
                     ⚙ Processing
                     <span class="badge text-bg-info px-5">{{ $ProcessingMsg }}</span>
                 </div>
