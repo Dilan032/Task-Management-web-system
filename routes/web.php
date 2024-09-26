@@ -23,6 +23,9 @@ Route::get('/', function () {
 route::get('/getDeviceDeatails', [DeviceDetectorController::class, 'getDeviceDeatails']);
 route::get('/location', [LoacationController::class, 'getLocation']);
 
+// send email notification
+route::post('/news-send', [NewsEmailController::class, 'newsSend'])->name('news-send');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
