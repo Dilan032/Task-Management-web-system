@@ -73,9 +73,6 @@ class ViewMessageController extends Controller
         return redirect()->back()->with('success', 'Employee assigned successfully!');
     }
 
-
-
-
     public function updateStatus(Request $request, $id)
     {
         // Validate the input
