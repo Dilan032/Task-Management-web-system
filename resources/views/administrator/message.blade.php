@@ -37,13 +37,15 @@
                         <input type="date" name="date_from" class="form-control" placeholder="From Date"
                             value="{{ request('date_from') }}">
                     </div>
+
+                    {{-- Filter from the issue priority --}}
                     <div class="col-md-3 mb-2 mb-md-0">
                         <lable for="form_date" class="mr-2">Issue Created Date:To</lable>
                         <input type="date" name="date_to" class="form-control" placeholder="To Date"
                             value="{{ request('date_to') }}">
                     </div>
 
-                    <!-- Filter by Message Status -->
+                    {{-- Filter from the issue progress --}}
                     <div class="col-md-3 mb-2 mb-md-0">
                         <select name="status" class="form-select">
                             <option value="" selected>Filter by Status</option>
@@ -76,14 +78,14 @@
 
                     <!-- Buttons Section -->
                     <div class="col-md-3 d-flex justify-content-end align-items-center">
-                        <button type="submit" class="btn btn-primary me-2">Apply</button>
+                        <button type="submit" class="btn btn-primary me-2"
+                            style="padding-inline-start: 10px">Apply</button>
                         <a href="{{ route('administrator.messages') }}" class="btn btn-warning me-2">Reset</a>
                         <button class="btn btn-success" type="button" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop" style="margin-left:10px">
-                            New issue
+                            data-bs-target="#staticBackdrop">
+                            Add
                         </button>
                     </div>
-
                 </div>
             </form>
         </div>

@@ -120,7 +120,7 @@
                                         : 'px-4';
                                 @endphp
                                 Status: <span
-                                    class="badge {{ $badgeClass }} btnInset py-2 {{ $padding }}">{{ $oneMessage->status }}</span>
+                                    class="badge {{ $badgeClass }} py-2 {{ $padding }}">{{ $oneMessage->status }}</span>
                             @endif
 
                             {{-- Task request mode showing part --}}
@@ -132,7 +132,7 @@
                                 ];
                             @endphp
                             request <span
-                                class="badge {{ $requestClasses[$oneMessage->request] ?? 'text-bg-info' }} btnInset py-2">{{ $oneMessage->request }}</span>
+                                class="badge {{ $requestClasses[$oneMessage->request] ?? 'text-bg-info' }} py-2">{{ $oneMessage->request }}</span>
                         </th>
                     </tr>
                 </tbody>

@@ -54,7 +54,7 @@
                     
                     <br>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-5">
-                        <a href="#" class="me-md-2 px-5">Visit to Bank Complaint Web Application</a>
+                        <a href="#" class="me-md-2 px-5">Visit to Institute Complaint Web Application</a>
                     </div>
             </div>
         </div>

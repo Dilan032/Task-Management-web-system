@@ -22,6 +22,8 @@
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <title>Nanosoft Solutions</title>
 </head>
 
@@ -38,7 +40,7 @@
     {{-- Footer --}}
     <x-footer />
 
-    
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1hbK99w1Z9rBfbZ3Tsw1Axu+Z2t7lVE5EZ2qpp" crossorigin="anonymous"></script>
 

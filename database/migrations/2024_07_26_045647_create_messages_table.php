@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('institute_id');
             $table->unsignedBigInteger('user_id'); //Message send user id store this column
+            $table->unsignedBigInteger('assigned_employee_id'); //This column store the assigned company employee id
             $table->string('assigned_employee');//This column store the assigned company employee
             $table->string('subject');
             $table->string('message');
@@ -43,6 +44,8 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
+
+            $table->foreign('assigned_employee_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

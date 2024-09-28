@@ -5,7 +5,7 @@
 
         <div class="d-flex justify-content-between">
             {{-- Today's total recived messages --}}
-            <p class="fs-4 ms-3 mt-2">All Messages <span
+            <p class="fs-4 ms-3 mt-2">All Issues <span
                     class="badge text-bg-light px-4 btnShado">{{ $totalMessages }}</span></p>
         </div>
 
@@ -23,7 +23,7 @@
                     📜Document Pending
                     <span class="badge text-bg-warning px-5">{{ $DocPendingMsg }}</span>
                 </div>
-                <div class="fs-6 fw-light d-flex justify-content-between px-4 mt-2">
+                <div class="fs-6 fw-light d-flex justify-content-between px-4 mt-2 mb-3">
                     ⚙ Processing
                     <span class="badge text-bg-info px-5">{{ $ProcessingMsg }}</span>
                 </div>

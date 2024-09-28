@@ -34,9 +34,9 @@ class SuperAdminController extends Controller
         $PendingMsg = $messages->where('status', 'Pending')->count();
         $AcceptMsg = $messages->where('status', 'Accept')->count();
         $RejectMsg = $messages->where('status', 'Reject')->count();
-
         $SolvedMsg = $messages->where('status', 'Completed')->count();
         $DocPendingMsg = $messages->where('status', 'Document Pending')->count();
+
         $processingStatuses = [
             'In Queue',
             'In Progress',
@@ -49,17 +49,16 @@ class SuperAdminController extends Controller
         // Count total messages received today
         $totalMessages = $messages->count();
 
-        //This laravel query support to get Important Action Required Issues to the Special Super Admin
-        $issues = Message::where('assigned_employee', 'SA-Upali Sir')
+        // Getting Important Action Required Issues to the Special Super Admin
+        $issues = Message::where('assigned_employee_id', 1)
             ->with('institute')
             ->select('priority', 'status', 'assigned_employee', 'institute_id', 'subject', 'created_at', 'id')
             ->paginate(10);
 
         // Count issues where status is not 'completed'
-        $nonCompletedIssuesCount = Message::where('assigned_employee', 'SA-Upali Sir')
+        $nonCompletedIssuesCount = Message::where('assigned_employee_id', 1)
             ->where('status', '!=', 'completed')
             ->count();
-
 
         return view('superAdmin.superAdminDashboard', [
             'totalEmployees' => $employeeCount,
@@ -80,7 +79,7 @@ class SuperAdminController extends Controller
     public function showImportantIssue()
     {
         // Fetch the specific important issue by ID
-        $issues = Message::where('assigned_employee', 'SA-Upali Sir')
+        $issues = Message::where('assigned_employee_id', 1)
             ->with('institute', 'user')
             ->select([
                 'id',
@@ -118,15 +117,75 @@ class SuperAdminController extends Controller
         ]);
     }
 
+    // for User Registration super admin
+    public function RegisterSuperAdmin(Request $request)
+    {
+        // Update the validation rules to require first_name and last_name
+        $rules = [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'user_type' => 'required|string',
+            'password' => 'required|string|min:8|max:32|confirmed',
+            'user_contact_num' => 'required|string|max:12',
+            'email' => 'required|string|email|max:255|unique:users,email',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Combine first name and last name
+        $fullName = $request->input('first_name') . ' ' . $request->input('last_name');
+
+        // Create the new user
+        $newUser = new User;
+        $newUser->user_type = $request->input('user_type');
+        $newUser->name = $fullName;  // Save the combined full name
+        $newUser->email = $request->input('email');
+        $newUser->user_contact_num = $request->input('user_contact_num');
+        $newUser->password = Hash::make($request->input('password'));
+        $newUser->save();
+
+        // Store plain password for email purposes
+        $plainPassword = $request->input('password');
+
+        if (Auth::check()) {
+            $RegisterAdminName = Auth::user()->name;
+            $RegisterUserType = Auth::user()->user_type;
+            $RegisterAadminEmail = Auth::user()->email;
+            $RegisterAdminContactNumber = Auth::user()->user_contact_num;
+        } else {
+            return redirect()->route('login');
+        }
+
+        // Send a welcome email
+        Mail::to($newUser->email)->send(new userWellcomeMessage(
+            $newUser->user_type,
+            $newUser->name,
+            $newUser->email,
+            $newUser->user_contact_num,
+            $plainPassword,
+            $RegisterAdminName,
+            $RegisterUserType,
+            $RegisterAadminEmail,
+            $RegisterAdminContactNumber
+        ));
+
+        return redirect()->back()->with('success', 'User registered successfully!');
+    }
 
     //Update the company employees details method (institute and company side)
-    public function companyEmpUpdate(Request $request, $id) // Company Employee Details Update function
+    public function companyEmpUpdate(Request $request, $id)
     {
-        // Find the company employee or super admin by ID
+        // Find the company employee by ID
         $employee = User::findOrFail($id);
 
+        // Validation rules
         $rules = [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'user_contact_num' => 'required|string|max:12',
             'password' => 'nullable|string|min:8|confirmed',
@@ -141,8 +200,14 @@ class SuperAdminController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        // Concatenate first name and last name to form the full name
+        $fullName = $request->input('first_name') . ' ' . $request->input('last_name');
+
+        // Store the old name for updating the Message table
+        $oldName = $employee->name;
+
         // Update employee details
-        $employee->name = $request->input('name');
+        $employee->name = $fullName;
         $employee->email = $request->input('email');
         $employee->status = $request->input('status');
         $employee->user_contact_num = $request->input('user_contact_num');
@@ -155,9 +220,17 @@ class SuperAdminController extends Controller
         // Save the updated employee details
         $employee->update();
 
+        // Update all messages where the assigned_employee is the old name
+        Message::where('assigned_employee', $oldName)->update(['assigned_employee' => $fullName]);
+
+        // Update all messages where the assigned_employee is the old name
+        Institute::where('assigned_employee', $oldName)->update(['assigned_employee' => $fullName]);
+
         // Redirect with a success message
         return redirect()->back()->with('success', 'Employee updated successfully!');
     }
+
+
 
     //Delete the company employees details method
     public function companyEmpDelete($id)
@@ -215,56 +288,6 @@ class SuperAdminController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
-    // for User Registration super admin
-    public function RegisterSuperAdmin(Request $request)
-    {
-        $rules = [
-            'user_type' => 'required|string',
-            'password' => 'required|string|min:8|max:32|confirmed',
-            'user_contact_num' => 'required|string|max:12',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'name' => 'required|string|max:255',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $newUser = new User;
-        $newUser->user_type = $request->input('user_type');
-        $newUser->name = $request->input('name');
-        $newUser->email = $request->input('email');
-        $newUser->user_contact_num = $request->input('user_contact_num');
-        $newUser->password = Hash::make($request->input('password'));
-        $newUser->save();
-
-        $plainPassword = $request->input('password');
-
-        if (Auth::check()) {
-            $RegisterAdminName = Auth::user()->name;
-            $RegisterUserType = Auth::user()->user_type;
-            $RegisterAadminEmail = Auth::user()->email;
-            $RegisterAdminContactNumber = Auth::user()->user_contact_num;
-        } else {
-            return redirect()->route('login');
-        }
-
-        Mail::to($newUser->email)->send(new userWellcomeMessage(
-            $newUser->user_type,
-            $newUser->name,
-            $newUser->email,
-            $newUser->user_contact_num,
-            $plainPassword,
-            $RegisterAdminName,
-            $RegisterUserType,
-            $RegisterAadminEmail,
-            $RegisterAdminContactNumber
-        ));
-
-        return redirect()->back()->with('success', 'User registered successfully!');
-    }
 
     //$Institute variable used for while user registration form generate institute name list
     public function ViewUsers(Request $request)

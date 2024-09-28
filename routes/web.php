@@ -23,6 +23,9 @@ Route::get('/', function () {
 route::get('/getDeviceDeatails', [DeviceDetectorController::class, 'getDeviceDeatails']);
 route::get('/location', [LoacationController::class, 'getLocation']);
 
+// send email notification
+route::post('/news-send', [NewsEmailController::class, 'newsSend'])->name('news-send');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -100,6 +103,7 @@ Route::controller(AllMessagesController::class)
         Route::get('/superAdmin/all-messages', 'index')->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
         Route::get('/superAdmin/all-messages/filter', 'filter')->name('messages.filter');
         Route::post('/superAdmin/messages/save', 'store')->name('superAdmin.messages.save');
+
     });
 
 Route::controller(InstituteController::class)->group(function () {

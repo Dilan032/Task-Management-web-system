@@ -46,7 +46,8 @@
 
 <div class="d-flex justify-content-end mb-3">
 
-    <form action="{{ route('com.update.message.priority', $messages->id) }}" method="POST">
+    {{-- priority drop down --}}
+    {{-- <form action="{{ route('com.update.message.priority', $messages->id) }}" method="POST">
         @csrf
         @method('POST')
 
@@ -68,7 +69,7 @@
                         day)</a></li>
             </ul>
         </div>
-    </form>
+    </form> --}}
 
     <!-- Status Dropdown -->
     <form action="{{ route('com.update.message.status', $messages->id) }}" method="POST" id="statusForm">
