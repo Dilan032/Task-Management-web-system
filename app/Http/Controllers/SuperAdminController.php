@@ -49,6 +49,7 @@ class SuperAdminController extends Controller
         // Count total messages received today
         $totalMessages = $messages->count();
 
+
         // Getting Important Action Required Issues to the Special Super Admin
         $issues = Message::where('assigned_employee_id', 1)
             ->with('institute')

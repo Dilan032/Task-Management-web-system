@@ -34,7 +34,6 @@ class ViewMessageController extends Controller
             }
         }
 
-
         if ($message) {
             return view('superAdmin.viewmessage', compact('message', 'employees', 'oneMessage'));  // Return the view with message and employees
         } else {
