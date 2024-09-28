@@ -130,8 +130,12 @@
                                 <form action="{{ route('accept.sp_request', $message->id) }}" method="POST"
                                     id="acceptSpRequestForm">
                                     @csrf
+                                    <input type="hidden" id="assigned_employee_id_for_sp_request"
+                                        name="assigned_employee_id">
                                     <button id="accept-sp-request-btn" class="btn btn-warning me-2"
-                                        onclick="submitSpRequestForm()">Accept</button>
+                                        onclick="submitSpRequestForm()">
+                                        Accept
+                                    </button>
                                 </form>
                             @endif
 
@@ -154,18 +158,23 @@
             <form id="assign-employee-form" action="{{ route('update.assigned.employee', $message->id) }}" method="POST">
                 @csrf
                 <div class="dropdown-center me-2">
-                    <select name="assigned_employee" class="form-select" aria-label="Assign Employee"
+                    <select name="assigned_employee" id="assigned_employee" class="form-select" aria-label="Assign Employee"
                         onchange="submitAssignEmployeeForm();">
                         <option selected disabled>Assign Employee</option>
                         @foreach ($employees as $employee)
-                            <option value="{{ $employee->name }}"
+                            <option value="{{ $employee->name }}" data-id="{{ $employee->id }}"
                                 {{ $message->assigned_employee == $employee->name ? 'selected' : '' }}>
                                 {{ $employee->name }}
                             </option>
                         @endforeach
                     </select>
+
+                    <!-- Hidden field for storing assigned_employee_id -->
+                    <input type="hidden" id="assigned_employee_id" name="assigned_employee_id"
+                        value="{{ old('assigned_employee_id') }}">
                 </div>
             </form>
+
 
             <form action="{{ route('update.message.priority', $message->id) }}" method="POST">
                 @csrf
@@ -520,6 +529,17 @@
         }
 
         function submitAssignEmployeeForm() {
+            // Get the selected option from the dropdown
+            const selectElement = document.getElementById('assigned_employee');
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            // Get the employee ID from the 'data-id' attribute
+            const employeeId = selectedOption.getAttribute('data-id');
+
+            // Set the employee ID to the hidden input field
+            document.getElementById('assigned_employee_id').value = employeeId;
+
+            // Submit the form
             document.getElementById('assign-employee-form').submit();
         }
 
@@ -628,6 +648,17 @@
         }
 
         function submitSpRequestForm() {
+            // Get the selected option from the employee dropdown
+            const selectElement = document.getElementById('assigned_employee');
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            // Get the employee ID from the 'data-id' attribute
+            const employeeId = selectedOption.getAttribute('data-id');
+
+            // Set the employee ID to the hidden input field in the SP request form
+            document.getElementById('assigned_employee_id_for_sp_request').value = employeeId;
+
+            // Submit the form
             document.getElementById('acceptSpRequestForm').submit();
         }
     </script>

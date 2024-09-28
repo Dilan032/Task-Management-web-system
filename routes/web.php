@@ -103,6 +103,7 @@ Route::controller(AllMessagesController::class)
         Route::get('/superAdmin/all-messages', 'index')->name('superAdmin.allmessages.view'); // Optional: Add query parameters for filtering
         Route::get('/superAdmin/all-messages/filter', 'filter')->name('messages.filter');
         Route::post('/superAdmin/messages/save', 'store')->name('superAdmin.messages.save');
+
     });
 
 Route::controller(InstituteController::class)->group(function () {

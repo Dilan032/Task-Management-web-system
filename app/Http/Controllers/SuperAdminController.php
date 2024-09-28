@@ -34,9 +34,9 @@ class SuperAdminController extends Controller
         $PendingMsg = $messages->where('status', 'Pending')->count();
         $AcceptMsg = $messages->where('status', 'Accept')->count();
         $RejectMsg = $messages->where('status', 'Reject')->count();
-
         $SolvedMsg = $messages->where('status', 'Completed')->count();
         $DocPendingMsg = $messages->where('status', 'Document Pending')->count();
+
         $processingStatuses = [
             'In Queue',
             'In Progress',
@@ -49,17 +49,17 @@ class SuperAdminController extends Controller
         // Count total messages received today
         $totalMessages = $messages->count();
 
-        //This laravel query support to get Important Action Required Issues to the Special Super Admin
-        $issues = Message::where('assigned_employee', 'super admin')
+
+        // Getting Important Action Required Issues to the Special Super Admin
+        $issues = Message::where('assigned_employee_id', 1)
             ->with('institute')
             ->select('priority', 'status', 'assigned_employee', 'institute_id', 'subject', 'created_at', 'id')
             ->paginate(10);
 
         // Count issues where status is not 'completed'
-        $nonCompletedIssuesCount = Message::where('assigned_employee', 'super admin')
+        $nonCompletedIssuesCount = Message::where('assigned_employee_id', 1)
             ->where('status', '!=', 'completed')
             ->count();
-
 
         return view('superAdmin.superAdminDashboard', [
             'totalEmployees' => $employeeCount,
@@ -80,7 +80,7 @@ class SuperAdminController extends Controller
     public function showImportantIssue()
     {
         // Fetch the specific important issue by ID
-        $issues = Message::where('assigned_employee', 'super admin')
+        $issues = Message::where('assigned_employee_id', 1)
             ->with('institute', 'user')
             ->select([
                 'id',
@@ -223,6 +223,9 @@ class SuperAdminController extends Controller
 
         // Update all messages where the assigned_employee is the old name
         Message::where('assigned_employee', $oldName)->update(['assigned_employee' => $fullName]);
+
+        // Update all messages where the assigned_employee is the old name
+        Institute::where('assigned_employee', $oldName)->update(['assigned_employee' => $fullName]);
 
         // Redirect with a success message
         return redirect()->back()->with('success', 'Employee updated successfully!');

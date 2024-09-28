@@ -196,7 +196,8 @@
 
                     <!-- Buttons Section -->
                     <div class="col-md-3 d-flex justify-content-end align-items-center">
-                        <button type="submit" class="btn btn-primary me-2" style="padding-inline-start: 10px">Apply</button>
+                        <button type="submit" class="btn btn-primary me-2"
+                            style="padding-inline-start: 10px">Apply</button>
                         <a href="{{ route('superAdmin.allmessages.view') }}" class="btn btn-warning me-2">Reset</a>
                         <button class="btn btn-success" type="button" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop2">
@@ -207,7 +208,6 @@
             </form>
         </div>
     </div>
-
 
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -238,6 +238,10 @@
                                     <label for="instituteSelect">Select Institute</label>
                                 </div>
 
+                                <!-- Hidden field for storing assigned_employee_id -->
+                                {{-- <input type="hidden" id="assigned_employee_id" name="assigned_employee_id"
+                                    value="{{ old('assigned_employee_id') }}"> --}}
+
                                 <div class="form-floating mb-3 userBgShado">
                                     <input type="text" name="subject" value="{{ old('subject') }}" class="form-control"
                                         id="floatingInput" placeholder="Subject">
@@ -254,101 +258,105 @@
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
                                 </div>
-                        </div>
 
+                                <div class="col-md-4">
+                                    <br> <br> <br>
+                                    <div class="text-center mb-3 mt-4">
+                                        <h3 class="fw-normal">Upload Images</h3>
+                                        <span class="font-monospace"><small>(Upload pictures where there are
+                                                problems)</small></span>
+                                    </div>
 
-                        <div class="col-md-4">
-                            <br> <br> <br>
-                            <div class="text-center mb-3 mt-4">
-                                <h3 class="fw-normal">Upload Images</h3>
-                                <span class="font-monospace"><small>(Upload pictures where there are
-                                        problems)</small></span>
-                            </div>
+                                    <div class="d-flex justify-content-around">
+                                        <section>
+                                            <div class="bg-white  rounded p-2 imgBg">
+                                                <label for="file_1" class="ionHover">
+                                                    <i class="bi bi-image-fill fs-1"></i>
+                                                </label>
+                                                <input type="file" class="d-none" name="img_1" id="file_1">
+                                            </div>
+                                            {{-- this style for when image file uploaded show that file uploaded or not --}}
+                                            <div class="ms-4 mt-2">
+                                                <div class="spinner-border spinner-border-sm" id="spinner_1"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <i class="bi bi-check-circle checkmark" id="checkmark_1"></i>
+                                            </div>
+                                        </section>
 
-                            <div class="d-flex justify-content-around">
-                                <section>
-                                    <div class="bg-white  rounded p-2 imgBg">
-                                        <label for="file_1" class="ionHover">
-                                            <i class="bi bi-image-fill fs-1"></i>
-                                        </label>
-                                        <input type="file" class="d-none" name="img_1" id="file_1">
-                                    </div>
-                                    {{-- this style for when image file uploaded show that file uploaded or not --}}
-                                    <div class="ms-4 mt-2">
-                                        <div class="spinner-border spinner-border-sm" id="spinner_1" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <i class="bi bi-check-circle checkmark" id="checkmark_1"></i>
-                                    </div>
-                                </section>
+                                        <section>
+                                            <div class="bg-white  rounded p-2 imgBg">
+                                                <label for="file_2" class="ionHover">
+                                                    <i class="bi bi-image-fill fs-1"></i>
+                                                </label>
+                                                <input type="file" class="d-none" name="img_2" id="file_2">
+                                            </div>
+                                            {{-- this style for when image file uploaded show that file uploaded or not --}}
+                                            <div class="ms-4 mt-2">
+                                                <div class="spinner-border spinner-border-sm" id="spinner_2"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <i class="bi bi-check-circle checkmark" id="checkmark_2"></i>
+                                            </div>
+                                        </section>
 
-                                <section>
-                                    <div class="bg-white  rounded p-2 imgBg">
-                                        <label for="file_2" class="ionHover">
-                                            <i class="bi bi-image-fill fs-1"></i>
-                                        </label>
-                                        <input type="file" class="d-none" name="img_2" id="file_2">
-                                    </div>
-                                    {{-- this style for when image file uploaded show that file uploaded or not --}}
-                                    <div class="ms-4 mt-2">
-                                        <div class="spinner-border spinner-border-sm" id="spinner_2" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <i class="bi bi-check-circle checkmark" id="checkmark_2"></i>
-                                    </div>
-                                </section>
+                                        <section>
+                                            <div class="bg-white  rounded p-2 imgBg">
+                                                <label for="file_3" class="ionHover">
+                                                    <i class="bi bi-image-fill fs-1"></i>
+                                                </label>
+                                                <input type="file" class="d-none" name="img_3" id="file_3">
+                                            </div>
+                                            {{-- this style for when image file uploaded show that file uploaded or not --}}
+                                            <div class="ms-4 mt-2">
+                                                <div class="spinner-border spinner-border-sm" id="spinner_3"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <i class="bi bi-check-circle checkmark" id="checkmark_3"></i>
+                                            </div>
+                                        </section>
 
-                                <section>
-                                    <div class="bg-white  rounded p-2 imgBg">
-                                        <label for="file_3" class="ionHover">
-                                            <i class="bi bi-image-fill fs-1"></i>
-                                        </label>
-                                        <input type="file" class="d-none" name="img_3" id="file_3">
-                                    </div>
-                                    {{-- this style for when image file uploaded show that file uploaded or not --}}
-                                    <div class="ms-4 mt-2">
-                                        <div class="spinner-border spinner-border-sm" id="spinner_3" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <i class="bi bi-check-circle checkmark" id="checkmark_3"></i>
-                                    </div>
-                                </section>
+                                        <section>
+                                            <div class="bg-white  rounded p-2 imgBg">
+                                                <label for="file_4" class="ionHover">
+                                                    <i class="bi bi-image-fill fs-1"></i>
+                                                </label>
+                                                <input type="file" class="d-none" name="img_4" id="file_4">
+                                            </div>
+                                            {{-- this style for when image file uploaded show that file uploaded or not --}}
+                                            <div class="ms-4 mt-2">
+                                                <div class="spinner-border spinner-border-sm" id="spinner_4"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <i class="bi bi-check-circle checkmark" id="checkmark_4"></i>
+                                            </div>
+                                        </section>
 
-                                <section>
-                                    <div class="bg-white  rounded p-2 imgBg">
-                                        <label for="file_4" class="ionHover">
-                                            <i class="bi bi-image-fill fs-1"></i>
-                                        </label>
-                                        <input type="file" class="d-none" name="img_4" id="file_4">
+                                        <section>
+                                            <div class="bg-white  rounded p-2 imgBg">
+                                                <label for="file_5" class="ionHover">
+                                                    <i class="bi bi-image-fill fs-1"></i>
+                                                </label>
+                                                <input type="file" class="d-none" name="img_5" id="file_5">
+                                            </div>
+                                            {{-- this style for when image file uploaded show that file uploaded or not --}}
+                                            <div class="ms-4 mt-2">
+                                                <div class="spinner-border spinner-border-sm" id="spinner_5"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <i class="bi bi-check-circle checkmark" id="checkmark_5"></i>
+                                            </div>
+                                        </section>
                                     </div>
-                                    {{-- this style for when image file uploaded show that file uploaded or not --}}
-                                    <div class="ms-4 mt-2">
-                                        <div class="spinner-border spinner-border-sm" id="spinner_4" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <i class="bi bi-check-circle checkmark" id="checkmark_4"></i>
-                                    </div>
-                                </section>
-
-                                <section>
-                                    <div class="bg-white  rounded p-2 imgBg">
-                                        <label for="file_5" class="ionHover">
-                                            <i class="bi bi-image-fill fs-1"></i>
-                                        </label>
-                                        <input type="file" class="d-none" name="img_5" id="file_5">
-                                    </div>
-                                    {{-- this style for when image file uploaded show that file uploaded or not --}}
-                                    <div class="ms-4 mt-2">
-                                        <div class="spinner-border spinner-border-sm" id="spinner_5" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <i class="bi bi-check-circle checkmark" id="checkmark_5"></i>
-                                    </div>
-                                </section>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>

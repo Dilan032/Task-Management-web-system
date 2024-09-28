@@ -14,11 +14,11 @@
         </ol>
     </nav>
 
-    <h3 class="mt-3 mb-3 text-center">Important Action Required Issues Section</h3>
+    <h3 class="mt-3 mb-4 text-center"><u>Important Action Required Issues Section</u></h3>
 
-    <div class="container-fluid mt-5">
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-            @foreach ($issues as $issue)
+    @foreach ($issues as $issue)
+        <div class="container-fluid mt-3">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-heading{{ $issue->id }}">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -123,14 +123,14 @@
                                         @endif
                                     @endfor
                                 </div> --}}
-                                <div class="col-md-12" style="margin-left:12px">
-                                    <strong>Viewed At:</strong> {{ $issue->viewed_at }}
-                                </div>
+                            <div class="col-md-12" style="margin-left:12px">
+                                <strong>Viewed At:</strong> {{ $issue->viewed_at }}
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            </div>
+
         </div>
-    </div>
+    @endforeach
 @endsection
